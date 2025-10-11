@@ -1,0 +1,2 @@
+# Nmap 7.94SVN scan initiated Fri Oct 10 10:36:55 2025 as: nmap --script vulners -sV -oN nmap_vulners_external.txt certifiedhacker.com
+# Nmap done at Fri Oct 10 10:36:58 2025 -- 1 IP address (0 hosts up) scanned in 3.21 seconds
