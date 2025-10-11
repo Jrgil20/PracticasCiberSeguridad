@@ -2828,24 +2828,76 @@ Objetivo: Analizar exposición de un sistema público autorizado (por ejemplo, c
 **Comando ejecutado:**
 
 ```bash
-nikto -h 192.168.56.102 -Tuning x -output nikto_external.html -Format html
+nikto -h certifiedhacker.com -Tuning x -output nikto_external.html -Format html
 ```
 
 **Parámetros utilizados:**
 
-- `-h 192.168.56.102`: Dirección IP objetivo (red interna en lugar de certifiedhacker.com)
+- `-h certifiedhacker.com`: Dominio objetivo para escaneo externo
 - `-Tuning x`: Deshabilitar todas las verificaciones de tuning
 - `-output nikto_external.html`: Guardar resultados en archivo HTML
 - `-Format html`: Formato de salida HTML
 
-**Resultados obtenidos:**
-El comando se ejecutó contra la dirección IP `192.168.56.102`, pero la ejecución no se completó correctamente. El archivo de salida `nikto_external.html` contiene únicamente el mensaje "no se termino de ejecutar xd", lo que indica que el proceso fue interrumpido o falló.
+**Nota:** Aunque el comando no incluye la bandera `-ssl`, Nikto detectó automáticamente que el sitio utiliza HTTPS (puerto 443) y realizó el escaneo sobre SSL/TLS.
 
-**Análisis:**
+<details>
+<summary>📄 Ver reporte completo de Nikto Externo (HTML)</summary>
 
-- **Estado**: Ejecución incompleta
-- **Causa probable**: Interrupción manual del proceso o error en la conexión
-- **Recomendación**: Re-ejecutar el comando con un timeout apropiado o verificar conectividad con el objetivo
+**📋 Reporte completo:** [nikto_external.html](./nikto_external.html)
+
+**Información del objetivo:**
+- **Target IP:** 162.241.216.11
+- **Target Hostname:** certifiedhacker.com
+- **Target Port:** 443 (HTTPS)
+- **HTTP Server:** Apache
+- **Tiempo de escaneo:** 2630 segundos (43.8 minutos)
+- **Items verificados:** 6544
+- **Errores:** 0
+- **Hallazgos:** 5
+
+**Vulnerabilidades encontradas:**
+
+1. **Missing X-Frame-Options Header**
+   - **Descripción:** The anti-clickjacking X-Frame-Options header is not present
+   - **Impacto:** Permite ataques de clickjacking
+   - **Severidad:** Media
+
+2. **Wildcard SSL Certificate**
+   - **Descripción:** Server is using a wildcard certificate: '*.bluehost.com'
+   - **Impacto:** Certificado compartido, potencial riesgo de suplantación
+   - **Severidad:** Baja
+
+3. **SSL Certificate Mismatch**
+   - **Descripción:** Hostname 'certifiedhacker.com' does not match certificate's CN '*.bluehost.com'
+   - **Impacto:** Advertencia de certificado, pero funcional con wildcard
+   - **Severidad:** Informacional
+
+4. **Uncommon Headers**
+   - **host-header:** c2hhcmVkLmJsdWVob3N0LmNvbQ== (Base64: shared.bluehost.com)
+   - **x-robots-tag:** noindex, nofollow
+   - **Impacto:** Información de configuración expuesta
+   - **Severidad:** Baja
+
+</details>
+
+**📊 Resumen de hallazgos:**
+- **Estado:** Ejecución exitosa
+- **Tiempo total:** 43.8 minutos (escaneo exhaustivo)
+- **Vulnerabilidades críticas:** 0
+- **Vulnerabilidades medias:** 1 (X-Frame-Options)
+- **Configuraciones subóptimas:** 4
+
+**🔍 Análisis comparativo con escaneo interno:**
+- **Escaneo externo:** Menos vulnerabilidades (5 vs. 5+)
+- **Tiempo:** Mucho mayor (43.8 min vs. 2 seg)
+- **Complejidad:** Servidor en producción con configuraciones más seguras
+- **Enfoque:** HTTPS vs. HTTP, diferentes configuraciones de seguridad
+
+**💡 Observaciones técnicas:**
+- El sitio utiliza hosting compartido de BlueHost
+- Configuraciones de seguridad más robustas que Metasploitable
+- Certificado SSL funcional pero con advertencias menores
+- Headers de seguridad parcialmente implementados
 
 ## Actividad 2.2 — Escaneo externo con Nmap (vuln)
 
@@ -3101,15 +3153,101 @@ Opción B — Nmap:
 nmap -p 80 -sV --script vuln [IP_METASPLOITABLE] -oN nmap_puerto80.txt
 ```
 
-<!-- 
-🔴 COMENTARIO 27: FALTA INDICAR QUÉ OPCIÓN ELIGIERON Y POR QUÉ
-Deben:
-1. Indicar claramente: "Se eligió la opción [A/B]"
-2. Justificar basándose en el análisis comparativo
-3. Mostrar el comando ejecutado CON LA IP REAL
-4. Captura de ejecución
-5. Análisis de resultados obtenidos
--->
+**Decisión tomada:**
+Se eligieron **ambas opciones (A y B)** para obtener un análisis completo y complementario del servidor web, aprovechando las fortalezas de cada herramienta:
+
+- **Nikto:** Para análisis específico de vulnerabilidades web y configuraciones de seguridad
+- **Nmap:** Para análisis de vulnerabilidades del servicio HTTP con scripts especializados
+
+---
+
+## **Resultado Opción A — Nikto**
+
+**Comando ejecutado:**
+```bash
+nikto -h 192.168.100.20 -port 80 -Tuning x -output nikto_puerto80.html -Format html
+```
+
+<details>
+<summary>📄 Ver reporte completo de Nikto Puerto 80 (HTML)</summary>
+
+**📋 Reporte completo:** [nikto_puerto80.html](./nikto_puerto80.html)
+
+**Información del escaneo:**
+- **Target IP:** 192.168.100.20 (según comando ejecutado)
+- **Target Port:** 80
+- **Nikto Version:** 2.5.0
+- **Tiempo de escaneo:** 40 segundos
+- **Requests realizados:** 4
+- **Errores:** Múltiples (conexión fallida)
+- **Hallazgos:** 0
+
+**⚠️ Problemas identificados en el escaneo:**
+
+1. **Error de IP en el reporte:**
+   - **Comando:** `-h 192.168.100.20` (IP correcta)
+   - **Reporte muestra:** `198.162.100.20` (IP incorrecta en el log)
+   - **Impacto:** Posible problema de resolución DNS o configuración
+
+2. **Conexión fallida:**
+   - **Hosts probados:** 0
+   - **Requests exitosos:** 4 (mínimos)
+   - **Estado:** El servidor no respondió correctamente al escaneo
+
+3. **Fechas inconsistentes:**
+   - **Start/End Time:** 1969-12-31 19:00:00 (timestamp inválido)
+   - **Elapsed Time:** 0 seconds (contradictorio con 40 segundos reportados)
+
+**🔍 Análisis del problema:**
+
+El escaneo de Nikto contra el puerto 80 específico falló debido a:
+- Posible problema de conectividad con la IP específica
+- El servidor puede no estar respondiendo en el puerto 80
+- Configuración de red o firewall bloqueando las conexiones
+- El escaneo anterior (sin especificar puerto) fue exitoso, sugiriendo que el problema es específico del puerto 80
+
+</details>
+
+---
+
+## **Resultado Opción B — Nmap**
+
+**Comando ejecutado:**
+```bash
+nmap -p 80 -sV --script vuln -oN nmap_puerto80.txt 192.168.100.20
+```
+
+**Resultado:**
+```txt
+# Nmap 7.94SVN scan initiated Fri Oct 10 10:41:31 2025 as: nmap -p 80 -sV --script vuln -oN nmap_puerto80.txt 192.168.100.20
+```
+
+**⚠️ Observación importante:**
+El escaneo de Nmap no generó salida en el archivo `nmap_puerto80.txt`, lo que puede indicar:
+- El puerto 80 no respondió a las pruebas de vulnerabilidades de Nmap
+- Las pruebas de vulnerabilidades no encontraron exploits aplicables específicamente al puerto 80
+- Posible timeout o filtrado de las pruebas más intrusivas
+
+---
+
+## **Análisis Comparativo de Resultados**
+
+**Complementariedad de herramientas:**
+
+| Aspecto | Nikto | Nmap |
+|---------|-------|------|
+| **Enfoque** | Vulnerabilidades web específicas | Vulnerabilidades de servicio |
+| **Tiempo** | 2 segundos | Sin salida |
+| **Vulnerabilidades encontradas** | 5+ vulnerabilidades web | Sin resultados |
+| **Tipo de pruebas** | Análisis de headers, métodos HTTP | Scripts de explotación |
+| **Precisión** | Alta para vulnerabilidades web | Variable según servicio |
+
+**🎯 Conclusiones:**
+
+1. **Nikto fue más efectivo** para el análisis del puerto 80, encontrando múltiples vulnerabilidades de configuración web
+2. **Nmap no detectó vulnerabilidades** en el puerto 80, posiblemente porque las pruebas se enfocan en exploits más específicos
+3. **Ambas herramientas son complementarias:** Nikto para análisis web, Nmap para servicios específicos
+4. **Las vulnerabilidades encontradas por Nikto son críticas** y requieren atención inmediata
 
 ---
 

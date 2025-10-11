@@ -1,1 +1,0 @@
-# Nmap 7.94SVN scan initiated Fri Oct 10 10:41:31 2025 as: nmap -p 80 -sV --script vuln -oN nmap_puerto80.txt 192.168.100.20
