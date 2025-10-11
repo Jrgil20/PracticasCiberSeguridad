@@ -472,17 +472,39 @@ Comando ejemplo:
 nmap --script vulners -sV certifiedhacker.com -oN nmap_vulners_external.txt
 ```
 
-<!-- 
-🔴 COMENTARIO 24: AGREGAR PREGUNTA DE REFLEXIÓN
-El documento original pregunta:
-"¿Notaste diferencias en los tiempos de respuesta entre escanear Metasploitable (local) y certifiedhacker.com (remoto)? ¿Qué factores influyen en esto?"
+**Resultados del escaneo:**
 
-Esta reflexión es importante para demostrar comprensión.
--->
+<details>
+<summary>📄 Ver resultados completos del escaneo Nmap (vulners) - certifiedhacker.com</summary>
+
+```txt
+# Nmap 7.94SVN scan initiated Fri Oct 10 10:36:55 2025 as: nmap --script vulners -sV -oN nmap_vulners_external.txt certifiedhacker.com
+# Nmap done at Fri Oct 10 10:36:58 2025 -- 1 IP address (0 hosts up) scanned in 3.21 seconds
+```
+
+</details>
+
+**📊 Resumen de hallazgos:**
+- **Host:** certifiedhacker.com
+- **Estado:** Host no disponible durante el escaneo
+- **Tiempo de escaneo:** 3.21 segundos
+- **Resultado:** 0 hosts activos detectados
+
+**🤔 Reflexión sobre diferencias de rendimiento:**
+
+¿Notaste diferencias en los tiempos de respuesta entre escanear Metasploitable (local) y certifiedhacker.com (remoto)? ¿Qué factores influyen en esto?
+
+**Factores que influyen en los tiempos de respuesta:**
+
+1. **Latencia de red:** El escaneo remoto depende de la latencia entre el atacante y el objetivo
+2. **Filtros de red:** Firewalls, IPS/IDS pueden bloquear o limitar el tráfico de escaneo
+3. **Estado del host objetivo:** El host puede estar caído, sobrecargado o con filtros estrictos
+4. **Configuración de servicios:** Los servicios pueden estar configurados para no responder a ciertos tipos de escaneos
+5. **Ancho de banda:** Limitaciones en la conexión pueden afectar la velocidad del escaneo
 
 ---
 
-# FASE 3: ANÁLISIS PROFUNDO DEL SERVIDOR WEB (Puerto 80)
+## FASE 3: ANÁLISIS PROFUNDO DEL SERVIDOR WEB (Puerto 80)
 
 Objetivo: Análisis exhaustivo del servidor web que corre en puerto 80 — búsqueda de archivos peligrosos, configuraciones incorrectas y componentes desactualizados.
 
