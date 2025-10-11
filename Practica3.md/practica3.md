@@ -132,87 +132,38 @@ Objetivo: Realizar un análisis completo del servidor legacy interno (Metasploit
 
 ## Actividad 1.1 — Escaneo con Nikto (capa de aplicación)
 
-<!-- 
-🔴 COMENTARIO 9: AGREGAR CONTEXTO TÉCNICO DE NIKTO
-El documento original incluye explicación de qué hace Nikto:
-"Nikto es un escáner especializado en servidores web que realiza más de 6,700 pruebas específicas para detectar:
-- Archivos y scripts peligrosos
-- Versiones desactualizadas de software
-- Problemas de configuración del servidor
-- Vulnerabilidades conocidas en aplicaciones web"
+Se realizó un escaneo al servidor web legacy mediante utilizando la herramienta nikto, especializada en este tipos de escaneos con el fin de detectar: 
+-	Archivos y scripts peligrosos
+-	Versiones desactualizadas de software
+-	Problemas de configuración del servidor
+-	Vulnerabilidades conocidas en aplicaciones web
 
-Agrégalo antes del comando.
--->
+Nkito realizó el escaneo mediante el envío de miles de peticiones HTTP/HTTPS al servidor objetivo para encontrar problemas de seguridad conocidos, primero se envian peticiones HTTP simples para analizar la información contenidad en las cabeceras de respuesta del objetivo ya que en ellas está la información de la versión del servidor que se está utilizando actualmente lo que sirve como base para la siguiente etapa. 
 
-Se realizó un escaneo al servidor web legacy mediante utilizndo la nikto, especializada en este tipos de escaenos para obtener 
-
-<!-- 
-🔴 COMENTARIO 10: TEXTO INCOMPLETO - COMPLETAR LA ORACIÓN
-"...para obtener [COMPLETAR: información sobre vulnerabilidades en la capa de aplicación web]"
--->
-
-Parámetros:
+Los parpametros del comando utilizado corresponden a:
 - -h [IP] : host objetivo.
 - -Tuning x : ajuste de pruebas (según necesidad).
 - -output / -Format html : reporte en HTML para documentación.
 
-<!-- 
-🔴 COMENTARIO 11: AGREGAR EXPLICACIÓN DETALLADA DE PARÁMETROS
-El documento original incluye una tabla explicativa más completa:
-| Parámetro | Función | ¿Por qué es importante? |
-Incluye esta tabla para mejor comprensión.
--->
-
-<!-- 
-🔴 COMENTARIO 12: FALTA EL COMANDO EJECUTADO COMPLETO
-Agrega aquí:
-```bash
-nikto -h [IP_METASPLOITABLE_REAL] -Tuning x -output nikto_internal.html -Format html
-```
-Con la IP real usada.
--->
+Como resultado se obtuvo que el servidor está construido con la versión 2.2.8 de Apache la cual no es la versión actual(esta es la 2.4.54), esta información es muy relevante para el análisis de las vulnerabilidades presentes ya que al no tener la versión más reciente de Apache las vulnerabilidades que ya fueron solventadas mediante la implementación de parches en versiones posteriores siguen estando presentes en el servidor actual lo cual es un falla de seguridad importante al tener posibles puntos de entrada conocidos y documentados al sistema.
 
 <img width="636" height="655" alt="image" src="https://gist.github.com/user-attachments/assets/c98fbb7a-10bd-49ee-a3e8-14fad4810975" />
-
-<!-- 
-🔴 COMENTARIO 13: AGREGAR INTERPRETACIÓN DE LA CAPTURA
-Después de la imagen, incluye:
-"En la captura se observa:
-- [Describir qué se ve en la imagen]
-- Tiempo de escaneo: [X minutos]
-- Número de pruebas realizadas: [X]
-- Hallazgos preliminares: [X vulnerabilidades detectadas]"
--->
 
 Notas:
 - Ejecutar únicamente en entornos autorizados y controlados.
 - Guardar reportes con timestamps para trazabilidad.
 
-<!-- 
-🔴 COMENTARIO 14: AGREGAR PREGUNTAS DE REFLEXIÓN
-El documento original incluye preguntas importantes:
-"Mientras el escaneo corre, reflexiona:
-- ¿Qué diferencia hay entre un escaneo de red y un escaneo de aplicación web?
-- ¿Por qué Nikto es más efectivo que Nmap para detectar vulnerabilidades web?"
-
-Agrégalas para demostrar comprensión conceptual.
--->
-
 ## Actividad 1.2 — Escaneo con Nmap + scripts "vuln"
 
-<!-- 
-🔴 COMENTARIO 15: AGREGAR CONTEXTO TÉCNICO DE NMAP
-El documento original explica:
-"Nmap con NSE (Nmap Scripting Engine) puede ejecutar scripts especializados que correlacionan servicios detectados con vulnerabilidades conocidas en bases de datos públicas."
--->
+Se realizó el comando que se visualiza abajo de este párrafo para realizar un escaneo mas completo del servidor legacy ya que al usar el NSE(Nnamp Scripting Engine) la permitiendo realizar las siguientes funciones:
 
-Descripción:
-Nmap con NSE ejecuta scripts que correlacionan servicios detectados con vulnerabilidades conocidas.
+- Detección de Vulnerabilidades
+- Detección Avanzada de Servicios y Aplicaciones
+- Explotación y Ataques de Fuerza Bruta
 
-Comando ejemplo:
-```bash
-nmap -sV --script vuln [IP_METASPLOITABLE] -oN nmap_vuln_internal.txt
-```
+El proceso se divide en el escaneo básico de los puertos mediante nmap, activando la bandera -sV para no solo saber el servicio corriendo en el puerto sino también determinar su versión específica, luego de este primer paso NSE procede a cargar todos los scripts pertenecientes a la categoria de vulnerabilidades, ya que se activó la bandera **--script vuln**, seguidamente ejecuta todos los scripts correspondientes a los servicios de los puertos que encontró abiertos y por último añade los resultados al informe presentado por nmap para brindar toda la información recogida por el proceso, todo esto se exporta al archivo **nmap_vuln_internal.txt**, como se puede ver especificado en el comando mediante la bandera **-oN** con el fin de tener un formatos mas legible para visualizar los resultados obtenidos.
+
+Cabe destacar que los scripts usados por este comando tienen como objetivo ver si el objetivo es vulnerable a fallos de seguridad conocidos (como un exploit específico de esa versión de software o un error de configuración común).
 
 **Resultados del escaneo:**
 
@@ -1927,19 +1878,35 @@ El script de Nmap "vulners" es un script de tipo NSE (Nmap Scripting Engine) que
 
 A diferencia de otros scripts como "vuln", que intentan explotar o confirmar la presencia de la vulnerabilidad mediante pruebas activas, "vulners" es principalmente no intrusivo: solamente compara la versión detectada contra las bases de datos, mostrando resultados al instante y minimizando así el impacto sobre el target. 
 
-En resumen:
-- El script "vulners" consulta Vulners.com.
-- Correlaciona servicios y versiones detectadas con vulnerabilidades públicas.
-- Muestra referencias directas a CVE, puntajes de severidad y posibles exploits.
-- No confirma con pruebas activas, sino por versión.
+El proceso se realiza de la siguiente manera:
 
-Esto permite identificar rápidamente el nivel de exposición y priorizar correcciones basadas en la criticidad real (CVSS) y la disponibilidad de exploits públicos.
+**A. Recolección de Versiones**
 
-Comando ejemplo:
+Gracias a la opción -sV, Nmap identifica las versiones exactas de todo el software en el host objetivo (por ejemplo, "OpenSSH versión 8.4"). Esta precisión es fundamental, ya que una vulnerabilidad a menudo afecta solo a un rango específico de versiones.
 
-```bash
-nmap --script vulners -sV [IP_METASPLOITABLE] -oN nmap_vulners_internal.txt
-```
+**B. Correlación Externa**
+
+El script vulners toma esa versión y realiza una consulta API a la base de datos pública y actualizada de Vulners.com. La consulta pregunta: "¿Qué CVEs, exploits y debilidades están asociados con esta versión de software?"
+
+**C. Presentación de Resultados**
+
+Nmap no intenta explotar la falla. En su lugar, el resultado del escaneo para cada servicio mostrará una lista de los CVEs relevantes y el nivel de gravedad (score) de cada uno.
+
+La mayor ventaja de usar vulners sobre un script genérico de categoría (vuln) es la exhaustividad y la actualidad de la información basada en CVEs.
+
+* **vuln**: Solo comprueba un subconjunto de vulnerabilidades que los desarrolladores de Nmap han codificado para probar.
+* **vulners**: Proporciona un listado completo de todos los CVEs conocidos públicamente para esa versión exacta de software en el momento del escaneo, lo que proporciona una visión más amplia de las posibles debilidades del sistema. Esto nos permite enfocarnos inmediatamente en las fallas con mayor impacto (High Severity).
+
+A continuación se presenta una tabla comparativa entre las dos banderas utilizadas en sus comandos respectivos a fin de brindar mayor información sobre ambas 
+
+| Característica | Opción 1: `--script vuln` | Opción 2: `--script vulners` |
+| :--- | :--- | :--- |
+| **Metodología** | **Prueba Activa / Local.** El script realiza pruebas directas (como enviar payloads de prueba) contra el servicio en el host objetivo. | **Consulta Pasiva / Externa.** El script toma la versión del servicio detectado y consulta una base de datos de CVEs **en línea** (Vulners.com). |
+| **Naturaleza del Escaneo** | **Ruidoso.** Al generar interacciones de prueba directas y repetidas, es más fácil de detectar por los sistemas IDS. | **Discreto.** Solo interactúa para obtener la versión del software. La búsqueda de vulnerabilidades es una consulta a una API externa. |
+| **Fuente de Datos** | Vulnerabilidades y pruebas codificadas **localmente** en la base de datos de Nmap. | **Base de datos externa y actualizada** de CVEs (Vulnerabilidades y Exposiciones Comunes) de Vulners.com. |
+| **Resultado** | Informa si una prueba **específica** fue exitosa o no (por ejemplo, "Vulnerabilidad X confirmada"). | Proporciona una lista exhaustiva de **IDs de CVEs** conocidos y sus puntuaciones de gravedad para la versión del software detectado. |
+| **Requisito Clave** | Base de datos de scripts de Nmap actualizada. | **Conexión a Internet** activa para poder acceder y consultar la base de datos de Vulners. |
+| **Objetivo** | Confirmar la presencia de fallas de seguridad a través de la **ejecución de pruebas**. | Identificar todas las **vulnerabilidades reportadas y catalogadas** que afectan la versión del software detectado. |
 
 **Resultados del escaneo:**
 
@@ -3100,14 +3067,6 @@ nmap --script vulners -sV certifiedhacker.com -oN nmap_vulners_external.txt
 
 Objetivo: Análisis exhaustivo del servidor web que corre en puerto 80 — búsqueda de archivos peligrosos, configuraciones incorrectas y componentes desactualizados.
 
-<!-- 
-🔴 COMENTARIO 25: AGREGAR LA "MISIÓN FINAL" DEL CISO
-El documento original incluye otra cita del CISO:
-"Hola de nuevo, nuestro servidor web principal corre en el puerto 80 de Metasploitable. Necesito un análisis EXHAUSTIVO de ese servicio específicamente. Usa la herramienta más apropiada para detectar archivos dañinos, configuraciones incorrectas y componentes desactualizados. Justifica tu elección."
-
-Esto da continuidad narrativa al informe.
--->
-
 ## Elección de herramienta (recomendación)
 
 - Herramienta principal: Nikto para pruebas específicas de aplicaciones web.
@@ -3116,30 +3075,6 @@ Esto da continuidad narrativa al informe.
 Justificación:
 - Nikto profundiza en endpoints, archivos y configuraciones HTTP.
 - Nmap vulners aporta referencias a CVE y puntajes para priorizar hallazgos.
-
-<!-- 
-🔴 COMENTARIO 26: COMPLETAR EL ANÁLISIS COMPARATIVO
-El documento original pide completar una tabla exhaustiva:
-
-ANÁLISIS COMPARATIVO DE HERRAMIENTAS
-
-NIKTO:
-Ventajas para este escenario:
-- [Completa aquí]
-- [Completa aquí]
-Desventajas:
-- [Completa aquí]
-
-NMAP (--script vuln):
-Ventajas: ...
-Desventajas: ...
-
-NMAP (--script vulners):
-Ventajas: ...
-Desventajas: ...
-
-Necesitas llenar cada sección con análisis específico.
--->
 
 ## Actividad 3.1 — Ejecución del escaneo específico
 
@@ -3253,114 +3188,10 @@ El escaneo de Nmap no generó salida en el archivo `nmap_puerto80.txt`, lo que p
 
 # ANÁLISIS Y DOCUMENTACIÓN DE RESULTADOS
 
-<!-- 
-🔴 COMENTARIO 28: ESTA ES LA SECCIÓN MÁS IMPORTANTE Y ESTÁ INCOMPLETA
-El documento original pide documentar vulnerabilidades con este formato ESPECÍFICO:
 
-### VULNERABILIDAD NIKTO #1
-**Nombre/Descripción:**
-[Copia exacta del hallazgo de Nikto]
-
-**CVE Asociado (si aplica):**
-[Busca en https://cve.mitre.org/]
-
-**Severidad (CVSS Score):**
-[Consulta NVD: https://nvd.nist.gov/]
-- Score: X.X (Bajo/Medio/Alto/Crítico)
-
-**Análisis Técnico:**
-¿Qué significa esta vulnerabilidad?
-[Explica en tus propias palabras qué permite hacer al atacante]
-
-**Vector de Ataque:**
-¿Cómo podría ser explotada?
-[Describe el escenario de ataque]
-
-**Impacto Potencial:**
-- Confidencialidad: [Alto/Medio/Bajo]
-- Integridad: [Alto/Medio/Bajo]
-- Disponibilidad: [Alto/Medio/Bajo]
-
-**Contramedidas Específicas:**
-1. [Acción inmediata]
-2. [Configuración recomendada]
-3. [Mejora a largo plazo]
-
-**Referencias:**
-- [URL de CVE]
-- [URL de advisory del vendor]
-- [Artículo técnico relevante]
-
-DEBES REPETIR ESTE FORMATO PARA AL MENOS:
-- 2 vulnerabilidades de Nikto
-- 2 vulnerabilidades de Nmap vulners
-(El objetivo dice "al menos 10 vulnerabilidades" pero puedes empezar con las más críticas)
--->
-
-Instrucción general:
-Repetir el formato de análisis para cada vulnerabilidad: extraer texto exacto del hallazgo, buscar el CVE (si aplica) en MITRE/NVD, anotar el CVSSv3 real, describir vector de ataque, impacto (confidencialidad, integridad, disponibilidad) y proponer contramedidas.
-
-## Plantilla por hallazgo
-
-- Nombre / Descripción (texto exacto del reporte)
-- Fuente (Nikto / Nmap --script vulners / otra)
-- CVE asociado (si aplica)
-- Severidad (CVSSv3 score y clasificación)
-- Análisis técnico (qué permite al atacante)
-- Vector de ataque (cómo podría explotarse)
-- Impacto potencial:
-  - Confidencialidad: [Alto/Medio/Bajo]
-  - Integridad: [Alto/Medio/Bajo]
-  - Disponibilidad: [Alto/Medio/Bajo]
-- Contramedidas:
-  1. Acción inmediata
-  2. Configuración recomendada
-  3. Mejora a largo plazo
-- Referencias (NVD, CVE, avisos del proveedor, KBs)
-
-<!-- 
-🔴 COMENTARIO 29: AQUÍ DEBEN IR LAS VULNERABILIDADES REALES ENCONTRADAS
-Esta plantilla es solo el formato. Necesitan:
-1. Revisar los archivos de salida (nikto_internal.html, nmap_vuln_internal.txt, etc.)
-2. Seleccionar las vulnerabilidades más críticas
-3. Documentar CADA UNA con este formato completo
-4. Buscar información real en CVE y NVD
-
-Ejemplo de cómo debería verse:
-
-### VULNERABILIDAD #1 (NIKTO)
-**Nombre/Descripción:**
-"+ The anti-clickjacking X-Frame-Options header is not present."
-
-**CVE Asociado:**
-N/A (es una configuración de seguridad)
-
-**Severidad:**
-Informacional / Bajo (no tiene CVE pero facilita ataques)
-
-**Análisis Técnico:**
-La ausencia del header X-Frame-Options permite que la página sea embebida en un iframe de un sitio malicioso, facilitando ataques de clickjacking donde el usuario cree estar interactuando con un sitio legítimo pero está siendo engañado.
-
-[Y CONTINUAR CON TODOS LOS CAMPOS...]
--->
-
----
-
-# HALLAZGOS REPRESENTATIVOS (ejemplos típicos)
+  # HALLAZGOS REPRESENTATIVOS 
 
 Los siguientes son hallazgos representativos basados en objetivos tipo Metasploitable 2 y escaneos con Nikto / Nmap. Verificar siempre en los outputs reales y en NVD.
-
-<!-- 
-🔴 COMENTARIO 30: ESTA SECCIÓN ES UN "PLACEHOLDER"
-Los hallazgos listados aquí (vsftpd, ProFTPD, Tomcat, etc.) son EJEMPLOS GENÉRICOS de lo que típicamente se encuentra en Metasploitable 2.
-
-DEBEN:
-1. Verificar cuáles de estos hallazgos aparecieron REALMENTE en sus escaneos
-2. Eliminar los que NO encontraron
-3. Agregar los que SÍ encontraron y no están en la lista
-4. Para cada hallazgo que mantengan, documentarlo con el formato completo del COMENTARIO 29
-5. Incluir capturas de pantalla de los reportes mostrando cada hallazgo
--->
 
 1) vsftpd 2.3.4 — backdoor en versión distribuida
 - Fuente: nmap (banner), vulners
@@ -3371,20 +3202,6 @@ DEBEN:
 - Fuente: nmap, verificación manual
 - Impacto: exposición de archivos / posible RCE
 - Contramedidas: deshabilitar módulo, parchear, restringir permisos
-
-<!-- [Continúan del 3 al 10...] -->
-
-<!-- 
-🔴 COMENTARIO 31: EXPANDIR CADA HALLAZGO
-Cada uno de estos 10 hallazgos debe tener el formato COMPLETO con:
-- CVE específico (ejemplo: vsftpd 2.3.4 = CVE-2011-2523)
-- CVSS score exacto consultado en NVD
-- Análisis técnico detallado
-- Vector de ataque paso a paso
-- Impacto en CIA
-- 3 contramedidas específicas
-- Referencias con URLs reales
--->
 
 ---
 
@@ -3401,49 +3218,48 @@ Cada uno de estos 10 hallazgos debe tener el formato COMPLETO con:
 | Falsos positivos | Moderados | Moderados / depende de banners |
 | Mejor caso de uso | Auditoría de aplicaciones web | Reconocimiento y priorización por CVE |
 
-<!-- 
-🔴 COMENTARIO 32: AGREGAR PREGUNTA DE REFLEXIÓN ESTRATÉGICA
-El documento original pide:
-"En un escenario real de auditoría, ¿en qué orden ejecutarías estas herramientas y por qué?
-
-Mi estrategia sería:
-1. [Primera herramienta] porque...
-2. [Segunda herramienta] porque...
-3. [Tercera herramienta] porque...
-
-Justificación de la secuencia:
-[Explica tu razonamiento considerando factores como sigilo, eficiencia, y progresión lógica del pentesting]"
-
-Esta sección demuestra pensamiento estratégico.
--->
-
----
 
 # ESTRATEGIA RECOMENDADA DE EJECUCIÓN
 
-Orden sugerido en una auditoría:
+ El mejor orden para utilizar las herramientas de escaneo en una auditoría de ciberseguridad real, priorizando el sigilo y una progresión lógica, es el siguiente:
 
-1. Nmap (descubrimiento de puertos y versiones) — para mapear superficie.
-2. Nmap --script vulners / vuln — para correlacionar versiones con CVEs y priorizar.
-3. Escáneres de aplicación (Nikto, OWASP ZAP, Burp) en los hosts web prioritarios — para hallar problemas lógicos de la app.
+* Nmap con --script vulners
+* Nikto
+* Nmap con --script vuln
 
-Justificación:
-- Empezar con reconocimiento pasará a pruebas más profundas solo donde aporte valor; así se minimiza tiempo y ruido, y se mejora priorización.
+**1. Nmap con --script vulners (Sigilo e Inteligencia Inicial)**
 
-<!-- 
-🔴 COMENTARIO 33: PERSONALIZAR ESTA SECCIÓN
-Esta es la estrategia genérica, pero deberían:
-1. Explicar si siguieron este orden en la práctica
-2. Si no, por qué eligieron otro orden
-3. Qué aprendieron sobre la eficiencia de cada enfoque
-4. Qué harían diferente en un escenario real
--->
+Se debe ejecutar primero el comando Nmap con **--script vulners** dado que representa el método más discreto y eficiente para la fase inicial de reconocimiento.
 
+* **Sigilo:** Esta herramienta es la menos intrusiva. Requiere únicamente la detección de la versión del software por parte de Nmap (-sV). La identificación de vulnerabilidades se lleva a cabo mediante una consulta API externa y pasiva a la base de datos de Vulners.com. El host objetivo solo registra la detección de la versión, sin recibir payloads o pruebas agresivas, lo que minimiza la posibilidad de ser detectado por los sistemas de seguridad.
+
+* **Eficiencia:** Proporciona inmediatamente una visión amplia al correlacionar las versiones de los servicios con todos los CVEs (Vulnerabilidades y Exposiciones Comunes) conocidos públicamente. Esto permite al auditor priorizar los riesgos y enfocar los esfuerzos de prueba activos subsecuentes en las debilidades más críticas.
+
+**2. Nikto(Enfoque en el servidor web)**
+
+Nikto debe ser la segunda herramienta ejecutada, una vez que la inteligencia pasiva ha sido recolectada. Se utiliza para una enumeración activa dirigida al servidor web.
+
+* **Complementariedad:** Nikto está optimizado para buscar malas configuraciones, archivos sensibles y directorios por defecto que el script vulners no puede identificar. Estos elementos a menudo no tienen un CVE formal, pero representan riesgos significativos.
+
+* **Progresión Lógica:** Aunque Nikto es inherentemente ruidoso debido a la gran cantidad de peticiones que genera, su ejecución se justifica en esta etapa. El auditor ya dispone de la lista de CVEs y ahora busca información adicional sobre la estructura y contenido del servidor web para definir vectores de ataque.
+
+**3. Nmap con --script vuln (Confirmación Activa de la Explotabilidad)**
+
+El comando Nmap con **--script vuln** se reserva para el último lugar, ya que implica la mayor pérdida de sigilo.
+
+* **Ruido y Riesgo:** Esta categoría de scripts realiza pruebas activas y agresivas de explotación, enviando comandos o paquetes de prueba directamente al servicio. Esta actividad genera un alto volumen de ruido y tiene la mayor probabilidad de ser detectada por los Sistemas de Detección de Intrusos (IDS) o de generar fallos en la aplicación.
+
+* **Función Final:** Su propósito es la confirmación de la explotabilidad. El auditor utiliza esta herramienta para verificar si una vulnerabilidad crítica identificada en las fases anteriores (vulners o Nikto) puede ser explotada activamente en el host objetivo, proporcionando la evidencia definitiva de la debilidad. Se sacrifica el sigilo por la confirmación final de la prueba de concepto.
 ---
 
 # CONCLUSIONES
+- La combinación de Nmap (scripts) y Nikto ofrece una cobertura complementaria: Nmap da visibilidad de servicios y CVEs; Nikto profundiza en configuraciones y endpoints web.
+- Muchos hallazgos provienen de mala configuración y versiones obsoletas. La higiene básica (parches, eliminación de servicios innecesarios, credenciales seguras) reduce significativamente el riesgo.
+- Priorizar acciones según exposición (Internet vs. red interna), CVSS y el impacto en confidencialidad/integridad/disponibilidad.
+- Hallazgos críticos (RCE, credenciales por defecto) requieren respuesta inmediata: parche, aislamiento del host y rotación de credenciales.
 
-<!-- 
-🔴 COMENTARIO 34: SECCIÓN CRÍTICA - EXPANDIR SIGNIFICATIVAMENTE
-El documento original pide:
-"Conclusiones de la actividad desarrollada
+---
+
+# CONTRIBUCIÓN AL PROYECTO
+
+La realizaciòn de la presente pràctica es una contribuciòn a nuestro proyecto ya que nos ha dada una nueva herramienta para combinar con nmap con el fin de poder conseguir mas informaciòn sobre vulnerabilidades del objetivo de nuestro ataque. Además el uso de la herramienta de nikto es un gran aditivo para estudiar los posibles puntdos de entrada depediendo del servidor web y su versión en la cual está cosntruida la página web objetivo permitiendo así una mejor planeación de estrategias para seleccionar el o los vectores de ataque mas apropiaos para realizar el atque.
