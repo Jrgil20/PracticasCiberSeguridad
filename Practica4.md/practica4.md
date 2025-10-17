@@ -1,12 +1,23 @@
-## Práctica Nro. 3-1: Web Application Analysis (Análisis de Vulnerabilidades en Servicios Web)
+## Práctica Nro. 4: Web Application Analysis (Análisis de Vulnerabilidades en Servicios Web)
+
+## Datos de Identificación
+
+| Apellido, Nombre | Cédula de Identidad | Nro. de Práctica | Fecha |
+| :--- | :---: | :---: | :--- |
+| Gil, Jesús | 30175126 | 4 | 17-10-2025|
+| Guilarte, Andrés | 30246084 | 4 | 17-10-2025 |
+
+**Nombre de la Práctica:** Análisis de Vulnerabilidades en Servicios Web
+
+**Grupo:** 4
 
 ### Introducción
 
-El profesor comenzó la práctica sobre como Los **servicios web** son fundamentalmente software, y por ende es **vulnerable por defecto**. Cuando un servidor web proporciona servicio a otras aplicaciones, **se expande la superficie de ataque**, creando más puntos de entrada potenciales para un atacante al ahora estar dos software como objetivos potenciales para un atacante.
+El profesor comenzó la práctica sobre como los **servicios web** son fundamentalmente software, y por ende son **vulnerable por defecto**. Cuando un servidor web proporciona servicio a otras aplicaciones, **se expande la superficie de ataque**, creando más puntos de entrada potenciales para un atacante al ahora estar dos software como objetivos potenciales para un atacante.
 
 Es importante distinguir entre **ancho de banda** (capacidad del medio) y **throughput** (rendimiento efectivo real). Usar los términos correctamente es fundamental para evaluar correctamente el sistema.
 
-Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasado, no se puede predecir el futuro**. Las herramientas identifican vulnerabilidades conocidas y patrones documentados. Por eso usamos la **disponibilidad de información actualizada**, no predicciones.
+Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasado, no se puede predecir el futuro**. Las herramientas identifican vulnerabilidades conocidas y patrones documentados, por eso usamos la **disponibilidad de información actualizada**, no predicciones.
 
 ---
 
@@ -29,8 +40,11 @@ Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasa
 
 2.  **Instalación y Configuración:**
     * Como se puede ver en la imágen posterior no se pudo conectar al escritorio remoto de la máquina del profesor(IP 192.168.4.36/24) para importar el archivo del instalador de OWASP ZAP ya que en la máquina física el archivo no estaba en la carpeta denominada como "Ciberseguridad" por lo que se tuvo que importar mediante un dispositivo USB copiando el archivo de otra máquina.
+
     ![alt text](image.png)
+
     * Se arrastró y soltó el instalador (`ZAP_2_16_1_unix.sh` o similar) a la VM de Kali, este archivo es el correspondiente a OWAS ZAP, la herramienta que será utilizada en esta práctica para hacer los análisis de las vulnerabilidades de los servicios web.
+
     ![alt text](image-1.png)
     * Se instaló OWASP ZAP con los siguientes comandos (adaptados a la versión disponible):
         * `chmod o+x ZAP_2_12_0_unix.sh`
@@ -42,18 +56,36 @@ Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasa
     * El segundo comando es la ejecución del archivo, en este caso el instalador de OWASP ZAP y cómo se ejecutó el change mode no es necesario usar sudo para ejectuar el archivo al ya tener los demás usuarios del sistema el permiso para ejecutarlo. El ./ se usa para indicar que se va a ejecutar un archivo que está dentro del directorio actual.
        
     * Se configuró el proxy en el navegador a **127.0.0.1** y puerto **8080**, se usa especificamente esta dirección IP ya que es la dirección IP de loopback lo que significa que le estamos diciendo al navegador que el proxy se está ejecutando en la misma máquina por la cual se está navegando, no en una máquina aparte y se usa el puerto 8080 ya que OWASP ZAP está configurado para escuchar el tráfico de ese puerto. Con esta configuración se está especificando que el proxy sea OWASP ZAP por lo que todas las peticiones HTTP y HTTPS tanto como request como response pasarán por él antes de llegar sus respectivos destions(la VM o el servidor web dependiendo del caso).
+
     ![alt text](image-5.png)
+
     * Al abrir OWASP ZAP, se escogió **“No, I do not want to persist this session at this moment in time”** (no deseo sesión persistente) lo que hace que los datos obtenidos por la herramienta sea guardados en la memoria RAM ganando una mayor velocidad de acceso a los datos por parte de ZAP pero con la desventaja de perder los datos obtenidos al apagar la máquina al la RAM usar almacenamiento volátil.
+
     ![alt text](image-6.png)
     
 3.  **Configuración de Confianza (Certificado):**
-    * Se importó el Certificado de Entidad (CE) de OWASP ZAP en el navegador Mozilla para crear la confianza (vía *Tools / Options / Network / Server Certificates / Save* y luego *Setting / View Certificate / Import*).
+    * Se importó el Certificado de Entidad (CE) de OWASP ZAP en el navegador Mozilla para crear la confianza (vía *Tools / Options / Network / Server Certificates / Save* y luego *Setting / View Certificate / Import*) ya que al usar el protoclo HTTPS el navegador está esperando que el sitio web visitado presente un certificado SSL/TLS emitido por una **Autoridad Certificadora (CA) de confianza** (como Let's Encrypt o DigiCert).
+    * Al estar usando ZAP como un proxy este actúa como un **Man in the Middle(MiM)** por lo que las peticiones pasan por el antes de llegar a sus destino, como se explicó anteriormente, pero para poder analizar la seguridad de la apliacación web se neceita ver el contendio por lo que ZAP genera dinámicamente un certificado falso firmado por su propia CA.
+    * Como el navegador no conoce la CA de ZAP, al ser esta de tipo privada, este no confiará en la conexión por lo cual la rechazará al no considerarla segura sin embargo al importarse el CE de ZAP se soluciona este problema al importarlo manualamente se le está diciendo al navegador "Confía en cualquier certificado que haya sido emitido por esta Autoridad Certificadora, aunque no sea una CA pública" y con esto ya ZAP puede realizar correctamente sus funciones como proxy como por ejemplo:
+      * **Descifrar** la comunicación del navegador al proxy.
+      * **Analizar** el contenido de la solicitud (parámetros, headers, cookies).
+      * Si es necesario, **modificar** la solicitud (ej. para inyectar payloads maliciosos).
+      * **Volver a cifrar** la solicitud y la envía al servidor real.
+      * **Repetir** el proceso con la respuesta del servidor.
+    * Antes de continuar con la siguiente sección es necesario explicar que es una CA y sus funciones y tipos para garantizar un mayor entendimeinto de lo relevante que es hacer la importación del CE antes de proceder con los análisis a realizar, una CA es una **entidad de confianza** que emite **certificados digitales** que se utilizan para verificar la identidad de sitios web (servidores), usuarios u otros dispositivos en Internet.
+    * La **función principal** de una CA es es actuar como un **tercero de confianza** en las comunicaciones electrónicas, especialmente en la **navegación web segura** (protocolo HTTPS) y esta función se realiza en el siguiente orden:
+      * **Verificación de Identidad**: Cuando un sitio web (ej. banco.com) quiere usar HTTPS, solicita un certificado a una CA. La CA verifica la identidad del solicitante y la propiedad del dominio.
+      * **Emisión de Certificado:** Si la verificación es exitosa, la CA firma y emite un **certificado SSL/TLS** al sitio web.
+      * **Establecer Confianza:** Cuando tu navegador se conecta a banco.com, el sitio presenta este certificado. Si el certificado fue firmado por una CA que el navegador ya tiene en su lista de **Autoridades Raíz de confianza** (una lista preinstalada en tu sistema operativo o navegador), el navegador confía en la conexión.
+    * Las CA se clasifican en dos tipos los cuales son:
+      * **CA Pública o Raíz:** Son grandes empresas como Let's Encrypt, DigiCert o Sectigo. Están incluidas por defecto en los navegadores y sistemas operativos de todo el mundo, siendo la base de la confianza en Internet.
+      * **CA Privada/Local:** No son conocidas por el público general. Se usan dentro de redes internas o, como en el caso de OWASP ZAP, para propósitos de **inspección y seguridad**. Dado que el navegador no confía en ellas por defecto, debes importarlas manualmente (como hiciste con ZAP) para que el navegador las acepte como válidas.
+
     ![alt text](image-7.png)
     
 4.  **Análisis Inicial:**
     * Se seleccionó **“Safe Mode”**.
     * Se navegó en el objetivo sugerido (PentesterLab) y se observó el intercambio de mensajes en OWASP ZAP.
-    
     * Se identificaron las alertas generadas por la navegación pasiva.
     
 ***
