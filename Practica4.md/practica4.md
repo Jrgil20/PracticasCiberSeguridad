@@ -36,23 +36,21 @@ Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasa
     * Se verificó el acceso a Internet desde la máquina "Analista" mediante el uso del comando ping -c4 a la dirección IP 8.8.8.8 correspondiente a Google y como se observa en la imagen debajo de este párrafo se enviaron todos los paquetes y se recibió una respuesta afirmativa a cada de uno de ellos. Cabe recordar que la bandera -c y su argumento posterior indica la cantidad de paquetes ICMP usadas para testear la conexión y que el TTL observado corresponde a la máquina Windows donde se está ejecutando la VM ya que para realizar el proceso se usan las interfaces de red de la máquina física y por ello el TTL observado es de 114(el TTL estándar de los SO Windows es de 128). 
     <div style="text-align:center;">
         <img src="https://i.imgur.com/A91tzsp.png" alt="Captura del ping a 8.8.8.8" style="max-width:600px; width:100%; height:auto; display:inline-block;" />
-        <p style="text-align:center;"><em>Figura: Resultado del comando <code>ping -c4 8.8.8.8</code> mostrando 4 paquetes enviados y recibidos; TTL observado 114.</em></p>
+        <p style="text-align:center;"><em>Figura 1: Resultado del comando <code>ping -c4 8.8.8.8</code> mostrando 4 paquetes enviados y recibidos; TTL observado 114.</em></p>
     </div>
-
-    _Figura: Resultado del comando `ping -c4 8.8.8.8` mostrando 4 paquetes enviados y recibidos; TTL observado 114._
 
 2. **Instalación y Configuración:**
     * Como se puede ver en la imágen posterior no se pudo conectar al escritorio remoto de la máquina del profesor(IP 192.168.4.36/24) para importar el archivo del instalador de OWASP ZAP ya que en la máquina física el archivo no estaba en la carpeta denominada como "Ciberseguridad" por lo que se tuvo que importar mediante un dispositivo USB copiando el archivo de otra máquina.
     <img src="https://i.imgur.com/Li8VCMR.png" alt="Captura del error al intentar conectar por Escritorio Remoto a la máquina del profesor (IP 192.168.4.36/24). La imagen muestra el mensaje de fallo de conexión indicando que no se pudo acceder." style="max-width:600px; width:100%; height:auto; display:block; margin:0 auto;" />
 
-    <p style="text-align:center;"><em>Figura: Captura del error al intentar conectar por Escritorio Remoto a la máquina del profesor (IP 192.168.4.36/24). La imagen muestra el mensaje de fallo de conexión indicando que no se pudo acceder.</em></p>
+    <p style="text-align:center;"><em>Figura 2: Captura del error al intentar conectar por Escritorio Remoto a la máquina del profesor (IP 192.168.4.36/24). La imagen muestra el mensaje de fallo de conexión indicando que no se pudo acceder.</em></p>
 
 
     * Se arrastró y soltó el instalador (`ZAP_2_16_1_unix.sh` o similar) a la VM de Kali, este archivo es el correspondiente a OWAS ZAP, la herramienta que será utilizada en esta práctica para hacer los análisis de las vulnerabilidades de los servicios web.
     
     <div style="text-align:center;">
         <img src="https://i.imgur.com/LAT820a.png" alt="Captura del instalador de OWASP ZAP (ZAP_2_16_1_unix.sh) siendo transferido a la VM de Kali Linux" style="max-width:700px; width:100%; height:auto; display:inline-block;" />
-        <p style="text-align:center;"><em>Figura: Captura del instalador de OWASP ZAP (ZAP_2_16_1_unix.sh) siendo transferido a la VM de Kali Linux.</em></p>
+        <p style="text-align:center;"><em>Figura 3: Captura del instalador de OWASP ZAP (ZAP_2_16_1_unix.sh) siendo transferido a la VM de Kali Linux.</em></p>
     </div>
 
     * Se instaló OWASP ZAP con los siguientes comandos (adaptados a la versión disponible):
@@ -61,7 +59,7 @@ Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasa
     
     <div style="text-align:center;">
         <img src="https://i.imgur.com/yosHL0D.png" alt="Captura de los comandos ejecutados en terminal para dar permisos de ejecución e instalar OWASP ZAP" style="max-width:700px; width:100%; height:auto; display:inline-block;" />
-        <p style="text-align:center;"><em>Figura: Ejecución de los comandos <code>chmod o+x ZAP_2_12_0_unix.sh</code> y <code>./ZAP_2_12_0_unix.sh</code> para instalar OWASP ZAP.</em></p>
+        <p style="text-align:center;"><em>Figura 4: Ejecución de los comandos <code>chmod o+x ZAP_2_12_0_unix.sh</code> y <code>./ZAP_2_12_0_unix.sh</code> para instalar OWASP ZAP.</em></p>
     </div>
 
     * El primer comanndo ejecutado tiene como finalidad darle permiso de ejecución a otros usuarios que no sean ni el propietario ni que pertenezcan al grupo del cual es miembro el archivo al script ./ ZAP_2_12_0_unix.sh, este cambio de permisos se logra con chmod(change mode) y sus banderas para especificar el cambio. En este caso se están activando las banderas o y +x, la primera(o) se encarga de darle permiso sobre el archivo a los usuarios que no son ni el propietario ni miembros del grupo al cual pertenece al archivo mientras que la segunda(+x) se encarga de asignar el permiso de ejecución sobre el archivo.
@@ -71,14 +69,14 @@ Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasa
     
     <div style="text-align:center;">
         <img src="https://i.imgur.com/Fl3aBsT.png" alt="Captura de la configuración del proxy en el navegador Firefox con la dirección 127.0.0.1 y puerto 8080" style="max-width:500px; width:100%; height:auto; display:inline-block;" />
-        <p style="text-align:center;"><em>Figura: Configuración del proxy HTTP en Firefox establecido en <code>127.0.0.1</code> puerto <code>8080</code> para interceptar tráfico con OWASP ZAP.</em></p>
+        <p style="text-align:center;"><em>Figura 5: Configuración del proxy HTTP en Firefox establecido en <code>127.0.0.1</code> puerto <code>8080</code> para interceptar tráfico con OWASP ZAP.</em></p>
     </div>
 
     * Al abrir OWASP ZAP, se escogió **"No, I do not want to persist this session at this moment in time"** (no deseo sesión persistente) lo que hace que los datos obtenidos por la herramienta sea guardados en la memoria RAM ganando una mayor velocidad de acceso a los datos por parte de ZAP pero con la desventaja de perder los datos obtenidos al apagar la máquina al la RAM usar almacenamiento volátil.
     
     <div style="text-align:center;">
         <img src="https://i.imgur.com/7Irox8R.png" alt="Captura de la pantalla de bienvenida de OWASP ZAP con la opción de no persistir la sesión seleccionada" style="max-width:600px; width:100%; height:auto; display:inline-block;" />
-        <p style="text-align:center;"><em>Figura: Diálogo de inicio de OWASP ZAP con la opción "No, I do not want to persist this session at this moment in time" seleccionada para almacenamiento en RAM.</em></p>
+        <p style="text-align:center;"><em>Figura 6: Diálogo de inicio de OWASP ZAP con la opción "No, I do not want to persist this session at this moment in time" seleccionada para almacenamiento en RAM.</em></p>
     </div>
 
 3.  **Configuración de Confianza (Certificado):**
@@ -100,7 +98,7 @@ Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasa
        * **CA Privada/Local:** No son conocidas por el público general. Se usan dentro de redes internas o, como en el caso de OWASP ZAP, para propósitos de **inspección y seguridad**. Dado que el navegador no confía en ellas por defecto, debes importarlas manualmente (como hiciste con ZAP) para que el navegador las acepte como válidas.
     <div style="text-align:center;">
         <img src="https://i.imgur.com/VkWYrlF.png" alt="Captura del proceso de guardado del certificado raíz de OWASP ZAP desde las opciones de Server Certificates" style="max-width:600px; width:100%; height:auto; display:inline-block;" />
-        <p style="text-align:center;"><em>Figura: Exportación del certificado raíz (Root CA Certificate) de OWASP ZAP desde Tools → Options → Server Certificates → Save.</em></p>
+        <p style="text-align:center;"><em>Figura 7: Exportación del certificado raíz (Root CA Certificate) de OWASP ZAP desde Tools → Options → Server Certificates → Save.</em></p>
     </div>
 
 4.  **Análisis Inicial:**
@@ -121,7 +119,7 @@ Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasa
     
     <div style="text-align:center;">
         <img src="https://i.imgur.com/xFt1BCn.png" alt="Captura de la configuración del escaneo automatizado en OWASP ZAP con la URL objetivo y el botón Attack" style="max-width:500px; width:100%; height:auto; display:inline-block;" />
-        <p style="text-align:center;"><em>Figura: Configuración del Automated Scan en OWASP ZAP con la dirección IP de la VM de PentesterLab antes de iniciar el ataque.</em></p>
+        <p style="text-align:center;"><em>Figura 8: Configuración del Automated Scan en OWASP ZAP con la dirección IP de la VM de PentesterLab antes de iniciar el ataque.</em></p>
     </div>
 
 2.  **Ejecución y Resultados:**
@@ -131,7 +129,7 @@ Finalmente, cuando analizamos vulnerabilidades, **se actualiza con vista al pasa
     
     <div style="text-align:center;">
         <img src="https://i.imgur.com/8N9B0NU.png" alt="Captura del reporte HTML generado por OWASP ZAP mostrando las alertas de vulnerabilidades encontradas" style="max-width:700px; width:100%; height:auto; display:inline-block;" />
-        <p style="text-align:center;"><em>Figura: Reporte HTML parcial generado por OWASP ZAP con las vulnerabilidades detectadas hasta el momento de detención.</em></p>
+        <p style="text-align:center;"><em>Figura 9: Reporte HTML parcial generado por OWASP ZAP con las vulnerabilidades detectadas hasta el momento de detención.</em></p>
     </div>
 
 ***
@@ -145,7 +143,7 @@ Se investigó en Internet y/o se usó la documentación de OWASP ZAP para obtene
 
 <div style="text-align:center;">
     <img src="https://i.imgur.com/FrsLTXP.png" alt="Captura de la alerta Path Traversal detectada por OWASP ZAP" style="max-width:700px; width:100%; height:auto; display:inline-block;" />
-    <p style="text-align:center;"><em>Figura: Alerta de vulnerabilidad Path Traversal seleccionada de manera aleatoria del reporte de OWASP ZAP.</em></p>
+    <p style="text-align:center;"><em>Figura 10: Alerta de vulnerabilidad Path Traversal seleccionada de manera aleatoria del reporte de OWASP ZAP.</em></p>
 </div>
 
 | Título de la Alerta | Descripción (en español) | Sugerencia de Solución |
@@ -156,7 +154,7 @@ Se investigó en Internet y/o se usó la documentación de OWASP ZAP para obtene
 
 <div style="text-align:center;">
     <img src="https://i.imgur.com/nIpweEj.png" alt="Captura de la alerta Remote File Inclusion detectada por OWASP ZAP" style="max-width:700px; width:100%; height:auto; display:inline-block;" />
-    <p style="text-align:center;"><em>Figura: Alerta de vulnerabilidad Remote File Inclusion seleccionada del reporte de OWASP ZAP.</em></p>
+    <p style="text-align:center;"><em>Figura 11: Alerta de vulnerabilidad Remote File Inclusion seleccionada del reporte de OWASP ZAP.</em></p>
 </div>
 
 | Título de la Alerta | Descripción (en español) | Sugerencia de Solución |
@@ -167,7 +165,7 @@ Se investigó en Internet y/o se usó la documentación de OWASP ZAP para obtene
 
 <div style="text-align:center;">
     <img src="https://i.imgur.com/MQC9BJS.png" alt="Captura de la alerta Content Security Policy Header Not Set detectada por OWASP ZAP" style="max-width:700px; width:100%; height:auto; display:inline-block;" />
-    <p style="text-align:center;"><em>Figura: Alerta de vulnerabilidad Content Security Policy (CSP) Header Not Set seleccionada del reporte de OWASP ZAP.</em></p>
+    <p style="text-align:center;"><em>Figura 12: Alerta de vulnerabilidad Content Security Policy (CSP) Header Not Set seleccionada del reporte de OWASP ZAP.</em></p>
 </div>
 
 | Título de la Alerta | Descripción (en español) | Sugerencia de Solución |
@@ -178,7 +176,7 @@ Se investigó en Internet y/o se usó la documentación de OWASP ZAP para obtene
 
 <div style="text-align:center;">
     <img src="https://i.imgur.com/QeM6lkT.png" alt="Captura de la alerta Cross-Domain Misconfiguration (CORS) detectada por OWASP ZAP" style="max-width:700px; width:100%; height:auto; display:inline-block;" />
-    <p style="text-align:center;"><em>Figura: Alerta de vulnerabilidad Cross-Domain Misconfiguration (CORS) seleccionada del reporte de OWASP ZAP.</em></p>
+    <p style="text-align:center;"><em>Figura 13: Alerta de vulnerabilidad Cross-Domain Misconfiguration (CORS) seleccionada del reporte de OWASP ZAP.</em></p>
 </div>
 
 | Título de la Alerta | Descripción (en español) | Sugerencia de Solución |
@@ -189,7 +187,7 @@ Se investigó en Internet y/o se usó la documentación de OWASP ZAP para obtene
 
 <div style="text-align:center;">
     <img src="https://i.imgur.com/Iw1CgvK.png" alt="Captura de la alerta Information Disclosure - Debug Error Messages detectada por OWASP ZAP" style="max-width:700px; width:100%; height:auto; display:inline-block;" />
-    <p style="text-align:center;"><em>Figura: Alerta de vulnerabilidad Information Disclosure - Debug Error Messages seleccionada del reporte de OWASP ZAP.</em></p>
+    <p style="text-align:center;"><em>Figura 14: Alerta de vulnerabilidad Information Disclosure - Debug Error Messages seleccionada del reporte de OWASP ZAP.</em></p>
 </div>
 
 | Título de la Alerta | Descripción (en español) | Sugerencia de Solución |
