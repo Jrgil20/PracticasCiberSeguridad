@@ -169,22 +169,22 @@ Header unset X-Powered-By
 
  * Luego de guardar los cambios en el archivo, se usaron los comandos ```sudo a2enconf security``` y ```sudo apache2ctl configtest ``` para habilitar la nueva configuración y para verificar que su sintaxis esté correcta, luego de que el segundo comando mostrará el mnesaje de "OK" se precedió a ejecutar el comando ```sudo systemctl restart apache2``` para reiniciar el servicio de Apache 2 pare que se efectuen los cambios.
 
-### Preguntas de Reflexión sobre el Módulo 1
+### Preguntas de Reflexión - Módulo 1 
 
-- ¿Por qué es importante ocultar la versión del servidor y del lenguaje de programación?
-  - Reduce la fuga de información: evita que un atacante identifique versiones con vulnerabilidades conocidas (CVE) y automatice exploits.
-  - Dificulta el reconocimiento automatizado y gana tiempo para la defensa.
-  - No sustituye el parcheo y buenas prácticas; es una medida de reducción de información (defensa en profundidad).
+* **¿Por qué es importante ocultar la versión del servidor y del lenguaje de programación?**
+  * Reduce la fuga de información: evita que un atacante identifique versiones con vulnerabilidades conocidas (CVE) y automatice exploits.
+  * Dificulta el reconocimiento automatizado y gana tiempo para la defensa.
+  * No sustituye el parcheo y buenas prácticas; es una medida de reducción de información (defensa en profundidad).
 
-- ¿Qué diferencia existe entre X-Frame-Options: DENY y X-Frame-Options: SAMEORIGIN?
-  - DENY: impide que la página sea cargada en un iframe desde cualquier origen (incluso el mismo).
-  - SAMEORIGIN: permite que la página sea embebida sólo por páginas del mismo origen (mismo esquema, host y puerto).
-  - Para mayor control y flexibilidad usar Content-Security-Policy con la directiva frame-ancestors.
+* **¿Qué diferencia existe entre X-Frame-Options: DENY y X-Frame-Options: SAMEORIGIN?**
+  * DENY: impide que la página sea cargada en un iframe desde cualquier origen (incluso el mismo).
+  * SAMEORIGIN: permite que la página sea embebida sólo por páginas del mismo origen (mismo esquema, host y puerto).
+  * Para mayor control y flexibilidad usar Content-Security-Policy con la directiva frame-ancestors.
 
-- ¿Por qué 'unsafe-inline' en CSP puede ser problemático?
-  - Permite ejecución de scripts/estilos inline, lo que debilita significativamente la protección contra XSS.
-  - Anula las ventajas de nonces/hashes y fomenta prácticas inseguras (event handlers inline, estilos inline).
-  - Recomendación: evitar 'unsafe-inline' y usar scripts externos con nonces o hashes, además de aplicar políticas restrictivas.
+* **¿Por qué 'unsafe-inline' en CSP puede ser problemático?**
+  * Permite ejecución de scripts/estilos inline, lo que debilita significativamente la protección contra XSS.
+  * Anula las ventajas de nonces/hashes y fomenta prácticas inseguras (event handlers inline, estilos inline).
+  * Recomendación: evitar 'unsafe-inline' y usar scripts externos con nonces o hashes, además de aplicar políticas restrictivas.
 
 ## Módulo 2: Fuzzing de Inyección SQL con OWASP ZAP 
 ### Objetivos del Módulo 
@@ -379,37 +379,37 @@ Análisis de Impacto:
 - Enumeración de tablas (objetivo: tabla `users`).  
 - Bypass total de autenticación y controles de acceso.
 
-### Preguntas de Reflexión sobre el Módulo 2
+### Preguntas de Reflexión - Módulo 2 
 
-- ¿Por qué el payload `1' OR 1=1 #` devuelve todos los usuarios en lugar de generar un error?
-  - El payload cierra la literal de cadena (`'`), inyecta una condición lógica siempre verdadera (`OR 1=1`) y usa `#` para comentar el resto de la consulta. El parser SQL recibe una sentencia sintácticamente válida cuya cláusula WHERE se reduce a una expresión que siempre evalúa true, por lo que el optimizador/ejecutor devuelve todas las filas que cumplen la consulta. Técnicamente: si la consulta original es WHERE user_id = '1' entonces tras la inyección la expresión queda WHERE user_id = '1' OR 1=1 -- y el plan de ejecución ya no filtra por user_id. Nota: el comportamiento exacto depende del contexto (si el parámetro era numérico sin comillas, codificación/escaping por la librería cliente, o si el framework usa ORM/prepared statements) — en esos casos el payload podría producir error o ser neutralizado.
+* **¿Por qué el payload `1' OR 1=1 #` devuelve todos los usuarios en lugar de generar un error?**
+  * El payload cierra la literal de cadena (`'`), inyecta una condición lógica siempre verdadera (`OR 1=1`) y usa `#` para comentar el resto de la consulta. El parser SQL recibe una sentencia sintácticamente válida cuya cláusula WHERE se reduce a una expresión que siempre evalúa true, por lo que el optimizador/ejecutor devuelve todas las filas que cumplen la consulta. Técnicamente: si la consulta original es WHERE user_id = '1' entonces tras la inyección la expresión queda WHERE user_id = '1' OR 1=1 -- y el plan de ejecución ya no filtra por user_id. Nota: el comportamiento exacto depende del contexto (si el parámetro era numérico sin comillas, codificación/escaping por la librería cliente, o si el framework usa ORM/prepared statements) — en esos casos el payload podría producir error o ser neutralizado.
 
-- ¿Qué diferencia existe entre el comentario `#` y `--` en inyecciones SQL?
-  - `#` y `--` son comentarios de una sola línea en muchos SGBD; sin embargo `--` es la forma definida por el estándar SQL y suele requerir un espacio o control después (`-- `) en implementaciones como MySQL/Oracle; MySQL admite `#` sin condiciones adicionales. Además existen comentarios de bloque `/* ... */`. Importante: el soporte varía por motor (p.ej. SQL Server acepta `--`, Oracle no reconoce `#` como comentario), y algunos conectores o filtros pueden normalizar/strippear comentarios, por lo que el payload debe adaptarse al dialecto objetivo para que el comentario efectivamente elimine el resto de la consulta y evite errores de sintaxis.
+* **¿Qué diferencia existe entre el comentario `#` y `--` en inyecciones SQL?**
+  * `#` y `--` son comentarios de una sola línea en muchos SGBD; sin embargo `--` es la forma definida por el estándar SQL y suele requerir un espacio o control después (`-- `) en implementaciones como MySQL/Oracle; MySQL admite `#` sin condiciones adicionales. Además existen comentarios de bloque `/* ... */`. Importante: el soporte varía por motor (p.ej. SQL Server acepta `--`, Oracle no reconoce `#` como comentario), y algunos conectores o filtros pueden normalizar/strippear comentarios, por lo que el payload debe adaptarse al dialecto objetivo para que el comentario efectivamente elimine el resto de la consulta y evite errores de sintaxis.
 
--- ¿Cómo podría un atacante usar esta vulnerabilidad para obtener contraseñas de usuarios?
-  - Métodos:
-    - Directos:
-      - Usar `UNION SELECT` para leer columnas de la tabla `users` (p. ej. username, password_hash).
-      - Consultar `information_schema` (tables, columns) para localizar tablas/columnas sensibles.
-      - Volcar tablas completas si la consulta y permisos lo permiten.
-    - Ciegos:
-      - Boolean-based: realizar consultas TRUE/FALSE con funciones como `SUBSTRING()`/`ORD()` para extraer caracteres uno a uno.
-      - Time-based: usar `SLEEP()` o funciones equivalentes para inferir bits/caracteres por el tiempo de respuesta.
-    - Basados en errores y funciones especiales:
-      - Error-based: provocar funciones que devuelvan errores con contenido útil.
-      - `LOAD_FILE()` / `INTO OUTFILE`: leer o escribir ficheros si el servidor y permisos lo permiten.
-      - UDFs o stacked queries (cuando el motor lo permita) para ejecutar código a nivel OS.
-    - Post-extracción:
-      - Crackear hashes offline (hashcat/john) teniendo en cuenta algoritmo, salt y rounds.
-      - Pivotar con credenciales obtenidas para escalar privilegios en la BD o servidor.
-    - Mitigaciones:
-      - Prepared statements / consultas parametrizadas.
-      - Principio de menor privilegio en cuentas BD y restricción de funciones peligrosas.
-      - Validación y saneamiento estricto de entradas, logging y detección de anomalías.
+* **¿Cómo podría un atacante usar esta vulnerabilidad para obtener contraseñas de usuarios?**
+  * Métodos:
+     * Directos:
+       * Usar `UNION SELECT` para leer columnas de la tabla `users` (p. ej. username, password_hash).
+       * Consultar `information_schema` (tables, columns) para localizar tablas/columnas sensibles.
+       * Volcar tablas completas si la consulta y permisos lo permiten.
+     * Ciegos:
+       * Boolean-based: realizar consultas TRUE/FALSE con funciones como `SUBSTRING()`/`ORD() para extraer caracteres uno a uno.
+       * Time-based: usar `SLEEP()` o funciones equivalentes para inferir bits/caracteres por el tiempo de respuesta.
+     * Basados en errores y funciones especiales:
+       * Error-based: provocar funciones que devuelvan errores con contenido útil.
+       * `LOAD_FILE()` / `INTO OUTFILE`: leer o escribir ficheros si el servidor y permisos lo permiten.
+       * UDFs o stacked queries (cuando el motor lo permita) para ejecutar código a nivel OS.
+     * Post-extracción:
+       * Crackear hashes offline (hashcat/john) teniendo en cuenta algoritmo, salt y rounds.
+       * Pivotar con credenciales obtenidas para escalar privilegios en la BD o servidor.
+     * Mitigaciones:
+       * Prepared statements / consultas parametrizadas.
+       * Principio de menor privilegio en cuentas BD y restricción de funciones peligrosas.
+       * Validación y saneamiento estricto de entradas, logging y detección de anomalías.
 
-- ¿Por qué es importante el tamaño de la respuesta al analizar resultados de fuzzing?
-  - La longitud del body es un oracle rápido: cambios significativos suelen correlacionarse con distinto número de filas devueltas, inclusión de errores o payload reflejado, lo que permite detectar anomalías a gran escala durante fuzzing automatizado. Técnicamente, usar tamaño junto a código HTTP, cabeceras y RTT mejora la fiabilidad. Limitaciones: contenido dinámico (tokens, timestamps), compresión, chunking, sesiones y paginación pueden producir falsos positivos/negativos; por eso se recomienda normalizar respuestas (eliminar partes volátiles), establecer umbrales estadísticos, y combinar análisis de tamaño con firmas en el body, hashing diferenciado y pruebas confirmatorias (manuales o payloads de extracción) antes de reportar una vulnerabilidad.
+* **¿Por qué es importante el tamaño de la respuesta al analizar resultados de fuzzing?**
+  * La longitud del body es un oracle rápido: cambios significativos suelen correlacionarse con distinto número de filas devueltas, inclusión de errores o payload reflejado, lo que permite detectar anomalías a gran escala durante fuzzing automatizado. Técnicamente, usar tamaño junto a código HTTP, cabeceras y RTT mejora la fiabilidad. Limitaciones: contenido dinámico (tokens, timestamps), compresión, chunking, sesiones y paginación pueden producir falsos positivos/negativos; por eso se recomienda normalizar respuestas (eliminar partes volátiles), establecer umbrales estadísticos, y combinar análisis de tamaño con firmas en el body, hashing diferenciado y pruebas confirmatorias (manuales o payloads de extracción) antes de reportar una vulnerabilidad.
   
 ## Módulo 3: Pentesting de Apache en Kali Linux 
 ### Objetivos del Módulo
@@ -547,3 +547,76 @@ sudo apache2ctl configtest
 sudo systemctl restart apache2 
 ```
 Estos comandos representan pasos cruciales para mejorar la seguridad y funcionalidad de un servidor Apache. Se utiliza `sudo a2enmod headers` para habilitar el módulo **mod_headers**, que es esencial para manipular las cabeceras HTTP de las respuestas, permitiendo añadir o modificar elementos de seguridad críticos (como Content-Security-Policy o X-Frame-Options). Luego, `sudo a2enconf security` activa un archivo de configuración predefinido (generalmente llamado security.conf) que contiene **directivas de seguridad recomendadas** para mitigar vulnerabilidades comunes. Después de realizar estos cambios, `sudo apache2ctl configtest` verifica la sintaxis de todos los archivos de configuración de Apache para garantizar que no haya errores que impidan el inicio del servicio. Finalmente, `sudo systemctl restart apache2` aplica estos nuevos módulos y configuraciones, deteniendo y volviendo a iniciar el servicio Apache para que los cambios surtan efecto.
+
+Luego de este proceso, se realizó nuevamente el escaneo y ahora se presenta una tabla comparativa entre las alertas de cada tabla.
+
+| Alerta | Presente en Andres_Guilarte_Jesus_Gil.html | Presente en reporte_apache_hardened.html | Evidencia / Observaciones |
+|---|:---:|:---:|---|
+| CSP: Falta de directiva sin fallback (form-action) | Sí | Sí | Header `Content-Security-Policy` no define `form-action`. Fragmento: `Content-Security-Policy: default-src 'self'; ...` |
+| CSP: `script-src 'unsafe-inline'` | Sí | Sí | Header incluye `script-src 'self' 'unsafe-inline'`. Esto permite ejecución de scripts inline. |
+| CSP: `style-src 'unsafe-inline'` | Sí | Sí | Header incluye `style-src 'self' 'unsafe-inline'`. Esto permite estilos inline que reducen la eficacia de CSP. |
+| Hidden File Found — `/server-status` expuesto | Sí | Sí | `GET /server-status` → HTTP/200 con información del servidor (cabeceras/body muestran versión Apache/estado). |
+
+Como se puede observar, no se lograron mitigar las vulnerabiliaddes luego de aplicar los cambios en el archivo de confugración de seguridad lo cual se puede deber a alguna de las siguientes razones: 
+* Configuración no recargada o con errores  
+  * Explicación: los archivos modificados no fueron aplicados porque Apache no se reinició/reconfiguró correctamente o hay errores de sintaxis.  
+  * Verificación: `sudo apache2ctl configtest` y `sudo systemctl status apache2`; revisar `/var/log/apache2/error.log`.
+
+* Archivo editado distinto al que atiende el servidor  
+  * Explicación: se cambió un fichero que no es el realmente cargado (p. ej. conf-available vs sites-enabled), por lo que la configuración activa no cambió.  
+  * Verificación: `apache2ctl -S`, `ls -l /etc/apache2/sites-enabled/ /etc/apache2/conf-enabled/`.
+
+* Módulo requerido no habilitado (p. ej. mod_headers)  
+  * Explicación: directivas `Header` u otras no tienen efecto si el módulo correspondiente no está activo.  
+  * Verificación: `apache2ctl -M | grep headers` (debe aparecer `headers_module`).
+
+* Cabeceras sobreescritas por la aplicación o middleware  
+  * Explicación: código de la aplicación (ej. `header()` en PHP), un proxy inverso o CDN puede alterar o restablecer cabeceras tras Apache.  
+  * Verificación: solicitar directamente a Apache `curl -I --no-keepalive http://<IP>/` desde la máquina analista y comparar con peticiones pasando por el proxy.
+
+* Intermediario (proxy/WAF/ZAP) alterando respuestas  
+  * Explicación: un proxy o herramienta de análisis puede inyectar, quitar o mostrar cabeceras distintas a las reales del servidor.  
+  * Verificación: repetir `curl -I` desactivando el proxy; revisar configuración de ZAP/balancer/CDN.
+
+* Política aplicada aún contiene directivas inseguras o incompletas  
+  * Explicación: la CSP configurada todavía incluye `'unsafe-inline'` o no define directivas obligatorias (ej. `form-action`), por lo que el scanner sigue reportando alertas.  
+  * Verificación: `curl -I http://<IP>` y revisar exactamente el valor de `Content-Security-Policy`.
+
+* `mod_status` expone `/server-status` sin restricciones  
+  * Explicación: mod_status sigue habilitado y accesible públicamente, mostrando información del servidor incluso si se ocultaron otros datos.  
+  * Verificación: `curl -I http://<IP>/server-status` y revisar `/etc/apache2/mods-enabled/status.conf`.
+
+* Caché o CDN mostrando versión antigua  
+  * Explicación: respuestas en cache (local o intermedias) pueden devolver cabeceras antiguas tras cambios de configuración.  
+  * Verificación: limpiar/invalidar cache, usar `curl -H 'Cache-Control: no-cache' -I http://<IP>/`.
+
+* Permisos o alcance insuficiente de la cuenta que hace los cambios  
+  * Explicación: edición realizada por un usuario sin privilegios puede no haber sobrescrito la configuración real.  
+  * Verificación: comprobar owner/permiso de los ficheros modificados (`ls -l`) y que se reinició Apache con permisos root.
+
+* Error en el orden de carga de ficheros (sobrescritura por conf posterior)  
+  * Explicación: una directiva aplicada en un fichero puede ser sobrescrita por otra cargada después (orden en `conf-enabled`/`sites-enabled`).  
+  * Verificación: inspeccionar el orden y contenido de `/etc/apache2/conf-enabled/` y `/etc/apache2/sites-enabled/`.
+
+### Preguntas de Reflexión - Módulo 3 
+
+* ¿Por qué es importante deshabilitar el listado de directorios en Apache?
+ * El Directory Listing expone la estructura de ficheros y recursos (backups, scripts, uploads, etc.), facilitando la enumeración y localización de activos sensibles. Esto aumenta la superficie de ataque y puede revelar ficheros con permisos débiles o información útil para explotaciones automatizadas.
+ * Ejemplo de configuración: `Options -Indexes`.
+
+* **¿Qué diferencia existe entre ServerTokens Prod y ServerTokens Full?**
+ * `ServerTokens Full`: La cabecera `Server` incluye información detallada (versión de Apache, módulos, SO), lo que facilita el fingerprinting y la búsqueda de CVE específicas.
+ * `ServerTokens Prod`: La cabecera se minimiza a un identificador genérico (p. ej. `Server: Apache`), reduciendo la fuga de información.
+ * Complemento: Usar `ServerSignature Off` para evitar mostrar información en páginas de error.
+
+* **¿Por qué no se recomienda habilitar HSTS en un servidor HTTP puro (sin HTTPS)?**
+ * `Strict-Transport-Security` solo tiene efecto cuando se entrega sobre HTTPS; en HTTP es ignorado por navegadores. Habilitar HSTS sin HTTPS es inútil y peligroso si posteriormente se habilita mal (riesgo de bloqueo por preload). HSTS debe activarse solo cuando todo el sitio responde correctamente por HTTPS con certificados válidos y la configuración ha sido probada.
+
+* **¿Qué otros módulos de Apache podrían mejorar la seguridad del servidor?**
+  * mod_ssl — habilita TLS/HTTPS (fundamental para seguridad en tránsito).
+  * mod_headers — aplicar cabeceras de seguridad (CSP, HSTS, X-Frame-Options,X-Content-Type-Options).
+  * mod_security (WAF) + OWASP CRS — detección y bloqueo de payloads maliciosos.
+  * mod_reqtimeout, mod_evasive, mod_qos — mitigación de DoS/Slowloris y control de tasa.
+  * mod_authz_core, mod_auth_basic — control de acceso y autenticación.
+  * mod_remoteip — corregir IPs reales detrás de proxies para logging y reglas.
+  * Además: deshabilitar módulos innecesarios, restringir mod_status y aplicar least privilege en cuentas/configuración.
