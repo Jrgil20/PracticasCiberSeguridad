@@ -205,7 +205,6 @@ Header unset X-Powered-By
 
 Luego de realizar los pasos del 1 al 4, se ejecutó el fuzzer con el payload `1' OR 1=1 #` se analizó la respuesta y no se obtuvo el resultado esperado. Luego se detectó un error en el punto donde se insertaba el payload, por lo que se cambió la ubicación de la inyección y se colocó directamente en el parámetro `id`. A continuación se muestra el campo que solicita el user id en el fuzzer y la petición GET esperada para la verificación en ZAP.
 
-el user id que pide en fuzzer  
 ![alt text](https://imgur.com/gqFL7Cd)
 
 Petición GET esperada:
