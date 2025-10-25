@@ -50,7 +50,6 @@ which apache2      # Servidor Apache
 
 ## MÓDULO 1: Análisis de Encabezados de Seguridad con OWASP ZAP
 ### Objetivos del Módulo
-
   * Configurar OWASP
   * Analizar encabezados HTTP de respuesta
   * Identificar deficiencias de seguridad en la configuración del servidor
@@ -71,8 +70,8 @@ Se inició OWASP ZAP como proxy de interceptación para capturar y analizar el t
 * Se entró a la página web **DVWA** luego de configurar a OWASP ZAP como proxy en la máquina "Analista", toda su expliación y razón en la práctica anterior, ya que esta será como objetivo de los ataques de la práctica.
 * **DVWA** es una aplicación web escrita en **PHP/MySQL**, diseñada especificamente para ser vulnerable lo que la hace una herramienta perfecta para pruebas y prácticas del área de la cibereguridad.
 * Se usa la URL ```http://192.168.100.20/dvwa/``` ya que al objetivo no tener una dominio público, como por ejemplo dvwa.com, se debe usar directamente la dirección IP del dispotivo objetivo ya que no se puede usar el servicio de DNS para hacer las traducciones necesarias para realizar la comunicación.
-* Se configuró en DVWA la opción de "Low" en el panel de DVWA Security para indicarle a la aplicación que no implemente **casi ninguna medidad de seguridad en su código fuente**, esto se hace adecuar el entorno para la realización de los ataques de la práctica.
-* Luego de esta configuración, se usó ZAP para monitorear la comunicación entre el cliente y el servidor, se abrió la petición ```GET http://192.168.100.20/dvwa/login.php``` y se abriron los headers corresposdinetes a la respuesta por parte del servidor, abajo de este párrafo se muestra el historial de las petciones visro de ZAP y posterior a la imagen se tiene la respuesta provista por el servidor.
+* Se configuró en DVWA la opción de "Low" en el panel de DVWA Security para indicarle a la aplicación que no implemente **casi ninguna medida de seguridad en su código fuente**, esto se hace para adecuar el entorno para la realización de los ataques de la práctica.
+* Luego de esta configuración, se usó ZAP para monitorear la comunicación entre el cliente y el servidor, se abrió la petición ```GET http://192.168.100.20/dvwa/login.php``` y se abriron los headers corresposdinetes a la respuesta por parte del servidor, abajo de este párrafo se muestra el historial de las peticiones visto de ZAP y posterior a la imagen se tiene la respuesta provista por el servidor.
 
 ![alt text](https://imgur.com/CU9fSVF)
 
@@ -168,11 +167,32 @@ Header unset X-Powered-By
 
 </details>
 
- * Luego de guardar los cambios en el archiv0o, se usaron los comandos ```sudo a2enconf security``` y ```sudo apache2ctl configtest ``` para habilitar la nueva configuración y para verificar que su sintaxis esté correcta, luego de que el segundo comando mostrará el mnesaje de "OK" se precedió a ejecutar el comando ```sudo systemctl restart apache2``` para reiniciar el servicio de Apache 2 pare que se efectuen los cambios.
+ * Luego de guardar los cambios en el archivo, se usaron los comandos ```sudo a2enconf security``` y ```sudo apache2ctl configtest ``` para habilitar la nueva configuración y para verificar que su sintaxis esté correcta, luego de que el segundo comando mostrará el mnesaje de "OK" se precedió a ejecutar el comando ```sudo systemctl restart apache2``` para reiniciar el servicio de Apache 2 pare que se efectuen los cambios.
 
+### Preguntas de Reflexión sobre el Módulo 1
 
+- ¿Por qué es importante ocultar la versión del servidor y del lenguaje de programación?
+  - Reduce la fuga de información: evita que un atacante identifique versiones con vulnerabilidades conocidas (CVE) y automatice exploits.
+  - Dificulta el reconocimiento automatizado y gana tiempo para la defensa.
+  - No sustituye el parcheo y buenas prácticas; es una medida de reducción de información (defensa en profundidad).
 
-Después de ejecutar el fuzzer con el payload `1' OR 1=1 #` se analizó la respuesta y no se obtuvo el resultado esperado. Luego se detectó un error en el punto donde se insertaba el payload, por lo que se cambió la ubicación de la inyección y se colocó directamente en el parámetro `id`. A continuación se muestra el campo que solicita el user id en el fuzzer y la petición GET esperada para la verificación en ZAP.
+- ¿Qué diferencia existe entre X-Frame-Options: DENY y X-Frame-Options: SAMEORIGIN?
+  - DENY: impide que la página sea cargada en un iframe desde cualquier origen (incluso el mismo).
+  - SAMEORIGIN: permite que la página sea embebida sólo por páginas del mismo origen (mismo esquema, host y puerto).
+  - Para mayor control y flexibilidad usar Content-Security-Policy con la directiva frame-ancestors.
+
+- ¿Por qué 'unsafe-inline' en CSP puede ser problemático?
+  - Permite ejecución de scripts/estilos inline, lo que debilita significativamente la protección contra XSS.
+  - Anula las ventajas de nonces/hashes y fomenta prácticas inseguras (event handlers inline, estilos inline).
+  - Recomendación: evitar 'unsafe-inline' y usar scripts externos con nonces o hashes, además de aplicar políticas restrictivas.
+
+## Módulo 2: Fuzzing de Inyección SQL con OWASP ZAP 
+### Objetivos del Módulo 
+ * Comprender el funcionamiento del Fuzzer de ZAP
+ * Detectar vulnerabilidades de inyección SQL mediante fuzzing 
+ * Documentar hallazgos de seguridad 
+
+Luego de realizar los pasos del 1 al 4, se ejecutó el fuzzer con el payload `1' OR 1=1 #` se analizó la respuesta y no se obtuvo el resultado esperado. Luego se detectó un error en el punto donde se insertaba el payload, por lo que se cambió la ubicación de la inyección y se colocó directamente en el parámetro `id`. A continuación se muestra el campo que solicita el user id en el fuzzer y la petición GET esperada para la verificación en ZAP.
 
 el user id que pide en fuzzer  
 ![alt text](image-2.png)
@@ -358,3 +378,65 @@ Análisis de Impacto:
 - Identificación de la versión de MySQL (posibles exploits específicos).  
 - Enumeración de tablas (objetivo: tabla `users`).  
 - Bypass total de autenticación y controles de acceso.
+
+### Preguntas de Reflexión sobre el Módulo 2
+
+- ¿Por qué el payload `1' OR 1=1 #` devuelve todos los usuarios en lugar de generar un error?
+  - El payload cierra la literal de cadena (`'`), inyecta una condición lógica siempre verdadera (`OR 1=1`) y usa `#` para comentar el resto de la consulta. El parser SQL recibe una sentencia sintácticamente válida cuya cláusula WHERE se reduce a una expresión que siempre evalúa true, por lo que el optimizador/ejecutor devuelve todas las filas que cumplen la consulta. Técnicamente: si la consulta original es WHERE user_id = '1' entonces tras la inyección la expresión queda WHERE user_id = '1' OR 1=1 -- y el plan de ejecución ya no filtra por user_id. Nota: el comportamiento exacto depende del contexto (si el parámetro era numérico sin comillas, codificación/escaping por la librería cliente, o si el framework usa ORM/prepared statements) — en esos casos el payload podría producir error o ser neutralizado.
+
+- ¿Qué diferencia existe entre el comentario `#` y `--` en inyecciones SQL?
+  - `#` y `--` son comentarios de una sola línea en muchos SGBD; sin embargo `--` es la forma definida por el estándar SQL y suele requerir un espacio o control después (`-- `) en implementaciones como MySQL/Oracle; MySQL admite `#` sin condiciones adicionales. Además existen comentarios de bloque `/* ... */`. Importante: el soporte varía por motor (p.ej. SQL Server acepta `--`, Oracle no reconoce `#` como comentario), y algunos conectores o filtros pueden normalizar/strippear comentarios, por lo que el payload debe adaptarse al dialecto objetivo para que el comentario efectivamente elimine el resto de la consulta y evite errores de sintaxis.
+
+-- ¿Cómo podría un atacante usar esta vulnerabilidad para obtener contraseñas de usuarios?
+  - Métodos:
+    - Directos:
+      - Usar `UNION SELECT` para leer columnas de la tabla `users` (p. ej. username, password_hash).
+      - Consultar `information_schema` (tables, columns) para localizar tablas/columnas sensibles.
+      - Volcar tablas completas si la consulta y permisos lo permiten.
+    - Ciegos:
+      - Boolean-based: realizar consultas TRUE/FALSE con funciones como `SUBSTRING()`/`ORD()` para extraer caracteres uno a uno.
+      - Time-based: usar `SLEEP()` o funciones equivalentes para inferir bits/caracteres por el tiempo de respuesta.
+    - Basados en errores y funciones especiales:
+      - Error-based: provocar funciones que devuelvan errores con contenido útil.
+      - `LOAD_FILE()` / `INTO OUTFILE`: leer o escribir ficheros si el servidor y permisos lo permiten.
+      - UDFs o stacked queries (cuando el motor lo permita) para ejecutar código a nivel OS.
+    - Post-extracción:
+      - Crackear hashes offline (hashcat/john) teniendo en cuenta algoritmo, salt y rounds.
+      - Pivotar con credenciales obtenidas para escalar privilegios en la BD o servidor.
+    - Mitigaciones:
+      - Prepared statements / consultas parametrizadas.
+      - Principio de menor privilegio en cuentas BD y restricción de funciones peligrosas.
+      - Validación y saneamiento estricto de entradas, logging y detección de anomalías.
+
+- ¿Por qué es importante el tamaño de la respuesta al analizar resultados de fuzzing?
+  - La longitud del body es un oracle rápido: cambios significativos suelen correlacionarse con distinto número de filas devueltas, inclusión de errores o payload reflejado, lo que permite detectar anomalías a gran escala durante fuzzing automatizado. Técnicamente, usar tamaño junto a código HTTP, cabeceras y RTT mejora la fiabilidad. Limitaciones: contenido dinámico (tokens, timestamps), compresión, chunking, sesiones y paginación pueden producir falsos positivos/negativos; por eso se recomienda normalizar respuestas (eliminar partes volátiles), establecer umbrales estadísticos, y combinar análisis de tamaño con firmas en el body, hashing diferenciado y pruebas confirmatorias (manuales o payloads de extracción) antes de reportar una vulnerabilidad.
+  
+## Módulo 3: Pentesting de Apache en Kali Linux 
+### Objetivos del Módulo
+* Instalar y configurar Apache2 en Kali Linux 
+* Realizar un escaneo de seguridad automatizado con ZAP 
+* Generar reportes profesionales en formato HTML 
+* Analizar y priorizar vulnerabilidades encontradas 
+
+### Paso 1: Instalación de Apache 2 
+Se ejecutaron los comandos mostrados para realizar la instalacion del servidor web Apache en la máquina "Analista", se utiliza ```sudo apt update``` para actualizar la lista local de paquetes disponibles, asegurando que el sistema conozca las últimas versiones del software en los repositorios, luego ```sudo apt install apache2 -y``` descarga e instala el paquete del servidor web (junto con todas sus dependencias), donde -y omite la necesidad de confirmación manual, y finalmente, ```apache2 -v``` se ejecuta para verificar que la instalación haya sido exitosa al mostrar la versión del servidor recién instalado.
+``` bash
+# Actualizar repositorios 
+sudo apt update 
+# Instalar Apache2 
+sudo apt install apache2 -y 
+# Verificar instalación 
+apache2 -v 
+```
+### Paso 2: Iniciar y Verificar Apache 
+Se ejecutaron los comandos mostrados para iniciar y verificar el inicio exitoso de Apache2 en la máquina "Analista", estos comandos operan a través de la utilidad systemctl con privilegios de superusuario (```sudo```) para interactuar con el sistema de inicialización y gestión de servicios systemd. Específicamente, ```sudo systemctl start apache2``` inicia la unidad de servicio apache2, activando el demonio del servidor web; a continuación, ```sudo systemctl status apache2``` es fundamental para la verificación operativa, ya que consulta a systemd para obtener el estado actual del servicio, confirmando si está en estado ```active (running)``` o si ha fallado; finalmente, ```sudo systemctl enable apache2``` configura el servicio para persistir después de los reinicios del sistema, creando los enlaces simbólicos necesarios que aseguran que apache2 se inicie automáticamente durante el proceso de arranque.
+``` bash
+# Iniciar el servicio Apache 
+sudo systemctl start apache2 
+# Verificar el estado 
+sudo systemctl status apache2 
+# Habilitar inicio automático (opcional) 
+sudo systemctl enable apache2 
+```
+
+Se anexa el html de inicio por defecto de Apache luego de iniciar su servicio en la máquina analista como evidencia del correcto inicio de apache [Página de inicio de Apache (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/Apache2_Debian_Default_Page_It_works.html)
