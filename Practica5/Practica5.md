@@ -9,7 +9,7 @@
 
 **Nombre de la Práctica:** Web Application Analysis II & SQL Injection
 (Análisis de Vulnerabilidades en Servicios Web)
- 
+
 **Grupo:** 4
 _______________________________________
 
@@ -24,7 +24,8 @@ Al finalizar este laboratorio, el estudiante será capaz de:
 5. Automatizar la explotación de inyecciones SQL utilizando SQLMap.  
 6. Enumerar bases de datos y extraer información sensible de forma controlada.  
 7. Generar reportes profesionales de pentesting con hallazgos y recomendaciones.  
-8. Aplicar principios éticos en pruebas de penetración controladas. 
+8. Aplicar principios éticos en pruebas de penetración controladas.
+
 _____________________________________
 
 ### Recursos Tecnológicos
@@ -49,13 +50,15 @@ which apache2      # Servidor Apache
 ```
 
 ## MÓDULO 1: Análisis de Encabezados de Seguridad con OWASP ZAP
-### Objetivos del Módulo
-  * Configurar OWASP
-  * Analizar encabezados HTTP de respuesta
-  * Identificar deficiencias de seguridad en la configuración del servidor
-  * Proponer configuraciones de hardening
 
-Los pasos 1 y 3 se realizaron en la práctica anterior; la explicación detallada y las evidencias están en el informe de la Práctica 4. Consulte el informe en GitHub: https://github.com/Jrgil20/PracticasCiberSeguridad/blob/main/Practica4.md/practica4.md
+### Objetivos del Módulo
+
+- Configurar OWASP
+- Analizar encabezados HTTP de respuesta
+- Identificar deficiencias de seguridad en la configuración del servidor
+- Proponer configuraciones de hardening
+
+Los pasos 1 y 3 se realizaron en la práctica anterior; la explicación detallada y las evidencias están en el informe de la Práctica 4. Consulte el informe en GitHub: [Práctica 4 — Informe en GitHub](https://github.com/Jrgil20/PracticasCiberSeguridad/blob/main/Practica4.md/practica4.md)
 
 ### Paso 2: Iniciar OWASP ZAP
 
@@ -67,11 +70,11 @@ Se inició OWASP ZAP como proxy de interceptación para capturar y analizar el t
 
 ### Pasos 4 y 5: Navegar a DVWA, Capturar Tráfico y Analizar Encabezados de Respuesta
 
-* Se entró a la página web **DVWA** luego de configurar a OWASP ZAP como proxy en la máquina "Analista", toda su expliación y razón en la práctica anterior, ya que esta será como objetivo de los ataques de la práctica.
-* **DVWA** es una aplicación web escrita en **PHP/MySQL**, diseñada especificamente para ser vulnerable lo que la hace una herramienta perfecta para pruebas y prácticas del área de la cibereguridad.
-* Se usa la URL ```http://192.168.100.20/dvwa/``` ya que al objetivo no tener una dominio público, como por ejemplo dvwa.com, se debe usar directamente la dirección IP del dispotivo objetivo ya que no se puede usar el servicio de DNS para hacer las traducciones necesarias para realizar la comunicación.
-* Se configuró en DVWA la opción de "Low" en el panel de DVWA Security para indicarle a la aplicación que no implemente **casi ninguna medida de seguridad en su código fuente**, esto se hace para adecuar el entorno para la realización de los ataques de la práctica.
-* Luego de esta configuración, se usó ZAP para monitorear la comunicación entre el cliente y el servidor. Se abrió la petición `GET http://192.168.100.20/dvwa/login.php` y se inspeccionaron los encabezados de la respuesta. A continuación se muestran: 1) la captura del servicio en el explorador y 2) el historial de peticiones visto desde ZAP (scan). Posterior a las imágenes se presenta la respuesta provista por el servidor.
+- Se entró a la página web **DVWA** luego de configurar a OWASP ZAP como proxy en la máquina "Analista", toda su expliación y razón en la práctica anterior, ya que esta será como objetivo de los ataques de la práctica.
+- **DVWA** es una aplicación web escrita en **PHP/MySQL**, diseñada especificamente para ser vulnerable lo que la hace una herramienta perfecta para pruebas y prácticas del área de la cibereguridad.
+- Se usa la URL ```http://192.168.100.20/dvwa/``` ya que al objetivo no tener una dominio público, como por ejemplo dvwa.com, se debe usar directamente la dirección IP del dispotivo objetivo ya que no se puede usar el servicio de DNS para hacer las traducciones necesarias para realizar la comunicación.
+- Se configuró en DVWA la opción de "Low" en el panel de DVWA Security para indicarle a la aplicación que no implemente **casi ninguna medida de seguridad en su código fuente**, esto se hace para adecuar el entorno para la realización de los ataques de la práctica.
+- Luego de esta configuración, se usó ZAP para monitorear la comunicación entre el cliente y el servidor. Se abrió la petición `GET http://192.168.100.20/dvwa/login.php` y se inspeccionaron los encabezados de la respuesta. A continuación se muestran: 1) la captura del servicio en el explorador y 2) el historial de peticiones visto desde ZAP (scan). Posterior a las imágenes se presenta la respuesta provista por el servidor.
 
 Captura del servicio en el explorador:
 ![Servicio en el explorador](https://imgur.com/JBsrGUD)
@@ -122,8 +125,8 @@ Se procederá a documentar los Headers de seguirdad faltantes en la peticióny s
 Como se puede observar, las petición realizada es sumamente insegura ya que faltan varios headers de seguridad lo que hace que sea un objetvio sencillo para los atacantes al existir varias vulnerabilidades sin mitigar que pueden ser explotadas mediante el uso de sus correspondientes exploits.
 
 En vista de la situación previamente explicada, es necesario modificar el archivo de configuración del servidor web utilizado, Apache 2, para agregarle la configuración de los Headers faltantes para mitigar las vulnerabilidades asociadas con cada Header faltante. Para ello se realizó lo siguiente:
- * Se abrió el archivo de configuración, ubicado en ```/etc/apache2/conf-available/security.conf```, mediante el editor Nano para agregar las configuraciones respectivas.
- * Se agregó lo siguiente al archivo de configuración: 
+ - Se abrió el archivo de configuración, ubicado en ```/etc/apache2/conf-available/security.conf```, mediante el editor Nano para agregar las configuraciones respectivas.
+ - Se agregó lo siguiente al archivo de configuración: 
 <details>
 <summary>Configuración de encabezados de seguridad (resumida)</summary>
 
@@ -171,30 +174,32 @@ Header unset X-Powered-By
 
 </details>
 
- * Luego de guardar los cambios en el archivo, se usaron los comandos ```sudo a2enconf security``` y ```sudo apache2ctl configtest ``` para habilitar la nueva configuración y para verificar que su sintaxis esté correcta, luego de que el segundo comando mostrará el mnesaje de "OK" se precedió a ejecutar el comando ```sudo systemctl restart apache2``` para reiniciar el servicio de Apache 2 pare que se efectuen los cambios.
+ - Luego de guardar los cambios en el archivo, se usaron los comandos ```sudo a2enconf security``` y ```sudo apache2ctl configtest ``` para habilitar la nueva configuración y para verificar que su sintaxis esté correcta, luego de que el segundo comando mostrará el mnesaje de "OK" se precedió a ejecutar el comando ```sudo systemctl restart apache2``` para reiniciar el servicio de Apache 2 pare que se efectuen los cambios.
 
 ### Preguntas de Reflexión - Módulo 1 
 
-*   **¿Por qué es importante ocultar la versión del servidor y del lenguaje de programación?**
-    *   Reduce la fuga de información: evita que un atacante identifique versiones con vulnerabilidades conocidas (CVE) y automatice exploits.
-    *   Dificulta el reconocimiento automatizado y gana tiempo para la defensa.
-    *   No sustituye el parcheo y buenas prácticas; es una medida de reducción de información (defensa en profundidad).
+- **¿Por qué es importante ocultar la versión del servidor y del lenguaje de programación?**
+  - Reduce la fuga de información: evita que un atacante identifique versiones con vulnerabilidades conocidas (CVE) y automatice exploits.
+  - Dificulta el reconocimiento automatizado y gana tiempo para la defensa.
+  - No sustituye el parcheo y buenas prácticas; es una medida de reducción de información (defensa en profundidad).
 
-*   **¿Qué diferencia existe entre `X-Frame-Options: DENY` y `X-Frame-Options: SAMEORIGIN`?**
-    *   `DENY`: impide que la página sea cargada en un `iframe` desde cualquier origen (incluso el mismo).
-    *   `SAMEORIGIN`: permite que la página sea embebida sólo por páginas del mismo origen (mismo esquema, host y puerto).
-    *   Para mayor control y flexibilidad usar `Content-Security-Policy` con la directiva `frame-ancestors`.
+- **¿Qué diferencia existe entre `X-Frame-Options: DENY` y `X-Frame-Options: SAMEORIGIN`?**
+  - `DENY`: impide que la página sea cargada en un `iframe` desde cualquier origen (incluso el mismo).
+  - `SAMEORIGIN`: permite que la página sea embebida sólo por páginas del mismo origen (mismo esquema, host y puerto).
+  - Para mayor control y flexibilidad usar `Content-Security-Policy` con la directiva `frame-ancestors`.
 
-*   **¿Por qué `'unsafe-inline'` en CSP puede ser problemático?**
-    *   Permite ejecución de scripts/estilos inline, lo que debilita significativamente la protección contra XSS.
-    *   Anula las ventajas de nonces/hashes y fomenta prácticas inseguras (event handlers inline, estilos inline).
-    *   Recomendación: evitar `'unsafe-inline'` y usar scripts externos con nonces o hashes, además de aplicar políticas restrictivas.
+- **¿Por qué `'unsafe-inline'` en CSP puede ser problemático?**
+  - Permite ejecución de scripts/estilos inline, lo que debilita significativamente la protección contra XSS.
+  - Anula las ventajas de nonces/hashes y fomenta prácticas inseguras (event handlers inline, estilos inline).
+  - Recomendación: evitar `'unsafe-inline'` y usar scripts externos con nonces o hashes, además de aplicar políticas restrictivas.
 
-## Módulo 2: Fuzzing de Inyección SQL con OWASP ZAP 
-### Objetivos del Módulo 
- * Comprender el funcionamiento del Fuzzer de ZAP
- * Detectar vulnerabilidades de inyección SQL mediante fuzzing 
- * Documentar hallazgos de seguridad 
+## Módulo 2: Fuzzing de Inyección SQL con OWASP ZAP:
+
+### Objetivos del Módulo
+
+- Comprender el funcionamiento del Fuzzer de ZAP.
+- Detectar vulnerabilidades de inyección SQL mediante fuzzing.
+- Documentar hallazgos de seguridad.
 
 Luego de realizar los pasos del 1 al 4, se ejecutó el fuzzer con el payload `1' OR 1=1 #` se analizó la respuesta y no se obtuvo el resultado esperado. Luego se detectó un error en el punto donde se insertaba el payload, por lo que se cambió la ubicación de la inyección y se colocó directamente en el parámetro `id`. A continuación se muestra el campo que solicita el user id en el fuzzer y la petición GET esperada para la verificación en ZAP.
 
@@ -202,6 +207,7 @@ el user id que pide en fuzzer
 ![alt text](https://imgur.com/gqFL7Cd)
 
 Petición GET esperada:
+
 ```http
 GET http://192.168.100.20/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit HTTP/1.1
 Host: 192.168.100.20
@@ -218,6 +224,7 @@ Upgrade-Insecure-Requests: 1
 Lo anterior está mal. En la imagen siguiente se muestra la forma correcta de insertar el payload en el parámetro id.
 
 Qué estuvo mal
+
 - Se ingresó el payload en el lugar equivocado del fuzzer (campo genérico o cuerpo) en vez de en el parámetro de consulta `id`.
 - No se verificó si el cliente o la herramienta estaban codificando/filtrando el payload (comillas/espacios escapados).
 - No se comprobó que la petición incluyera los parámetros necesarios (por ejemplo `Submit=Submit`) ni las cookies de sesión (`security=low; PHPSESSID=…`).
@@ -239,6 +246,7 @@ En la siguiente imagen se muestra correctamente colocado el payload en el parám
 Después de ejecutar el fuzzer con el payload `1' OR 1=1 #` se analizó la respuesta y no se obtuvo el resultado esperado.
 
 Qué estuvo mal:
+
 - Se ingresó el payload en el lugar equivocado del fuzzer (campo genérico o cuerpo) en vez de en el parámetro de consulta `id`.  
 - No se verificó si el cliente o la herramienta estaban codificando/filtrando el payload (comillas/espacios escapados).  
 - No se comprobó que la petición incluyera los parámetros necesarios (por ejemplo `Submit=Submit`) ni las cookies de sesión (`security=low; PHPSESSID=…`).
@@ -267,24 +275,26 @@ El valor `1` debe aparecer ahora resaltado.
 1. En la ventana "Payloads", hacer clic en "Add...".  
 2. Seleccionar el tipo: "Strings".  
 3. En el campo "String", ingresar el payload:
-
-`1' OR 1=1 #`
+  `1' OR 1=1 #`
 
 4. Hacer clic en "Add" y luego en "OK" para cerrar la ventana de payloads.
-
-Explicación del payload:
-- `1'` → Cierra la comilla de la consulta original.  
-- `OR 1=1` → Condición siempre verdadera.  
-- `#` → Comentario en MySQL que ignora el resto de la consulta.
+  Explicación del payload:
+    - `1'` → Cierra la comilla de la consulta original.  
+    - `OR 1=1` → Condición siempre verdadera.  
+    - `#` → Comentario en MySQL que ignora el resto de la consulta.
 
 Consulta original esperada:
+
 ```sql
 SELECT first_name, surname FROM users WHERE user_id = '1';
 ```
+
 Consulta inyectada:
+
 ```sql
 SELECT first_name, surname FROM users WHERE user_id = '1' OR 1=1 #';
 ```
+
 El `#` comenta la comilla final, evitando errores de sintaxis. La condición `OR 1=1` hace que la cláusula WHERE siempre sea verdadera, devolviendo todos los usuarios.
 
 ---
@@ -295,6 +305,7 @@ El `#` comenta la comilla final, evitando errores de sintaxis. La condición `OR
 - Hacer clic en "Start Fuzzer".
 
 Resultados esperados en la pestaña de resultados del fuzzing:
+
 - State: Successful  
 - Code: 200  
 - Reason: OK  
@@ -314,6 +325,7 @@ En lugar de la imagen, enlace al reporte en HTML publicado: [Reporte del fuzzer 
 En lugar de la imagen, enlace al reporte en HTML publicado: [Reporte del fuzzer (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/paylod4.html) — Abra el enlace en el navegador para ver el informe completo en formato HTML.
 
 Resultado Obtenido (Inyección Exitosa):
+
 - ID: `1' OR 1=1 #` — First name: admin — Surname: admin  
 - ID: `1' OR 1=1 #` — First name: Gordon — Surname: Brown  
 - ID: `1' OR 1=1 #` — First name: Hack — Surname: Me  
@@ -335,6 +347,7 @@ Resultado Obtenido (Inyección Exitosa):
 | Indicador de vulnerabilidad | ❌ Normal | ✅ VULNERABLE |
 
 Análisis:
+
 - El aumento significativo en el tamaño de la respuesta y la devolución de múltiples usuarios confirman que:
   - La aplicación es vulnerable a inyección SQL.  
   - No existe validación de entrada en el parámetro `id`.  
@@ -346,14 +359,19 @@ Análisis:
 ### Explicación Técnica del Payload
 
 Consulta original:
+
 ```sql
 SELECT first_name, surname FROM users WHERE user_id = '1';
 ```
+
 Consulta con payload `1' OR 1=1 #`:
+
 ```sql
 SELECT first_name, surname FROM users WHERE user_id = '1' OR 1=1 #';
 ```
+
 Desglose:
+
 - `1'` → Cierra la comilla original.  
 - `OR 1=1` → Bypass lógico.  
 - `#` → Comentario en MySQL que ignora la comilla sobrante.
@@ -371,6 +389,7 @@ Desglose:
 | 5 | `1' UNION SELECT table_name, null FROM information_schema.tables WHERE table_schema='dvwa' #` | Enumerar tablas | Lista: guestbook, users | ✅ Exitoso |
 
 Análisis de Impacto:
+
 - Reconocimiento completo de la infraestructura de base de datos.  
 - Identificación de la versión de MySQL (posibles exploits específicos).  
 - Enumeración de tablas (objetivo: tabla `users`).  
@@ -378,45 +397,50 @@ Análisis de Impacto:
 
 ### Preguntas de Reflexión - Módulo 2 
 
-*   **¿Por qué el payload `1' OR 1=1 #` devuelve todos los usuarios en lugar de generar un error?**
-    *   El payload cierra la literal de cadena (`'`), inyecta una condición lógica siempre verdadera (`OR 1=1`) y usa `#` para comentar el resto de la consulta. El parser SQL recibe una sentencia sintácticamente válida cuya cláusula `WHERE` se reduce a una expresión que siempre evalúa `true`, por lo que el optimizador/ejecutor devuelve todas las filas que cumplen la consulta. Técnicamente: si la consulta original es `WHERE user_id = '1'` entonces tras la inyección la expresión queda `WHERE user_id = '1' OR 1=1 --` y el plan de ejecución ya no filtra por `user_id`. Nota: el comportamiento exacto depende del contexto (si el parámetro era numérico sin comillas, codificación/escaping por la librería cliente, o si el framework usa ORM/prepared statements) — en esos casos el payload podría producir error o ser neutralizado.
+- **¿Por qué el payload `1' OR 1=1 #` devuelve todos los usuarios en lugar de generar un error?**
+  - El payload cierra la literal de cadena (`'`), inyecta una condición lógica siempre verdadera (`OR 1=1`) y usa `#` para comentar el resto de la consulta. El parser SQL recibe una sentencia sintácticamente válida cuya cláusula `WHERE` se reduce a una expresión que siempre evalúa `true`, por lo que el optimizador/ejecutor devuelve todas las filas que cumplen la consulta. Técnicamente: si la consulta original es `WHERE user_id = '1'` entonces tras la inyección la expresión queda `WHERE user_id = '1' OR 1=1 --` y el plan de ejecución ya no filtra por `user_id`. Nota: el comportamiento exacto depende del contexto (si el parámetro era numérico sin comillas, codificación/escaping por la librería cliente, o si el framework usa ORM/prepared statements) — en esos casos el payload podría producir error o ser neutralizado.
 
-*   **¿Qué diferencia existe entre el comentario `#` y `--` en inyecciones SQL?**
-    *   `#` y `--` son comentarios de una sola línea en muchos SGBD; sin embargo `--` es la forma definida por el estándar SQL y suele requerir un espacio o control después (`-- `) en implementaciones como MySQL/Oracle; MySQL admite `#` sin condiciones adicionales. Además existen comentarios de bloque `/* ... */`. Importante: el soporte varía por motor (p.ej. SQL Server acepta `--`, Oracle no reconoce `#` como comentario), y algunos conectores o filtros pueden normalizar/strippear comentarios, por lo que el payload debe adaptarse al dialecto objetivo para que el comentario efectivamente elimine el resto de la consulta y evite errores de sintaxis.
+- **¿Qué diferencia existe entre el comentario `#` y `--` en inyecciones SQL?**
+  - `#` y `--` son comentarios de una sola línea en muchos SGBD; sin embargo `--` es la forma definida por el estándar SQL y suele requerir un espacio o control después (`-- `) en implementaciones como MySQL/Oracle; MySQL admite `#` sin condiciones adicionales. Además existen comentarios de bloque `/* ... */`. Importante: el soporte varía por motor (p.ej. SQL Server acepta `--`, Oracle no reconoce `#` como comentario), y algunos conectores o filtros pueden normalizar/strippear comentarios, por lo que el payload debe adaptarse al dialecto objetivo para que el comentario efectivamente elimine el resto de la consulta y evite errores de sintaxis.
 
-*   **¿Cómo podría un atacante usar esta vulnerabilidad para obtener contraseñas de usuarios?**
-    *   Métodos:
-        *   Directos:
-            *   Usar `UNION SELECT` para leer columnas de la tabla `users` (p. ej. `username`, `password_hash`).
-            *   Consultar `information_schema` (`tables`, `columns`) para localizar tablas/columnas sensibles.
-            *   Volcar tablas completas si la consulta y permisos lo permiten.
-        *   Ciegos:
-            *   Boolean-based: realizar consultas `TRUE`/`FALSE` con funciones como `SUBSTRING()`/`ORD()` para extraer caracteres uno a uno.
-            *   Time-based: usar `SLEEP()` o funciones equivalentes para inferir bits/caracteres por el tiempo de respuesta.
-        *   Basados en errores y funciones especiales:
-            *   Error-based: provocar funciones que devuelvan errores con contenido útil.
-            *   `LOAD_FILE()` / `INTO OUTFILE`: leer o escribir ficheros si el servidor y permisos lo permiten.
-            *   UDFs o stacked queries (cuando el motor lo permita) para ejecutar código a nivel OS.
-        *   Post-extracción:
-            *   Crackear hashes offline (hashcat/john) teniendo en cuenta algoritmo, salt y rounds.
-            *   Pivotar con credenciales obtenidas para escalar privilegios en la BD o servidor.
-        *   Mitigaciones:
-            *   Prepared statements / consultas parametrizadas.
-            *   Principio de menor privilegio en cuentas BD y restricción de funciones peligrosas.
-            *   Validación y saneamiento estricto de entradas, logging y detección de anomalías.
+- **¿Cómo podría un atacante usar esta vulnerabilidad para obtener contraseñas de usuarios?**
+  - Métodos:
+    - Directos:
+      - Usar `UNION SELECT` para leer columnas de la tabla `users` (p. ej. `username`, `password_hash`).
+      - Consultar `information_schema` (`tables`, `columns`) para localizar tablas/columnas sensibles.
+      - Volcar tablas completas si la consulta y permisos lo permiten.
+    - Ciegos:
+      - Boolean-based: realizar consultas `TRUE`/`FALSE` con funciones como `SUBSTRING()`/`ORD()` para extraer caracteres uno a uno.
+      - Time-based: usar `SLEEP()` o funciones equivalentes para inferir bits/caracteres por el tiempo de respuesta.
+    - Basados en errores y funciones especiales:
+      - Error-based: provocar funciones que devuelvan errores con contenido útil.
+      - `LOAD_FILE()` / `INTO OUTFILE`: leer o escribir ficheros si el servidor y permisos lo permiten.
+      - UDFs o stacked queries (cuando el motor lo permita) para ejecutar código a nivel OS.
+    - Post-extracción:
+      - Crackear hashes offline (hashcat/john) teniendo en cuenta algoritmo, salt y rounds.
+      - Pivotar con credenciales obtenidas para escalar privilegios en la BD o servidor.
+    - Mitigaciones:
+      - Prepared statements / consultas parametrizadas.
+      - Principio de menor privilegio en cuentas BD y restricción de funciones peligrosas.
+      - Validación y saneamiento estricto de entradas, logging y detección de anomalías.
 
-*   **¿Por qué es importante el tamaño de la respuesta al analizar resultados de fuzzing?**
-    *   La longitud del body es un "oracle" rápido: cambios significativos suelen correlacionarse con distinto número de filas devueltas, inclusión de errores o payload reflejado, lo que permite detectar anomalías a gran escala durante fuzzing automatizado. Técnicamente, usar tamaño junto a código HTTP, cabeceras y RTT mejora la fiabilidad. Limitaciones: contenido dinámico (tokens, timestamps), compresión, chunking, sesiones y paginación pueden producir falsos positivos/negativos; por eso se recomienda normalizar respuestas (eliminar partes volátiles), establecer umbrales estadísticos, y combinar análisis de tamaño con firmas en el body, hashing diferenciado y pruebas confirmatorias (manuales o payloads de extracción) antes de reportar una vulnerabilidad.
+- **¿Por qué es importante el tamaño de la respuesta al analizar resultados de fuzzing?**
+  - La longitud del body es un "oracle" rápido: cambios significativos suelen correlacionarse con distinto número de filas devueltas, inclusión de errores o payload reflejado, lo que permite detectar anomalías a gran escala durante fuzzing automatizado. Técnicamente, usar tamaño junto a código HTTP, cabeceras y RTT mejora la fiabilidad.
+  - Limitaciones: contenido dinámico (tokens, timestamps), compresión, chunking, sesiones y paginación pueden producir falsos positivos/negativos; por eso se recomienda normalizar respuestas (eliminar partes volátiles), establecer umbrales estadísticos, y combinar análisis de tamaño con firmas en el body, hashing diferenciado y pruebas confirmatorias (manuales o payloads de extracción) antes de reportar una vulnerabilidad.
   
 ## Módulo 3: Pentesting de Apache en Kali Linux 
+
 ### Objetivos del Módulo
-* Instalar y configurar Apache2 en Kali Linux 
-* Realizar un escaneo de seguridad automatizado con ZAP 
-* Generar reportes profesionales en formato HTML 
-* Analizar y priorizar vulnerabilidades encontradas 
+
+- Instalar y configurar Apache2 en Kali Linux 
+- Realizar un escaneo de seguridad automatizado con ZAP 
+- Generar reportes profesionales en formato HTML 
+- Analizar y priorizar vulnerabilidades encontradas 
 
 ### Paso 1: Instalación de Apache 2 
+
 Se ejecutaron los comandos mostrados para realizar la instalacion del servidor web Apache en la máquina "Analista".
+
 ``` bash
 # Actualizar repositorios 
 sudo apt update 
@@ -425,10 +449,13 @@ sudo apt install apache2 -y
 # Verificar instalación 
 apache2 -v 
 ```
+
 Se utiliza ```sudo apt update``` para actualizar la lista local de paquetes disponibles, asegurando que el sistema conozca las últimas versiones del software en los repositorios, luego ```sudo apt install apache2 -y``` descarga e instala el paquete del servidor web (junto con todas sus dependencias), donde -y omite la necesidad de confirmación manual, y finalmente, ```apache2 -v``` se ejecuta para verificar que la instalación haya sido exitosa al mostrar la versión del servidor recién instalado.
 
 ### Pasos 2 y 3: Iniciar y Verificar Apache y Acceder al Sitio Web de Prueba 
+
 Se ejecutaron los comandos mostrados para iniciar y verificar el inicio exitoso de Apache2 en la máquina "Analista".
+
 ``` bash
 # Iniciar el servicio Apache 
 sudo systemctl start apache2 
@@ -437,19 +464,21 @@ sudo systemctl status apache2
 # Habilitar inicio automático (opcional) 
 sudo systemctl enable apache2 
 ```
+
 Estos comandos operan a través de la utilidad systemctl con privilegios de superusuario (```sudo```) para interactuar con el sistema de inicialización y gestión de servicios systemd. Específicamente, ```sudo systemctl start apache2``` inicia la unidad de servicio apache2, activando el demonio del servidor web; a continuación, ```sudo systemctl status apache2``` es fundamental para la verificación operativa, ya que consulta a systemd para obtener el estado actual del servicio, confirmando si está en estado ```active (running)``` o si ha fallado; finalmente, ```sudo systemctl enable apache2``` configura el servicio para persistir después de los reinicios del sistema, creando los enlaces simbólicos necesarios que aseguran que apache2 se inicie automáticamente durante el proceso de arranque.
 
 Se anexa el html de inicio por defecto de Apache luego de iniciar su servicio en la máquina analista como evidencia del correcto inicio de apache [Página de inicio de Apache (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/Apache2_Debian_Default_Page_It_works.html), se debe mencionar que antes de acceder a la página de prueba se tuvo que desactivar el proxy para poder garantizar el correcto funcionamiento de Apache ya que en caso contrario ocurrirían los sigueinntes incovenientes:
- * **Conflicto de Escucha de Puertos**
-   * Apache está configurado por defecto para escuchar y servir la página de prueba en el puerto HTTP estándar (80).
-   * El navegador, al tener el proxy activado, envía toda la solicitud (incluyendo la de http://localhost/) al puerto del proxy (8080), no directamente al puerto 80 de Apache.
 
-* **Interrupción del Flujo Directo**
-  * La prueba requiere una conexión directa y sin intermediarios del navegador (Cliente) a Apache (Servidor Web) para confirmar que el servicio apache2 está en ejecución y sirviendo archivos correctamente en su puerto predeterminado (80).
-  * El proxy actúa como un hombre en el medio (Man-in-the-Middle). En lugar de hablar con Apache, el navegador solo habla con ZAP. ZAP no está diseñado para actuar como el servidor web de Apache, sino para interceptar y analizar el tráfico web, lo que interrumpe la prueba de funcionalidad básica.
+- **Conflicto de Escucha de Puertos**
+  - Apache está configurado por defecto para escuchar y servir la página de prueba en el puerto HTTP estándar (80).
+  - El navegador, al tener el proxy activado, envía toda la solicitud (incluyendo la de http://localhost/) al puerto del proxy (8080), no directamente al puerto 80 de Apache.
 
-* **Garantía de Verificación Pura**
-  * Desactivar el proxy elimina una variable externa de seguridad o análisis (ZAP) que podría estar modificando, ralentizando o bloqueando la respuesta de Apache, asegurando que cualquier error durante la prueba se deba exclusivamente a un problema en la instalación de Apache, y no a la configuración del proxy.
+- **Interrupción del Flujo Directo**
+  - La prueba requiere una conexión directa y sin intermediarios del navegador (Cliente) a Apache (Servidor Web) para confirmar que el servicio apache2 está en ejecución y sirviendo archivos correctamente en su puerto predeterminado (80).
+  - El proxy actúa como un hombre en el medio (Man-in-the-Middle). En lugar de hablar con Apache, el navegador solo habla con ZAP. ZAP no está diseñado para actuar como el servidor web de Apache, sino para interceptar y analizar el tráfico web, lo que interrumpe la prueba de funcionalidad básica.
+
+- **Garantía de Verificación Pura**
+  - Desactivar el proxy elimina una variable externa de seguridad o análisis (ZAP) que podría estar modificando, ralentizando o bloqueando la respuesta de Apache, asegurando que cualquier error durante la prueba se deba exclusivamente a un problema en la instalación de Apache, y no a la configuración del proxy.
 
 ### Pasos 4, 5, 6 y 7: Identificar la Dirección IP de Kali, Configurar Escaneo Automatizado en ZAP, Monitorear el Progreso del Escaneo y Analizar Alertas de Seguridad
 
@@ -462,7 +491,6 @@ Durante la ejecución se monitorearon en tiempo real las pestañas Spider, Activ
 Al concluir el escaneo se exportaron los resultados y se generó evidencia reproducible: para cada hallazgo se documentaron URL, método, request/response completos, payloads utilizados y capturas asociadas.
 
 ![ZAP scan captura](https://imgur.com/z6PWzSN)
-
 
 ### Pasos 8 y 9: Documentar Vulnerabilidades Encontradas y Generar Reporte HTML
 
@@ -477,8 +505,10 @@ Se encontraron las siguientes vulnerabilidades luego de haber finalizado el esca
 
 ### Pasos 10 y 11: Aplicar Hardening a Apache, Re-escanear y Comparar Resultados
 
-En vista de las vulnerabilidades identificadcas en el escaneo, es necesario reforzar la seguridad de Apache por lo que se ejectuó el comando `sudo nano /etc/apache2/conf-available/security.conf ` para abrir el archivo de configuración de seguridad de Apache con el editor Nano para incorporar lo siguiente con el fin de mitigar las vulnerabilidades. 
+En vista de las vulnerabilidades identificadcas en el escaneo, es necesario reforzar la seguridad de Apache por lo que se ejectuó el comando `sudo nano /etc/apache2/conf-available/security.conf` para abrir el archivo de configuración de seguridad de Apache con el editor Nano para incorporar lo siguiente con el fin de mitigar las vulnerabilidades.
+
 <details>
+
 <summary>Configuración de hardening completa</summary>
 
 ```bash
@@ -535,7 +565,8 @@ KeepAliveTimeout 5
 </details>
 
 
- * Luego de guardar los cambios en el archivo, se ejecutaron los comandos que se muestran a conitnuación para aplicar los cambios en la configuración de seguridad.
+- Luego de guardar los cambios en el archivo, se ejecutaron los comandos que se muestran a conitnuación para aplicar los cambios en la configuración de seguridad.
+
 ``` bash
 # Habilitar módulo de headers 
 sudo a2enmod headers 
@@ -557,64 +588,65 @@ Luego de este proceso, se realizó nuevamente el escaneo y ahora se presenta una
 | CSP: `style-src 'unsafe-inline'` | Sí | Sí | Header incluye `style-src 'self' 'unsafe-inline'`. Esto permite estilos inline que reducen la eficacia de CSP. |
 | Hidden File Found — `/server-status` expuesto | Sí | Sí | `GET /server-status` → HTTP/200 con información del servidor (cabeceras/body muestran versión Apache/estado). |
 
-Como se puede observar, no se lograron mitigar las vulnerabiliaddes luego de aplicar los cambios en el archivo de confugración de seguridad lo cual se puede deber a alguna de las siguientes razones: 
-* Configuración no recargada o con errores  
-  * Explicación: los archivos modificados no fueron aplicados porque Apache no se reinició/reconfiguró correctamente o hay errores de sintaxis.  
-  * Verificación: `sudo apache2ctl configtest` y `sudo systemctl status apache2`; revisar `/var/log/apache2/error.log`.
+Como se puede observar, no se lograron mitigar las vulnerabiliaddes luego de aplicar los cambios en el archivo de confugración de seguridad lo cual se puede deber a alguna de las siguientes razones:
 
-* Archivo editado distinto al que atiende el servidor  
-  * Explicación: se cambió un fichero que no es el realmente cargado (p. ej. conf-available vs sites-enabled), por lo que la configuración activa no cambió.  
-  * Verificación: `apache2ctl -S`, `ls -l /etc/apache2/sites-enabled/ /etc/apache2/conf-enabled/`.
+- Configuración no recargada o con errores  
+  - Explicación: los archivos modificados no fueron aplicados porque Apache no se reinició/reconfiguró correctamente o hay errores de sintaxis.  
+  - Verificación: `sudo apache2ctl configtest` y `sudo systemctl status apache2`; revisar `/var/log/apache2/error.log`.
 
-* Módulo requerido no habilitado (p. ej. mod_headers)  
-  * Explicación: directivas `Header` u otras no tienen efecto si el módulo correspondiente no está activo.  
-  * Verificación: `apache2ctl -M | grep headers` (debe aparecer `headers_module`).
+- Archivo editado distinto al que atiende el servidor  
+  - Explicación: se cambió un fichero que no es el realmente cargado (p. ej. conf-available vs sites-enabled), por lo que la configuración activa no cambió.  
+  - Verificación: `apache2ctl -S`, `ls -l /etc/apache2/sites-enabled/ /etc/apache2/conf-enabled/`.
 
-* Cabeceras sobreescritas por la aplicación o middleware  
-  * Explicación: código de la aplicación (ej. `header()` en PHP), un proxy inverso o CDN puede alterar o restablecer cabeceras tras Apache.  
-  * Verificación: solicitar directamente a Apache `curl -I --no-keepalive http://<IP>/` desde la máquina analista y comparar con peticiones pasando por el proxy.
+- Módulo requerido no habilitado (p. ej. mod_headers)  
+  - Explicación: directivas `Header` u otras no tienen efecto si el módulo correspondiente no está activo.  
+  - Verificación: `apache2ctl -M | grep headers` (debe aparecer `headers_module`).
 
-* Intermediario (proxy/WAF/ZAP) alterando respuestas  
-  * Explicación: un proxy o herramienta de análisis puede inyectar, quitar o mostrar cabeceras distintas a las reales del servidor.  
-  * Verificación: repetir `curl -I` desactivando el proxy; revisar configuración de ZAP/balancer/CDN.
+- Cabeceras sobreescritas por la aplicación o middleware  
+  - Explicación: código de la aplicación (ej. `header()` en PHP), un proxy inverso o CDN puede alterar o restablecer cabeceras tras Apache.  
+  - Verificación: solicitar directamente a Apache `curl -I --no-keepalive http://<IP>/` desde la máquina analista y comparar con peticiones pasando por el proxy.
 
-* Política aplicada aún contiene directivas inseguras o incompletas  
-  * Explicación: la CSP configurada todavía incluye `'unsafe-inline'` o no define directivas obligatorias (ej. `form-action`), por lo que el scanner sigue reportando alertas.  
-  * Verificación: `curl -I http://<IP>` y revisar exactamente el valor de `Content-Security-Policy`.
+- Intermediario (proxy/WAF/ZAP) alterando respuestas  
+  - Explicación: un proxy o herramienta de análisis puede inyectar, quitar o mostrar cabeceras distintas a las reales del servidor.  
+  - Verificación: repetir `curl -I` desactivando el proxy; revisar configuración de ZAP/balancer/CDN.
 
-* `mod_status` expone `/server-status` sin restricciones  
-  * Explicación: mod_status sigue habilitado y accesible públicamente, mostrando información del servidor incluso si se ocultaron otros datos.  
-  * Verificación: `curl -I http://<IP>/server-status` y revisar `/etc/apache2/mods-enabled/status.conf`.
+- Política aplicada aún contiene directivas inseguras o incompletas  
+  - Explicación: la CSP configurada todavía incluye `'unsafe-inline'` o no define directivas obligatorias (ej. `form-action`), por lo que el scanner sigue reportando alertas.  
+  - Verificación: `curl -I http://<IP>` y revisar exactamente el valor de `Content-Security-Policy`.
 
-* Caché o CDN mostrando versión antigua  
-  * Explicación: respuestas en cache (local o intermedias) pueden devolver cabeceras antiguas tras cambios de configuración.  
-  * Verificación: limpiar/invalidar cache, usar `curl -H 'Cache-Control: no-cache' -I http://<IP>/`.
+- `mod_status` expone `/server-status` sin restricciones  
+  - Explicación: mod_status sigue habilitado y accesible públicamente, mostrando información del servidor incluso si se ocultaron otros datos.  
+  - Verificación: `curl -I http://<IP>/server-status` y revisar `/etc/apache2/mods-enabled/status.conf`.
 
-* Permisos o alcance insuficiente de la cuenta que hace los cambios  
-  * Explicación: edición realizada por un usuario sin privilegios puede no haber sobrescrito la configuración real.  
-  * Verificación: comprobar owner/permiso de los ficheros modificados (`ls -l`) y que se reinició Apache con permisos root.
+- Caché o CDN mostrando versión antigua  
+  - Explicación: respuestas en cache (local o intermedias) pueden devolver cabeceras antiguas tras cambios de configuración.  
+  - Verificación: limpiar/invalidar cache, usar `curl -H 'Cache-Control: no-cache' -I http://<IP>/`.
 
-* Error en el orden de carga de ficheros (sobrescritura por conf posterior)  
-  * Explicación: una directiva aplicada en un fichero puede ser sobrescrita por otra cargada después (orden en `conf-enabled`/`sites-enabled`).  
-  * Verificación: inspeccionar el orden y contenido de `/etc/apache2/conf-enabled/` y `/etc/apache2/sites-enabled/`.
+- Permisos o alcance insuficiente de la cuenta que hace los cambios  
+  - Explicación: edición realizada por un usuario sin privilegios puede no haber sobrescrito la configuración real.  
+  - Verificación: comprobar owner/permiso de los ficheros modificados (`ls -l`) y que se reinició Apache con permisos root.
+
+- Error en el orden de carga de ficheros (sobrescritura por conf posterior)  
+  - Explicación: una directiva aplicada en un fichero puede ser sobrescrita por otra cargada después (orden en `conf-enabled`/`sites-enabled`).  
+  - Verificación: inspeccionar el orden y contenido de `/etc/apache2/conf-enabled/` y `/etc/apache2/sites-enabled/`.
 
 ### Preguntas de Reflexión - Módulo 3
 
-1.  **¿Por qué es importante deshabilitar el listado de directorios en Apache?**  
+1.**¿Por qué es importante deshabilitar el listado de directorios en Apache?**  
     El Directory Listing expone la estructura de ficheros y recursos (backups, scripts, uploads, etc.), facilitando la enumeración y localización de activos sensibles y aumentando la superficie de ataque. Ejemplo de configuración: `Options -Indexes`.
 
-2.  **¿Qué diferencia existe entre `ServerTokens Prod` y `ServerTokens Full`?**  
-    *   `ServerTokens Full`: la cabecera `Server` incluye detalles (versión de Apache, módulos, SO), lo que facilita el fingerprinting y la búsqueda de CVE.  
-    *   `ServerTokens Prod`: minimiza la cabecera a un identificador genérico (por ejemplo `Server: Apache`), reduciendo la fuga de información. Complementar con `ServerSignature Off` para ocultar información en páginas de error.
+2.**¿Qué diferencia existe entre `ServerTokens Prod` y `ServerTokens Full`?**  
+    - `ServerTokens Full`: la cabecera `Server` incluye detalles (versión de Apache, módulos, SO), lo que facilita el fingerprinting y la búsqueda de CVE.  
+    - `ServerTokens Prod`: minimiza la cabecera a un identificador genérico (por ejemplo `Server: Apache`), reduciendo la fuga de información. Complementar con `ServerSignature Off` para ocultar información en páginas de error.
 
-3.  **¿Por qué no se recomienda habilitar HSTS en un servidor HTTP puro (sin HTTPS)?**  
+3.**¿Por qué no se recomienda habilitar HSTS en un servidor HTTP puro (sin HTTPS)?**  
     HSTS solo tiene efecto sobre HTTPS; en HTTP es ignorado por navegadores. Activarlo sin HTTPS es inútil y puede ser peligroso (riesgo al usar preload). Habilitar HSTS solo cuando todo el sitio responde correctamente por HTTPS con certificados válidos y tras pruebas completas.
 
-4.  **¿Qué otros módulos de Apache podrían mejorar la seguridad del servidor?**  
-    *   `mod_ssl` — TLS/HTTPS.  
-    *   `mod_headers` — gestión de cabeceras de seguridad (CSP, HSTS, X-Frame-Options, X-Content-Type-Options).  
-    *   `mod_security` + OWASP CRS — WAF para detección/bloqueo de payloads.  
-    *   `mod_reqtimeout`, `mod_evasive`, `mod_qos` — mitigación de DoS/Slowloris y control de tasas.  
-    *   `mod_authz_core`, `mod_auth_basic` — control de acceso y autenticación.  
-    *   `mod_remoteip` — obtener IP real detrás de proxies para logging y reglas.  
+4.**¿Qué otros módulos de Apache podrían mejorar la seguridad del servidor?**  
+    - `mod_ssl` — TLS/HTTPS.  
+    - `mod_headers` — gestión de cabeceras de seguridad (CSP, HSTS, X-Frame-Options, X-Content-Type-Options).  
+    - `mod_security` + OWASP CRS — WAF para detección/bloqueo de payloads.  
+    - `mod_reqtimeout`, `mod_evasive`, `mod_qos` — mitigación de DoS/Slowloris y control de tasas.  
+    - `mod_authz_core`, `mod_auth_basic` — control de acceso y autenticación.  
+    - `mod_remoteip` — obtener IP real detrás de proxies para logging y reglas.  
     Recomendación general: deshabilitar módulos innecesarios, restringir `mod_status` y aplicar principio de mínimo privilegio.
