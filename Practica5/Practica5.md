@@ -65,17 +65,21 @@ Se inició OWASP ZAP como proxy de interceptación para capturar y analizar el t
 
 ![ZAP captura](https://imgur.com/7G5ZwRr)
 
-### Pasos 4: y 5 Navegar a DVWA, Capturar Tráfico y Analizar Encabezados de Respuesta
+### Pasos 4 y 5: Navegar a DVWA, Capturar Tráfico y Analizar Encabezados de Respuesta
 
 * Se entró a la página web **DVWA** luego de configurar a OWASP ZAP como proxy en la máquina "Analista", toda su expliación y razón en la práctica anterior, ya que esta será como objetivo de los ataques de la práctica.
 * **DVWA** es una aplicación web escrita en **PHP/MySQL**, diseñada especificamente para ser vulnerable lo que la hace una herramienta perfecta para pruebas y prácticas del área de la cibereguridad.
 * Se usa la URL ```http://192.168.100.20/dvwa/``` ya que al objetivo no tener una dominio público, como por ejemplo dvwa.com, se debe usar directamente la dirección IP del dispotivo objetivo ya que no se puede usar el servicio de DNS para hacer las traducciones necesarias para realizar la comunicación.
 * Se configuró en DVWA la opción de "Low" en el panel de DVWA Security para indicarle a la aplicación que no implemente **casi ninguna medida de seguridad en su código fuente**, esto se hace para adecuar el entorno para la realización de los ataques de la práctica.
-* Luego de esta configuración, se usó ZAP para monitorear la comunicación entre el cliente y el servidor, se abrió la petición ```GET http://192.168.100.20/dvwa/login.php``` y se abriron los headers corresposdinetes a la respuesta por parte del servidor, abajo de este párrafo se muestra el historial de las peticiones visto de ZAP y posterior a la imagen se tiene la respuesta provista por el servidor.
+* Luego de esta configuración, se usó ZAP para monitorear la comunicación entre el cliente y el servidor. Se abrió la petición `GET http://192.168.100.20/dvwa/login.php` y se inspeccionaron los encabezados de la respuesta. A continuación se muestran: 1) la captura del servicio en el explorador y 2) el historial de peticiones visto desde ZAP (scan). Posterior a las imágenes se presenta la respuesta provista por el servidor.
 
-![alt text](https://imgur.com/CU9fSVF)
+Captura del servicio en el explorador:
+![Servicio en el explorador](https://imgur.com/JBsrGUD)
 
-#### Response del servidor
+Historial de peticiones / Scan en ZAP:
+![Historial de ZAP / Scan](https://imgur.com/CU9fSVF)
+
+#### Respuesta del servidor
 
 HTTP/1.1 302 Found
 
@@ -101,7 +105,7 @@ Connection: Keep-Alive
 
 Content-Type: text/html
 
-### PASO 6: Documentar Encabezados Faltantes
+### Paso 6: Documentar Encabezados Faltantes
 
 Se procederá a documentar los Headers de seguirdad faltantes en la peticióny se clasificarán dependiendo de su importancia para la protección del objetivo.
 
@@ -113,7 +117,7 @@ Se procederá a documentar los Headers de seguirdad faltantes en la peticióny s
 | 4 | Strict-Transport-Security | Man-in-the-Middle | Las conexiones pueden ser interceptadas si no se fuerza HTTPS | 🔴 Alta |
 | 5 | X-XSS-Protection | Cross-Site Scripting | Desactiva protecciones del navegador contra XSS reflejado | 🟡 Media |
 
-### PASO 7: Proponer Configuraciones de Hardening
+### Paso 7: Proponer Configuraciones de Hardening
 
 Como se puede observar, las petición realizada es sumamente insegura ya que faltan varios headers de seguridad lo que hace que sea un objetvio sencillo para los atacantes al existir varias vulnerabilidades sin mitigar que pueden ser explotadas mediante el uso de sus correspondientes exploits.
 
@@ -171,20 +175,20 @@ Header unset X-Powered-By
 
 ### Preguntas de Reflexión - Módulo 1 
 
-* **¿Por qué es importante ocultar la versión del servidor y del lenguaje de programación?**
-  * Reduce la fuga de información: evita que un atacante identifique versiones con vulnerabilidades conocidas (CVE) y automatice exploits.
-  * Dificulta el reconocimiento automatizado y gana tiempo para la defensa.
-  * No sustituye el parcheo y buenas prácticas; es una medida de reducción de información (defensa en profundidad).
+*   **¿Por qué es importante ocultar la versión del servidor y del lenguaje de programación?**
+    *   Reduce la fuga de información: evita que un atacante identifique versiones con vulnerabilidades conocidas (CVE) y automatice exploits.
+    *   Dificulta el reconocimiento automatizado y gana tiempo para la defensa.
+    *   No sustituye el parcheo y buenas prácticas; es una medida de reducción de información (defensa en profundidad).
 
-* **¿Qué diferencia existe entre X-Frame-Options: DENY y X-Frame-Options: SAMEORIGIN?**
-  * DENY: impide que la página sea cargada en un iframe desde cualquier origen (incluso el mismo).
-  * SAMEORIGIN: permite que la página sea embebida sólo por páginas del mismo origen (mismo esquema, host y puerto).
-  * Para mayor control y flexibilidad usar Content-Security-Policy con la directiva frame-ancestors.
+*   **¿Qué diferencia existe entre `X-Frame-Options: DENY` y `X-Frame-Options: SAMEORIGIN`?**
+    *   `DENY`: impide que la página sea cargada en un `iframe` desde cualquier origen (incluso el mismo).
+    *   `SAMEORIGIN`: permite que la página sea embebida sólo por páginas del mismo origen (mismo esquema, host y puerto).
+    *   Para mayor control y flexibilidad usar `Content-Security-Policy` con la directiva `frame-ancestors`.
 
-* **¿Por qué 'unsafe-inline' en CSP puede ser problemático?**
-  * Permite ejecución de scripts/estilos inline, lo que debilita significativamente la protección contra XSS.
-  * Anula las ventajas de nonces/hashes y fomenta prácticas inseguras (event handlers inline, estilos inline).
-  * Recomendación: evitar 'unsafe-inline' y usar scripts externos con nonces o hashes, además de aplicar políticas restrictivas.
+*   **¿Por qué `'unsafe-inline'` en CSP puede ser problemático?**
+    *   Permite ejecución de scripts/estilos inline, lo que debilita significativamente la protección contra XSS.
+    *   Anula las ventajas de nonces/hashes y fomenta prácticas inseguras (event handlers inline, estilos inline).
+    *   Recomendación: evitar `'unsafe-inline'` y usar scripts externos con nonces o hashes, además de aplicar políticas restrictivas.
 
 ## Módulo 2: Fuzzing de Inyección SQL con OWASP ZAP 
 ### Objetivos del Módulo 
@@ -195,7 +199,7 @@ Header unset X-Powered-By
 Luego de realizar los pasos del 1 al 4, se ejecutó el fuzzer con el payload `1' OR 1=1 #` se analizó la respuesta y no se obtuvo el resultado esperado. Luego se detectó un error en el punto donde se insertaba el payload, por lo que se cambió la ubicación de la inyección y se colocó directamente en el parámetro `id`. A continuación se muestra el campo que solicita el user id en el fuzzer y la petición GET esperada para la verificación en ZAP.
 
 el user id que pide en fuzzer  
-![alt text](image-2.png)
+![alt text](https://imgur.com/gqFL7Cd)
 
 Petición GET esperada:
 ```http
@@ -220,13 +224,6 @@ Qué estuvo mal
 
 En la siguiente imagen se muestra correctamente colocado el payload en el parámetro `id`.
 
-
-![alt text](image-4.png)
-
-![alt text](image-5.png)
-
-![alt text](image-6.png)
-
 ### Iniciar el Fuzzer
 
 - Se hizo clic derecho sobre la petición seleccionada.  
@@ -237,7 +234,7 @@ En la siguiente imagen se muestra correctamente colocado el payload en el parám
 
 ---
 
-### PASO 5: Configurar el Payload de Fuzzing - Primer Intento (Incorrecto)
+### Paso 5: Configurar el Payload de Fuzzing - Primer Intento (Incorrecto)
 
 Después de ejecutar el fuzzer con el payload `1' OR 1=1 #` se analizó la respuesta y no se obtuvo el resultado esperado.
 
@@ -252,7 +249,7 @@ Se detectó el error en el punto donde se insertaba el payload y se cambió la u
 
 ---
 
-### PASO 5 (Corregido): Configurar el Payload de Fuzzing Correctamente
+### Paso 5 (Corregido): Configurar el Payload de Fuzzing Correctamente
 
 1. En la ventana del Fuzzer, en el panel "Request", localizar el parámetro `id=1` en la URL.  
 2. Seleccionar únicamente el valor `1` (no el parámetro completo `id=1`).  
@@ -265,7 +262,7 @@ El valor `1` debe aparecer ahora resaltado.
 
 ---
 
-### PASO 6: Añadir Payload de Inyección SQL
+### Paso 6: Añadir Payload de Inyección SQL
 
 1. En la ventana "Payloads", hacer clic en "Add...".  
 2. Seleccionar el tipo: "Strings".  
@@ -292,7 +289,7 @@ El `#` comenta la comilla final, evitando errores de sintaxis. La condición `OR
 
 ---
 
-### PASO 7: Ejecutar el Fuzzer
+### Paso 7: Ejecutar el Fuzzer
 
 - Verificar que el payload esté configurado correctamente.  
 - Hacer clic en "Start Fuzzer".
@@ -308,7 +305,7 @@ En lugar de la imagen, enlace al reporte en HTML publicado: [Reporte del fuzzer 
 
 ---
 
-### PASO 8: Analizar la Respuesta del Fuzzing
+### Paso 8: Analizar la Respuesta del Fuzzing
 
 - En la ventana de resultados del Fuzzer, hacer clic en la petición ejecutada.  
 - En el panel inferior, seleccionar la pestaña "Response".  
@@ -327,7 +324,7 @@ Resultado Obtenido (Inyección Exitosa):
 
 ---
 
-### PASO 9: Comparar Respuestas
+### Paso 9: Comparar Respuestas
 
 | Aspecto | Petición Legítima (id=1) | Petición Inyectada (id=1' OR 1=1 #) |
 | :--- | :---: | :---: |
@@ -381,35 +378,35 @@ Análisis de Impacto:
 
 ### Preguntas de Reflexión - Módulo 2 
 
-* **¿Por qué el payload `1' OR 1=1 #` devuelve todos los usuarios en lugar de generar un error?**
-  * El payload cierra la literal de cadena (`'`), inyecta una condición lógica siempre verdadera (`OR 1=1`) y usa `#` para comentar el resto de la consulta. El parser SQL recibe una sentencia sintácticamente válida cuya cláusula WHERE se reduce a una expresión que siempre evalúa true, por lo que el optimizador/ejecutor devuelve todas las filas que cumplen la consulta. Técnicamente: si la consulta original es WHERE user_id = '1' entonces tras la inyección la expresión queda WHERE user_id = '1' OR 1=1 -- y el plan de ejecución ya no filtra por user_id. Nota: el comportamiento exacto depende del contexto (si el parámetro era numérico sin comillas, codificación/escaping por la librería cliente, o si el framework usa ORM/prepared statements) — en esos casos el payload podría producir error o ser neutralizado.
+*   **¿Por qué el payload `1' OR 1=1 #` devuelve todos los usuarios en lugar de generar un error?**
+    *   El payload cierra la literal de cadena (`'`), inyecta una condición lógica siempre verdadera (`OR 1=1`) y usa `#` para comentar el resto de la consulta. El parser SQL recibe una sentencia sintácticamente válida cuya cláusula `WHERE` se reduce a una expresión que siempre evalúa `true`, por lo que el optimizador/ejecutor devuelve todas las filas que cumplen la consulta. Técnicamente: si la consulta original es `WHERE user_id = '1'` entonces tras la inyección la expresión queda `WHERE user_id = '1' OR 1=1 --` y el plan de ejecución ya no filtra por `user_id`. Nota: el comportamiento exacto depende del contexto (si el parámetro era numérico sin comillas, codificación/escaping por la librería cliente, o si el framework usa ORM/prepared statements) — en esos casos el payload podría producir error o ser neutralizado.
 
-* **¿Qué diferencia existe entre el comentario `#` y `--` en inyecciones SQL?**
-  * `#` y `--` son comentarios de una sola línea en muchos SGBD; sin embargo `--` es la forma definida por el estándar SQL y suele requerir un espacio o control después (`-- `) en implementaciones como MySQL/Oracle; MySQL admite `#` sin condiciones adicionales. Además existen comentarios de bloque `/* ... */`. Importante: el soporte varía por motor (p.ej. SQL Server acepta `--`, Oracle no reconoce `#` como comentario), y algunos conectores o filtros pueden normalizar/strippear comentarios, por lo que el payload debe adaptarse al dialecto objetivo para que el comentario efectivamente elimine el resto de la consulta y evite errores de sintaxis.
+*   **¿Qué diferencia existe entre el comentario `#` y `--` en inyecciones SQL?**
+    *   `#` y `--` son comentarios de una sola línea en muchos SGBD; sin embargo `--` es la forma definida por el estándar SQL y suele requerir un espacio o control después (`-- `) en implementaciones como MySQL/Oracle; MySQL admite `#` sin condiciones adicionales. Además existen comentarios de bloque `/* ... */`. Importante: el soporte varía por motor (p.ej. SQL Server acepta `--`, Oracle no reconoce `#` como comentario), y algunos conectores o filtros pueden normalizar/strippear comentarios, por lo que el payload debe adaptarse al dialecto objetivo para que el comentario efectivamente elimine el resto de la consulta y evite errores de sintaxis.
 
-* **¿Cómo podría un atacante usar esta vulnerabilidad para obtener contraseñas de usuarios?**
-  * Métodos:
-     * Directos:
-       * Usar `UNION SELECT` para leer columnas de la tabla `users` (p. ej. username, password_hash).
-       * Consultar `information_schema` (tables, columns) para localizar tablas/columnas sensibles.
-       * Volcar tablas completas si la consulta y permisos lo permiten.
-     * Ciegos:
-       * Boolean-based: realizar consultas TRUE/FALSE con funciones como `SUBSTRING()`/`ORD() para extraer caracteres uno a uno.
-       * Time-based: usar `SLEEP()` o funciones equivalentes para inferir bits/caracteres por el tiempo de respuesta.
-     * Basados en errores y funciones especiales:
-       * Error-based: provocar funciones que devuelvan errores con contenido útil.
-       * `LOAD_FILE()` / `INTO OUTFILE`: leer o escribir ficheros si el servidor y permisos lo permiten.
-       * UDFs o stacked queries (cuando el motor lo permita) para ejecutar código a nivel OS.
-     * Post-extracción:
-       * Crackear hashes offline (hashcat/john) teniendo en cuenta algoritmo, salt y rounds.
-       * Pivotar con credenciales obtenidas para escalar privilegios en la BD o servidor.
-     * Mitigaciones:
-       * Prepared statements / consultas parametrizadas.
-       * Principio de menor privilegio en cuentas BD y restricción de funciones peligrosas.
-       * Validación y saneamiento estricto de entradas, logging y detección de anomalías.
+*   **¿Cómo podría un atacante usar esta vulnerabilidad para obtener contraseñas de usuarios?**
+    *   Métodos:
+        *   Directos:
+            *   Usar `UNION SELECT` para leer columnas de la tabla `users` (p. ej. `username`, `password_hash`).
+            *   Consultar `information_schema` (`tables`, `columns`) para localizar tablas/columnas sensibles.
+            *   Volcar tablas completas si la consulta y permisos lo permiten.
+        *   Ciegos:
+            *   Boolean-based: realizar consultas `TRUE`/`FALSE` con funciones como `SUBSTRING()`/`ORD()` para extraer caracteres uno a uno.
+            *   Time-based: usar `SLEEP()` o funciones equivalentes para inferir bits/caracteres por el tiempo de respuesta.
+        *   Basados en errores y funciones especiales:
+            *   Error-based: provocar funciones que devuelvan errores con contenido útil.
+            *   `LOAD_FILE()` / `INTO OUTFILE`: leer o escribir ficheros si el servidor y permisos lo permiten.
+            *   UDFs o stacked queries (cuando el motor lo permita) para ejecutar código a nivel OS.
+        *   Post-extracción:
+            *   Crackear hashes offline (hashcat/john) teniendo en cuenta algoritmo, salt y rounds.
+            *   Pivotar con credenciales obtenidas para escalar privilegios en la BD o servidor.
+        *   Mitigaciones:
+            *   Prepared statements / consultas parametrizadas.
+            *   Principio de menor privilegio en cuentas BD y restricción de funciones peligrosas.
+            *   Validación y saneamiento estricto de entradas, logging y detección de anomalías.
 
-* **¿Por qué es importante el tamaño de la respuesta al analizar resultados de fuzzing?**
-  * La longitud del body es un oracle rápido: cambios significativos suelen correlacionarse con distinto número de filas devueltas, inclusión de errores o payload reflejado, lo que permite detectar anomalías a gran escala durante fuzzing automatizado. Técnicamente, usar tamaño junto a código HTTP, cabeceras y RTT mejora la fiabilidad. Limitaciones: contenido dinámico (tokens, timestamps), compresión, chunking, sesiones y paginación pueden producir falsos positivos/negativos; por eso se recomienda normalizar respuestas (eliminar partes volátiles), establecer umbrales estadísticos, y combinar análisis de tamaño con firmas en el body, hashing diferenciado y pruebas confirmatorias (manuales o payloads de extracción) antes de reportar una vulnerabilidad.
+*   **¿Por qué es importante el tamaño de la respuesta al analizar resultados de fuzzing?**
+    *   La longitud del body es un "oracle" rápido: cambios significativos suelen correlacionarse con distinto número de filas devueltas, inclusión de errores o payload reflejado, lo que permite detectar anomalías a gran escala durante fuzzing automatizado. Técnicamente, usar tamaño junto a código HTTP, cabeceras y RTT mejora la fiabilidad. Limitaciones: contenido dinámico (tokens, timestamps), compresión, chunking, sesiones y paginación pueden producir falsos positivos/negativos; por eso se recomienda normalizar respuestas (eliminar partes volátiles), establecer umbrales estadísticos, y combinar análisis de tamaño con firmas en el body, hashing diferenciado y pruebas confirmatorias (manuales o payloads de extracción) antes de reportar una vulnerabilidad.
   
 ## Módulo 3: Pentesting de Apache en Kali Linux 
 ### Objetivos del Módulo
@@ -454,7 +451,7 @@ Se anexa el html de inicio por defecto de Apache luego de iniciar su servicio en
 * **Garantía de Verificación Pura**
   * Desactivar el proxy elimina una variable externa de seguridad o análisis (ZAP) que podría estar modificando, ralentizando o bloqueando la respuesta de Apache, asegurando que cualquier error durante la prueba se deba exclusivamente a un problema en la instalación de Apache, y no a la configuración del proxy.
 
-### Pasos 4,5,6 y 7: Identificar la Dirección IP de Kali , Configurar Escaneo Automatizado en ZAP, Monitorear el Progreso del Escaneo y Analizar Alertas de Seguridad 
+### Pasos 4, 5, 6 y 7: Identificar la Dirección IP de Kali, Configurar Escaneo Automatizado en ZAP, Monitorear el Progreso del Escaneo y Analizar Alertas de Seguridad
 
 Se identificó la IP de la máquina "Analista" ya es crucial obtener la dirección IP correcta de la máquina objetivo antes de iniciar cualquier escaneo, se obvtuvo mediaante el uso del comando`ip addr show` permite identificar la interfaz y la IP asignada a la máquina, es recomendable hacer pruebas de conexión luego de obtener la IP para garantizar la correcta conexión de la máquina hacia la red.
 
@@ -464,7 +461,10 @@ Durante la ejecución se monitorearon en tiempo real las pestañas Spider, Activ
 
 Al concluir el escaneo se exportaron los resultados y se generó evidencia reproducible: para cada hallazgo se documentaron URL, método, request/response completos, payloads utilizados y capturas asociadas.
 
-### Pasos 8 y 9: Documentar Vulnerabilidades Encontradas  y Generar Reporte HTML 
+![ZAP scan captura](https://imgur.com/z6PWzSN)
+
+
+### Pasos 8 y 9: Documentar Vulnerabilidades Encontradas y Generar Reporte HTML
 
 Se encontraron las siguientes vulnerabilidades luego de haber finalizado el escaneo realizado a la IP `192.168.100.27` correespondiente a la máquina "Analista", de igual forma se realizó la exportación del informe en formato HTML que las contiene y su correspondiente se puede encontrar en el siguiente enlace [Reporte de Alertas de Seguridad del 1er escaneo (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/Andres_Guilarte_Jesus_Gil.html).
 
@@ -598,25 +598,23 @@ Como se puede observar, no se lograron mitigar las vulnerabiliaddes luego de apl
   * Explicación: una directiva aplicada en un fichero puede ser sobrescrita por otra cargada después (orden en `conf-enabled`/`sites-enabled`).  
   * Verificación: inspeccionar el orden y contenido de `/etc/apache2/conf-enabled/` y `/etc/apache2/sites-enabled/`.
 
-### Preguntas de Reflexión - Módulo 3 
+### Preguntas de Reflexión - Módulo 3
 
-* ¿Por qué es importante deshabilitar el listado de directorios en Apache?
- * El Directory Listing expone la estructura de ficheros y recursos (backups, scripts, uploads, etc.), facilitando la enumeración y localización de activos sensibles. Esto aumenta la superficie de ataque y puede revelar ficheros con permisos débiles o información útil para explotaciones automatizadas.
- * Ejemplo de configuración: `Options -Indexes`.
+1.  **¿Por qué es importante deshabilitar el listado de directorios en Apache?**  
+    El Directory Listing expone la estructura de ficheros y recursos (backups, scripts, uploads, etc.), facilitando la enumeración y localización de activos sensibles y aumentando la superficie de ataque. Ejemplo de configuración: `Options -Indexes`.
 
-* **¿Qué diferencia existe entre ServerTokens Prod y ServerTokens Full?**
- * `ServerTokens Full`: La cabecera `Server` incluye información detallada (versión de Apache, módulos, SO), lo que facilita el fingerprinting y la búsqueda de CVE específicas.
- * `ServerTokens Prod`: La cabecera se minimiza a un identificador genérico (p. ej. `Server: Apache`), reduciendo la fuga de información.
- * Complemento: Usar `ServerSignature Off` para evitar mostrar información en páginas de error.
+2.  **¿Qué diferencia existe entre `ServerTokens Prod` y `ServerTokens Full`?**  
+    *   `ServerTokens Full`: la cabecera `Server` incluye detalles (versión de Apache, módulos, SO), lo que facilita el fingerprinting y la búsqueda de CVE.  
+    *   `ServerTokens Prod`: minimiza la cabecera a un identificador genérico (por ejemplo `Server: Apache`), reduciendo la fuga de información. Complementar con `ServerSignature Off` para ocultar información en páginas de error.
 
-* **¿Por qué no se recomienda habilitar HSTS en un servidor HTTP puro (sin HTTPS)?**
- * `Strict-Transport-Security` solo tiene efecto cuando se entrega sobre HTTPS; en HTTP es ignorado por navegadores. Habilitar HSTS sin HTTPS es inútil y peligroso si posteriormente se habilita mal (riesgo de bloqueo por preload). HSTS debe activarse solo cuando todo el sitio responde correctamente por HTTPS con certificados válidos y la configuración ha sido probada.
+3.  **¿Por qué no se recomienda habilitar HSTS en un servidor HTTP puro (sin HTTPS)?**  
+    HSTS solo tiene efecto sobre HTTPS; en HTTP es ignorado por navegadores. Activarlo sin HTTPS es inútil y puede ser peligroso (riesgo al usar preload). Habilitar HSTS solo cuando todo el sitio responde correctamente por HTTPS con certificados válidos y tras pruebas completas.
 
-* **¿Qué otros módulos de Apache podrían mejorar la seguridad del servidor?**
-  * mod_ssl — habilita TLS/HTTPS (fundamental para seguridad en tránsito).
-  * mod_headers — aplicar cabeceras de seguridad (CSP, HSTS, X-Frame-Options,X-Content-Type-Options).
-  * mod_security (WAF) + OWASP CRS — detección y bloqueo de payloads maliciosos.
-  * mod_reqtimeout, mod_evasive, mod_qos — mitigación de DoS/Slowloris y control de tasa.
-  * mod_authz_core, mod_auth_basic — control de acceso y autenticación.
-  * mod_remoteip — corregir IPs reales detrás de proxies para logging y reglas.
-  * Además: deshabilitar módulos innecesarios, restringir mod_status y aplicar least privilege en cuentas/configuración.
+4.  **¿Qué otros módulos de Apache podrían mejorar la seguridad del servidor?**  
+    *   `mod_ssl` — TLS/HTTPS.  
+    *   `mod_headers` — gestión de cabeceras de seguridad (CSP, HSTS, X-Frame-Options, X-Content-Type-Options).  
+    *   `mod_security` + OWASP CRS — WAF para detección/bloqueo de payloads.  
+    *   `mod_reqtimeout`, `mod_evasive`, `mod_qos` — mitigación de DoS/Slowloris y control de tasas.  
+    *   `mod_authz_core`, `mod_auth_basic` — control de acceso y autenticación.  
+    *   `mod_remoteip` — obtener IP real detrás de proxies para logging y reglas.  
+    Recomendación general: deshabilitar módulos innecesarios, restringir `mod_status` y aplicar principio de mínimo privilegio.
