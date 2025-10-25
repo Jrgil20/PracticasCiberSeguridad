@@ -125,8 +125,10 @@ Se procederá a documentar los Headers de seguirdad faltantes en la peticióny s
 Como se puede observar, las petición realizada es sumamente insegura ya que faltan varios headers de seguridad lo que hace que sea un objetvio sencillo para los atacantes al existir varias vulnerabilidades sin mitigar que pueden ser explotadas mediante el uso de sus correspondientes exploits.
 
 En vista de la situación previamente explicada, es necesario modificar el archivo de configuración del servidor web utilizado, Apache 2, para agregarle la configuración de los Headers faltantes para mitigar las vulnerabilidades asociadas con cada Header faltante. Para ello se realizó lo siguiente:
- - Se abrió el archivo de configuración, ubicado en ```/etc/apache2/conf-available/security.conf```, mediante el editor Nano para agregar las configuraciones respectivas.
- - Se agregó lo siguiente al archivo de configuración: 
+
+- Se abrió el archivo de configuración, ubicado en ```/etc/apache2/conf-available/security.conf```, mediante el editor Nano para agregar las configuraciones respectivas.
+- Se agregó lo siguiente al archivo de configuración: 
+
 <details>
 <summary>Configuración de encabezados de seguridad (resumida)</summary>
 
@@ -174,7 +176,7 @@ Header unset X-Powered-By
 
 </details>
 
- - Luego de guardar los cambios en el archivo, se usaron los comandos ```sudo a2enconf security``` y ```sudo apache2ctl configtest ``` para habilitar la nueva configuración y para verificar que su sintaxis esté correcta, luego de que el segundo comando mostrará el mnesaje de "OK" se precedió a ejecutar el comando ```sudo systemctl restart apache2``` para reiniciar el servicio de Apache 2 pare que se efectuen los cambios.
+- Luego de guardar los cambios en el archivo, se usaron los comandos ```sudo a2enconf security``` y ```sudo apache2ctl configtest``` para habilitar la nueva configuración y para verificar que su sintaxis esté correcta, luego de que el segundo comando mostrará el mnesaje de "OK" se precedió a ejecutar el comando ```sudo systemctl restart apache2``` para reiniciar el servicio de Apache 2 pare que se efectuen los cambios.
 
 ### Preguntas de Reflexión - Módulo 1 
 
@@ -563,7 +565,6 @@ KeepAliveTimeout 5
 ```
 
 </details>
-
 
 - Luego de guardar los cambios en el archivo, se ejecutaron los comandos que se muestran a conitnuación para aplicar los cambios en la configuración de seguridad.
 
