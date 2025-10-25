@@ -419,7 +419,7 @@ Análisis de Impacto:
 * Analizar y priorizar vulnerabilidades encontradas 
 
 ### Paso 1: Instalación de Apache 2 
-Se ejecutaron los comandos mostrados para realizar la instalacion del servidor web Apache en la máquina "Analista", se utiliza ```sudo apt update``` para actualizar la lista local de paquetes disponibles, asegurando que el sistema conozca las últimas versiones del software en los repositorios, luego ```sudo apt install apache2 -y``` descarga e instala el paquete del servidor web (junto con todas sus dependencias), donde -y omite la necesidad de confirmación manual, y finalmente, ```apache2 -v``` se ejecuta para verificar que la instalación haya sido exitosa al mostrar la versión del servidor recién instalado.
+Se ejecutaron los comandos mostrados para realizar la instalacion del servidor web Apache en la máquina "Analista".
 ``` bash
 # Actualizar repositorios 
 sudo apt update 
@@ -428,8 +428,10 @@ sudo apt install apache2 -y
 # Verificar instalación 
 apache2 -v 
 ```
-### Paso 2: Iniciar y Verificar Apache 
-Se ejecutaron los comandos mostrados para iniciar y verificar el inicio exitoso de Apache2 en la máquina "Analista", estos comandos operan a través de la utilidad systemctl con privilegios de superusuario (```sudo```) para interactuar con el sistema de inicialización y gestión de servicios systemd. Específicamente, ```sudo systemctl start apache2``` inicia la unidad de servicio apache2, activando el demonio del servidor web; a continuación, ```sudo systemctl status apache2``` es fundamental para la verificación operativa, ya que consulta a systemd para obtener el estado actual del servicio, confirmando si está en estado ```active (running)``` o si ha fallado; finalmente, ```sudo systemctl enable apache2``` configura el servicio para persistir después de los reinicios del sistema, creando los enlaces simbólicos necesarios que aseguran que apache2 se inicie automáticamente durante el proceso de arranque.
+Se utiliza ```sudo apt update``` para actualizar la lista local de paquetes disponibles, asegurando que el sistema conozca las últimas versiones del software en los repositorios, luego ```sudo apt install apache2 -y``` descarga e instala el paquete del servidor web (junto con todas sus dependencias), donde -y omite la necesidad de confirmación manual, y finalmente, ```apache2 -v``` se ejecuta para verificar que la instalación haya sido exitosa al mostrar la versión del servidor recién instalado.
+
+### Pasos 2 y 3: Iniciar y Verificar Apache y Acceder al Sitio Web de Prueba 
+Se ejecutaron los comandos mostrados para iniciar y verificar el inicio exitoso de Apache2 en la máquina "Analista".
 ``` bash
 # Iniciar el servicio Apache 
 sudo systemctl start apache2 
@@ -438,5 +440,110 @@ sudo systemctl status apache2
 # Habilitar inicio automático (opcional) 
 sudo systemctl enable apache2 
 ```
+Estos comandos operan a través de la utilidad systemctl con privilegios de superusuario (```sudo```) para interactuar con el sistema de inicialización y gestión de servicios systemd. Específicamente, ```sudo systemctl start apache2``` inicia la unidad de servicio apache2, activando el demonio del servidor web; a continuación, ```sudo systemctl status apache2``` es fundamental para la verificación operativa, ya que consulta a systemd para obtener el estado actual del servicio, confirmando si está en estado ```active (running)``` o si ha fallado; finalmente, ```sudo systemctl enable apache2``` configura el servicio para persistir después de los reinicios del sistema, creando los enlaces simbólicos necesarios que aseguran que apache2 se inicie automáticamente durante el proceso de arranque.
 
-Se anexa el html de inicio por defecto de Apache luego de iniciar su servicio en la máquina analista como evidencia del correcto inicio de apache [Página de inicio de Apache (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/Apache2_Debian_Default_Page_It_works.html)
+Se anexa el html de inicio por defecto de Apache luego de iniciar su servicio en la máquina analista como evidencia del correcto inicio de apache [Página de inicio de Apache (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/Apache2_Debian_Default_Page_It_works.html), se debe mencionar que antes de acceder a la página de prueba se tuvo que desactivar el proxy para poder garantizar el correcto funcionamiento de Apache ya que en caso contrario ocurrirían los sigueinntes incovenientes:
+ * **Conflicto de Escucha de Puertos**
+   * Apache está configurado por defecto para escuchar y servir la página de prueba en el puerto HTTP estándar (80).
+   * El navegador, al tener el proxy activado, envía toda la solicitud (incluyendo la de http://localhost/) al puerto del proxy (8080), no directamente al puerto 80 de Apache.
+
+* **Interrupción del Flujo Directo**
+  * La prueba requiere una conexión directa y sin intermediarios del navegador (Cliente) a Apache (Servidor Web) para confirmar que el servicio apache2 está en ejecución y sirviendo archivos correctamente en su puerto predeterminado (80).
+  * El proxy actúa como un hombre en el medio (Man-in-the-Middle). En lugar de hablar con Apache, el navegador solo habla con ZAP. ZAP no está diseñado para actuar como el servidor web de Apache, sino para interceptar y analizar el tráfico web, lo que interrumpe la prueba de funcionalidad básica.
+
+* **Garantía de Verificación Pura**
+  * Desactivar el proxy elimina una variable externa de seguridad o análisis (ZAP) que podría estar modificando, ralentizando o bloqueando la respuesta de Apache, asegurando que cualquier error durante la prueba se deba exclusivamente a un problema en la instalación de Apache, y no a la configuración del proxy.
+
+### Pasos 4,5,6 y 7: Identificar la Dirección IP de Kali , Configurar Escaneo Automatizado en ZAP, Monitorear el Progreso del Escaneo y Analizar Alertas de Seguridad 
+
+Se identificó la IP de la máquina "Analista" ya es crucial obtener la dirección IP correcta de la máquina objetivo antes de iniciar cualquier escaneo, se obvtuvo mediaante el uso del comando`ip addr show` permite identificar la interfaz y la IP asignada a la máquina, es recomendable hacer pruebas de conexión luego de obtener la IP para garantizar la correcta conexión de la máquina hacia la red.
+
+Se configuró el escaneo automatizado en OWASP ZAP indicando la URL objetivo en formato completo (`http://192.168.100.27`) y restringiendo el scope al host objetivo para limitar la superficie de prueba. Se seleccionó la araña tradicional para el descubrimiento de rutas estáticas y se habilitó la ajax spider cuando fue necesario para contenido dinámico.
+
+Durante la ejecución se monitorearon en tiempo real las pestañas Spider, Active Scan y Alerts de ZAP, y se registraron métricas operativas relevantes (códigos HTTP, RTT, tasa de peticiones y errores 4xx/5xx).
+
+Al concluir el escaneo se exportaron los resultados y se generó evidencia reproducible: para cada hallazgo se documentaron URL, método, request/response completos, payloads utilizados y capturas asociadas.
+
+### Pasos 8 y 9: Documentar Vulnerabilidades Encontradas  y Generar Reporte HTML 
+
+Se encontraron las siguientes vulnerabilidades luego de haber finalizado el escaneo realizado a la IP `192.168.100.27` correespondiente a la máquina "Analista", de igual forma se realizó la exportación del informe en formato HTML que las contiene y su correspondiente se puede encontrar en el siguiente enlace [Reporte de Alertas de Seguridad del 1er escaneo (HTML publicado)](https://jrgil20.github.io/PracticasCiberSeguridad/Practica5/Andres_Guilarte_Jesus_Gil.html).
+
+| Alerta | Riesgo | Confianza | Ocurrencias | URL / Recurso | Evidencia |
+|---|---:|---:|---:|---|---|
+| CSP: Failure to define directive with no fallback (form-action) | Medium | High | 1 | http://localhost | Header: `Content-Security-Policy: ...` falta `form-action` (directiva sin fallback). |
+| CSP: `script-src 'unsafe-inline'` | Medium | High | 1 | http://localhost | Header: `Content-Security-Policy: ... script-src 'self' 'unsafe-inline'; ...` |
+| CSP: `style-src 'unsafe-inline'` | Medium | High | 1 | http://localhost | Header: `Content-Security-Policy: ... style-src 'self' 'unsafe-inline'; ...` |
+| Hidden File Found — server-status expuesto | Medium | High | 1 | http://localhost/server-status | GET `/server-status` → HTTP/200 con información de servidor (ej. versión Apache en body/headers). |
+
+### Pasos 10 y 11: Aplicar Hardening a Apache, Re-escanear y Comparar Resultados
+
+En vista de las vulnerabilidades identificadcas en el escaneo, es necesario reforzar la seguridad de Apache por lo que se ejectuó el comando `sudo nano /etc/apache2/conf-available/security.conf ` para abrir el archivo de configuración de seguridad de Apache con el editor Nano para incorporar lo siguiente con el fin de mitigar las vulnerabilidades. 
+<details>
+<summary>Configuración de hardening completa</summary>
+
+```bash
+# ============================================ 
+# HARDENING DE APACHE2 
+# ============================================ 
+# Ocultar versión del servidor 
+ServerTokens Prod 
+ServerSignature Off 
+# Deshabilitar listado de directorios 
+<Directory /var/www/html> 
+Options -Indexes 
+AllowOverride None 
+Require all granted 
+</Directory> 
+# Encabezados de seguridad 
+<IfModule mod_headers.c> 
+Header always set X-Frame-Options "SAMEORIGIN" 
+Header always set X-Content-Type-Options "nosniff" 
+Header always set X-XSS-Protection "1; mode=block" 
+Header always set Referrer-Policy "strict-origin-when-cross-origin" 
+Header always set Permissions-Policy "geolocation=(), microphone=(), 
+camera=()" 
+# Content Security Policy 
+Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; 
+style-src 'self' 'unsafe-inline';" 
+# HSTS (solo si usa HTTPS) 
+# Header always set Strict-Transport-Security 
+"max-age=31536000; 
+includeSubDomains" 
+</IfModule> 
+# Deshabilitar métodos HTTP innecesarios 
+<Directory /> 
+<LimitExcept GET POST HEAD> 
+deny from all 
+</LimitExcept> 
+</Directory> 
+# Protección contra ataques de fuerza bruta 
+<IfModule mod_evasive20.c> 
+DOSHashTableSize 3097 
+DOSPageCount 2 
+DOSSiteCount 50 
+DOSPageInterval 1 
+DOSSiteInterval 1 
+DOSBlockingPeriod 10 
+</IfModule> 
+# Timeout de conexión 
+Timeout 60 
+KeepAlive On 
+MaxKeepAliveRequests 100 
+KeepAliveTimeout 5
+```
+
+</details>
+
+
+ * Luego de guardar los cambios en el archivo, se ejecutaron los comandos que se muestran a conitnuación para aplicar los cambios en la configuración de seguridad.
+``` bash
+# Habilitar módulo de headers 
+sudo a2enmod headers 
+# Habilitar configuración de seguridad 
+sudo a2enconf security 
+# Verificar sintaxis 
+sudo apache2ctl configtest 
+# Reiniciar Apache 
+sudo systemctl restart apache2 
+```
+Estos comandos representan pasos cruciales para mejorar la seguridad y funcionalidad de un servidor Apache. Se utiliza `sudo a2enmod headers` para habilitar el módulo **mod_headers**, que es esencial para manipular las cabeceras HTTP de las respuestas, permitiendo añadir o modificar elementos de seguridad críticos (como Content-Security-Policy o X-Frame-Options). Luego, `sudo a2enconf security` activa un archivo de configuración predefinido (generalmente llamado security.conf) que contiene **directivas de seguridad recomendadas** para mitigar vulnerabilidades comunes. Después de realizar estos cambios, `sudo apache2ctl configtest` verifica la sintaxis de todos los archivos de configuración de Apache para garantizar que no haya errores que impidan el inicio del servicio. Finalmente, `sudo systemctl restart apache2` aplica estos nuevos módulos y configuraciones, deteniendo y volviendo a iniciar el servicio Apache para que los cambios surtan efecto.
