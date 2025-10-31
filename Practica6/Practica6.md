@@ -58,44 +58,46 @@ which burpsuite    # Burp Suite (Opcional)
 
 ### 📝 Procedimiento Paso a Paso
 
-PASO 1: Preparar el Entorno PentesterLab
-1. Iniciar la máquina virtual PentesterLab
-    - En VirtualBox, seleccione la VM PentesterLab
-    - Haga clic en Iniciar
-2. Obtener la dirección IP:
-    - Una vez iniciada, la VM mostrará su IP en la pantalla de login
-    - 📝 Anote la IP: **192.168.56.103**
-    - Ejemplo: 192.168.56.103
-3. Verificar conectividad desde Kali:
+### PASO 1: Preparar el Entorno PentesterLab
+Se inició la máquina virtual "pentester" quien tomará el rol de objetivo dentro de la ejecución de este módulo.
+
+Se ejecutó el comando `ifconfig` para obtener informnación sobre las interfaces de red de la máquina "pentester" para poder obtener la direccion IP de la misma, dando como resultado la obtención la dirección `192.168.100.6`.
+
+Se verificó la conexión entre las máquinas "analista" y "pentester" mediante el envío de paquetes ICMP mediante el uso del comando ping como se puede ver abajo de este párrafo.
 ```bash
 ping -c 4 192.168.56.103
 ```
 
 📊 Resultado esperado (Simulación desde Kali Linux):
 ```
-PING 192.168.56.103 (192.168.56.103) 56(84) bytes of data.
-64 bytes from 192.168.56.103: icmp_seq=1 ttl=64 time=2.45 ms
-64 bytes from 192.168.56.103: icmp_seq=2 ttl=64 time=1.89 ms
-64 bytes from 192.168.56.103: icmp_seq=3 ttl=64 time=2.12 ms
-64 bytes from 192.168.56.103: icmp_seq=4 ttl=64 time=1.95 ms
+PING 192.168.100.6 (192.168.100.6) 56(84) bytes of data.
+64 bytes from 192.168.100.6: icmp_seq=1 ttl=64 time=0.928 ms
+64 bytes from 192.168.100.6: icmp_seq=2 ttl=64 time=0.412 ms
+64 bytes from 192.168.100.6: icmp_seq=3 ttl=64 time=1.03 ms
+64 bytes from 192.168.100.6: icmp_seq=4 ttl=64 time=1.16 ms
 
---- 192.168.56.103 statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3004ms
-rtt min/avg/max/stddev = 1.89/2.10/2.45/0.22 ms
+--- 192.168.100.6 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3022ms
+rtt min/avg/max/mdev = 0.412/0.882/1.156/0.283 ms
 ```
 
 ✔️ Punto de Verificación: Se recibieron 4 respuestas exitosas, confirmando conectividad con la VM PentesterLab.
 
 
-PASO 2: Acceder a la Aplicación Vulnerable
-1. En Firefox (Kali Linux), navegue a:
+### PASO 2: Acceder a la Aplicación Vulnerable
+Se navegó en la máquina "analista" a la URL que se mjuestra debajo de este párrafo para poder acceder a la apliación vulnerable, se tuvo que apagar el proxy, en este caso OWASP ZAP, para poder tener un correcto funcionamiento en vista de que se busca atacar directamente al objetivo sin pasar antes por una máquina o aplicación.
 ```
-http://[IP_PENTESTERLAB]
+http://192.168.100.6
 ```
+Cabe destacar que al apagar el proxy el objetivo va a saver exactamente cual es la dirección de la máquina atacante al no "esconder" su dirección IP mediante el uso del proxy.
+
 2. En la página principal, localice la sección:
 SQL Injections → Example 1
 3. Haga clic en "Example 1"
 📸 Captura esperada: Página con una galería de imágenes y parámetros en la URL:
+
+!(image.png)
+
 ```
 http://192.168.56.103/sqli/example1.php?id=1
 ```
