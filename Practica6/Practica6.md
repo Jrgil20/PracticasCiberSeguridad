@@ -96,43 +96,19 @@ SQL Injections → Example 1
 3. Haga clic en "Example 1"
 📸 Captura esperada: Página con una galería de imágenes y parámetros en la URL:
 
-!(image.png)
+![Galería de Imág](image.png)
 
 ```
-http://192.168.56.103/sqli/example1.php?id=1
+http://192.168.100.6/sqli/example1.php?name=root
 ```
 
-**📊 Simulación de la Práctica - Salida Generada con IA:**
-
-La página cargará mostrando una galería de imágenes con la siguiente estructura:
-
-```
-╔════════════════════════════════════════════════════════════════╗
-║           SQL Injection - Example 1 (PentesterLab)             ║
-╚════════════════════════════════════════════════════════════════╝
-
-[Galería de Imágenes]
-┌──────────────────────────────────────────────────────────────┐
-│ Imagen ID: 1                                                 │
-│ ┌────────────────────────────────────────────────────────┐   │
-│ │  [Fotografía de montaña/naturaleza]                    │   │
-│ └────────────────────────────────────────────────────────┘   │
-│ Título: Mountain View                                        │
-│ Descripción: Beautiful landscape photo                       │
-│ URL Actual: http://192.168.56.103/sqli/example1.php?id=1    │
-└──────────────────────────────────────────────────────────────┘
-
-[Navegación]
-< Previous | [1] [2] [3] [4] [5] | Next >
-```
-
-✔️ Punto de Verificación: Se cargó correctamente la aplicación vulnerable con el parámetro `id=1` visible en la URL.
+✔️ Punto de Verificación: Se cargó correctamente la aplicación vulnerable con el parámetro `name=root` visible en la URL.
 
 PASO 3: Verificar Vulnerabilidad Manualmente
 Antes de usar SQLMap, confirme manualmente la vulnerabilidad:
 1. Modifique la URL agregando una comilla simple:
 ```
-http://[IP]/sqli/example1.php?id=1'
+http://[IP]/sqli/example1.php?name=root'
 ```
 📊 Resultado esperado: Error de SQL visible:
 ```
@@ -169,7 +145,7 @@ Error en: ...id = 1'
 - Esta es una inyección SQL clásica de tipo error-based
 ```
 
-✔️ Punto de Verificación: Se confirmó manualmente que el parámetro `id` es vulnerable a inyección SQL.
+✔️ Punto de Verificación: Se confirmó manualmente que el parámetro `name` es vulnerable a inyección SQL.
 
 PASO 4: Comando 1 - Fingerprinting de la Base de Datos
 Objetivo: Identificar el tipo y versión del sistema de gestión de base de datos.
@@ -874,6 +850,14 @@ PASO 5: Acceder a la Consola de Administración
 http://localhost:4848
 
 📸 Captura esperada: Consola de administración de Payara Server
+
+![Consola de administración de Payara](image-2.png)
+
+rr:1 http://kali.download/kali kali-rolling/main amd64 enum4linux all 0.9.1-0kali2
+  403  Bitdefender Endpoint Security Tools blocked this page [IP: 104.17.253.239 80]
+E: Failed to fetch http://kali.download/kali/pool/main/e/enum4linux/enum4linux_0.9.1-0kali2_all.deb  403  Bitdefender Endpoint Security Tools blocked this page [IP: 104.17.253.239 80]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+
 
 🔒 Configuración de seguridad inicial:
 Por defecto, Payara NO requiere autenticación en localhost. Esto es una vulnerabilidad de configuración.
