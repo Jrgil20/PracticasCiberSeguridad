@@ -109,7 +109,7 @@ http://192.168.100.6/sqli/example1.php?name=root
 
 ✔️ Punto de Verificación: Se cargó correctamente la aplicación vulnerable con el parámetro `name=root` visible en la URL.
 
-PASO 3: Verificar Vulnerabilidad Manualmente
+### PASO 3: Verificar Vulnerabilidad Manualmente
 Antes de usar SQLMap, confirme manualmente la vulnerabilidad:
 
 1. Modifique la URL agregando una comilla simple:
@@ -157,7 +157,7 @@ Error en: ...id = 1'
 
 ✔️ Punto de Verificación: Se confirmó manualmente que el parámetro `name` es vulnerable a inyección SQL.
 
-PASO 4: Comando 1 - Fingerprinting de la Base de Datos
+### PASO 4: Comando 1 - Fingerprinting de la Base de Datos
 Objetivo: Identificar el tipo y versión del sistema de gestión de base de datos.
 
 ```bash
@@ -235,7 +235,7 @@ Injection technique(s) confirmed: time-based blind, error-based (heuristic)
 
 Nota: esta salida es una simulación creada para ilustrar el resultado esperado y está claramente etiquetada como "Generada con IA". Cuando ejecutes sqlmap en tu entorno, los tiempos, los mensajes y la precisión de la huella (fingerprint) pueden variar según la versión del DBMS y la configuración del servidor.
 
-PASO 5: Comando 2 - Identificar Usuario Actual
+### PASO 5: Comando 2 - Identificar Usuario Actual
 Objetivo: Determinar con qué usuario la aplicación se conecta a la base de datos.
 
 ```bash
@@ -281,7 +281,7 @@ current user: 'root@localhost'
 
 🔍 Nota de seguridad: Esta simulación muestra un escenario donde la aplicación se conecta a la base de datos como `root@localhost`, lo cual es un hallazgo crítico en entornos reales. Siempre use cuentas con privilegios mínimos para aplicaciones web en producción.
 
-PASO 6: Comando 3 - Enumerar Bases de Datos
+### PASO 6: Comando 3 - Enumerar Bases de Datos
 Objetivo: Listar todas las bases de datos accesibles.
 
 ```bash
@@ -344,7 +344,7 @@ available databases [3]:
 
 🔍 Nota aclaratoria: la salida anterior está marcada explícitamente como "Generada con IA". En una ejecución real, los tiempos, los prefijos de log y el orden pueden variar. Use esta simulación para comprender la información que sqlmap entrega al enumerar bases de datos.
 
-PASO 7: Comando 4 - Enumerar Tablas
+### PASO 7: Comando 4 - Enumerar Tablas
 Objetivo: Listar todas las tablas de la base de datos exercises.
 
 ```bash
@@ -406,7 +406,7 @@ Database: exercises
 
 🔍 Nota: esta salida está claramente marcada como "Generada con IA". En una ejecución real, los tiempos, mensajes y formato pueden variar según la versión de sqlmap y la configuración del servidor. Use esta simulación como ejemplo de lo que debe documentarse cuando se enumeren tablas con sqlmap.
 
-PASO 8: Comando 5 - Enumerar Columnas
+### PASO 8: Comando 5 - Enumerar Columnas
 Objetivo: Listar todas las columnas de la tabla users.
 
 ```bash
@@ -487,7 +487,7 @@ Table: users
 
 🔍 Nota: esta salida está explícitamente marcada como "Generada con IA". En una ejecución real, los tiempos, mensajes y formato pueden variar según la versión de sqlmap. Use esta simulación para comprender cómo sqlmap enumera y presenta la estructura de columnas de una tabla específica.
 
-PASO 9: Extraer Datos de la Tabla (Reto Avanzado)
+### PASO 9: Extraer Datos de la Tabla (Reto Avanzado)
 ⚠️ ADVERTENCIA ÉTICA: Esta acción extrae datos sensibles. Solo debe realizarse en entornos de prueba autorizados.
 
 ```bash
@@ -678,9 +678,9 @@ SecRule ARGS "@detectSQLi" \
 3. ¿Por qué es peligroso que las contraseñas estén hasheadas solo con MD5?
 4. ¿Cómo podría un atacante usar la función LOAD_FILE() de MySQL?
 
-🚀 MÓDULO 5: Análisis de Seguridad de Payara Server
+## MÓDULO 5: Análisis de Seguridad de Payara Server
 
-Objetivos del Módulo
+### Objetivos del Módulo
 
 - Instalar y configurar Payara Server 6.2025.4.
 - Desplegar aplicaciones web en Payara.
@@ -688,9 +688,9 @@ Objetivos del Módulo
 - Identificar vulnerabilidades específicas de servidores de aplicaciones Java.
 - Documentar diferencias en superficies de ataque y recomendaciones de mitigación.
 
-📝 Procedimiento Paso a Paso
+### 📝 Procedimiento Paso a Paso
 
-PASO 1: Verificar Requisitos Previos
+### PASO 1: Verificar Requisitos Previos
 
 - Verificar Java:
 
@@ -779,7 +779,7 @@ javac 11.0.20
 
 ⚠️ **Nota:** Esta simulación está claramente marcada como "Generada con IA". En una instalación real en Kali Linux, los nombres de paquetes, versiones y salidas pueden variar según la versión de Kali y las actualizaciones disponibles.
 
-PASO 2: Descargar e Instalar Payara Server
+### PASO 2: Descargar e Instalar Payara Server
 
 - Crear directorio de trabajo
 
@@ -832,7 +832,7 @@ export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> ~/.profile
 ```
 
-PASO 3: Configurar Variables de Entorno
+### PASO 3: Configurar Variables de Entorno
 
 ```bash
 # Abrir .bashrc en el editor
@@ -912,7 +912,7 @@ asadmin list-domains
 netstat -tuln | grep -E '4848|8080|8181'
 ```
 
-PASO 5: Acceder a la Consola de Administración
+### PASO 5: Acceder a la Consola de Administración
 
 1. Abra Firefox en Kali Linux
 2. Navegue a:
@@ -956,7 +956,7 @@ asadmin restart-domain domain1
 
 ✔️ Punto de Verificación: Al acceder nuevamente a http://localhost:4848, debe solicitar usuario y contraseña.
 
-PASO 6: Desplegar una Aplicación de Prueba
+### PASO 6: Desplegar una Aplicación de Prueba
 Crearemos una aplicación web simple para realizar el análisis de seguridad.
 Crear estructura de la aplicación:
 
@@ -1041,9 +1041,9 @@ process.jsp
 WEB-INF/
 WEB-INF/web.xml
 
-PASO 7: Desplegar la Aplicación en Payara
+### PASO 7: Desplegar la Aplicación en Payara
 
-Método 1: Usando la consola de administración
+#### Método 1: Usando la consola de administración
 
 1. Acceda a http://localhost:4848
 2. En el menú lateral: Applications
@@ -1052,7 +1052,7 @@ Método 1: Usando la consola de administración
 5. Context Root: /webapp-test
 6. Haga clic en OK
 
-Método 2: Usando línea de comandos
+#### Método 2: Usando línea de comandos
 
 ## Desplegar usando asadmin
 asadmin deploy --contextroot /webapp-test ~/webapp-test/webapp-test.war
@@ -1070,7 +1070,7 @@ http://localhost:8080/webapp-test/
 
 ✔️ Punto de Verificación: La página debe mostrarse correctamente con el formulario.
 
-PASO 8: Escanear Payara Server con OWASP ZAP
+### PASO 8: Escanear Payara Server con OWASP ZAP
 
 Configuración del escaneo:
 
@@ -1156,11 +1156,7 @@ Recomendaciones generales (priorizadas):
 
 Nota final: esta salida está claramente etiquetada como "Generada con IA" y sirve para ilustrar qué tipo de resultados y recomendaciones podrían aparecer tras un escaneo automatizado con OWASP ZAP. Los detalles reales (nombres de URLs, conteos, severidad) variarán según la configuración del entorno y la versión de ZAP.
 
-
-PASO 9: Análisis de Vulnerabilidades en Payara
-Una vez completado el escaneo, analice las alertas encontradas:
-
-PASO 9: Análisis de Vulnerabilidades en Payara
+### PASO 9: Análisis de Vulnerabilidades en Payara
 Una vez completado el escaneo, analice las alertas encontradas:
 
 📊 Resumen (tabla) de vulnerabilidades detectadas (evidencia simulada)
