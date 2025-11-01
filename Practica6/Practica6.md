@@ -1067,6 +1067,7 @@ Command list-applications executed successfully.
 Acceder a la aplicación:
 
 http://localhost:8080/webapp-test/
+
 ✔️ Punto de Verificación: La página debe mostrarse correctamente con el formulario.
 
 PASO 8: Escanear Payara Server con OWASP ZAP
@@ -1230,6 +1231,7 @@ Mitigación:
 Similar a Apache, Payara no configura encabezados de seguridad por defecto.
 
 Mitigación en web.xml:
+
 ```xml
 <filter>
     <filter-name>SecurityHeadersFilter</filter-name>
@@ -1465,7 +1467,7 @@ chmod +x payara-hardening.sh
 
 - Total de sistemas analizados: 4  
 
-    - DVWA en Metasploitable 2  
+- DVWA en Metasploitable 2  
 - Apache en Kali Linux  
 - PentesterLab (MySQL)  
 - Payara Server en Kali Linux
