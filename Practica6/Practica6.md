@@ -101,7 +101,7 @@ SQL Injections → Example 1
 3. Haga clic en "Example 1"
 📸 Captura esperada: Página con una galería de imágenes y parámetros en la URL:
 
-![Galería de Imág](image.png)
+![Galería de Imág](https://imgur.com/jTSNqJR)
 
 ``` bash
 http://192.168.100.6/sqli/example1.php?name=root
@@ -920,7 +920,7 @@ http://localhost:4848
 
 📸 Captura esperada: Consola de administración de Payara Server
 
-![Consola de administración de Payara](image-2.png)
+![Consola de administración de Payara](https://imgur.com/essF7Ou)
 
 rr:1 http://kali.download/kali kali-rolling/main amd64 enum4linux all 0.9.1-0kali2
   403  Bitdefender Endpoint Security Tools blocked this page [IP: 104.17.253.239 80]
