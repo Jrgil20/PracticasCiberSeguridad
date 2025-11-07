@@ -1,4 +1,4 @@
-# Práctica Nro. 6: Cross-Site Scripting (XSS) y Cross-Site Request Forgery (CSRF)
+# Práctica Nro. 7: Password Attacks
 
 ## Datos de Identificación
 
@@ -7,7 +7,6 @@
 | Gil, Jesús | 30175126 | 7 | 07-11-2025|
 | Guilarte, Andrés | 30246084 | 7 | 07-11-2025 |
 
-**Nombre de la Práctica:** Password Attacks
 
 **Grupo:** 4
 _______________________________________
@@ -161,6 +160,85 @@ Uso responsable (ejemplo): utilice `hydra` o `john` para pruebas autorizadas con
 # hydra -l usuario_prueba -P ~/Desktop/cupp/pedro.txt ssh://192.168.x.y
 ```
 
+### Actividad 2 — Configuración SSH en el Equipo A (servicio y acceso)
+
+Nota: esta actividad se debe ejecutar en el EQUIPO A y con privilegios (usar `sudo` cuando sea necesario). Todas las acciones descritas a continuación deben realizarse únicamente en entornos de laboratorio autorizados.
+
+1) Iniciar el servicio SSH (como root o con sudo):
+
+```bash
+sudo service ssh start
+```
+
+2) Crear un usuario para acceso SSH (usuario: `pedroperez`):
+
+```bash
+sudo adduser pedroperez
+# Cuando se solicite la contraseña, use: Punky_
+# Deje todos los campos de identificación en blanco (pulse Enter)
+```
+
+3) Probar conexión remota desde el Equipo B (comprobación básica)
+
+- Desde Equipo B intente conectarse por contraseña (solo para verificar que el servicio y el usuario existen):
+
+```bash
+ssh pedroperez@X.X.X.X
+# Reemplace X.X.X.X por la IP del Equipo A. Ingrese la contraseña Punky_ cuando sea solicitada.
+```
+
+4) Generar la llave RSA en Equipo B (cliente) — comando sencillo:
+
+```bash
+ssh-keygen -t rsa
+# Recomendado: usar -b 4096 para mayor entropía, y especifique la ruta si no desea sobrescribir claves existentes.
+```
+
+5) Copiar la clave pública al Equipo A para permitir acceso por clave (método recomendado):
+
+- Usando `ssh-copy-id` desde Equipo B (esto creará/actualizará `/home/pedroperez/.ssh/authorized_keys` en el Equipo A):
+
+```bash
+ssh-copy-id -i ~/.ssh/id_rsa.pub pedroperez@X.X.X.X
+```
+
+- Si por alguna razón debe copiar manualmente la clave, en el Equipo A cree el directorio `.ssh` en el home del usuario y ajuste permisos:
+
+```bash
+sudo mkdir -p /home/pedroperez/.ssh
+sudo chmod 700 /home/pedroperez/.ssh
+sudo chown pedroperez:pedroperez /home/pedroperez/.ssh
+# Luego en Equipo B
+# scp ~/.ssh/id_rsa.pub pedroperez@X.X.X.X:/tmp/id_rsa.pub
+# En Equipo A (como root):
+sudo mv /tmp/id_rsa.pub /home/pedroperez/.ssh/authorized_keys
+sudo chown pedroperez:pedroperez /home/pedroperez/.ssh/authorized_keys
+sudo chmod 600 /home/pedroperez/.ssh/authorized_keys
+```
+
+Nota sobre la instrucción provista originalmente: el uso de `/etc/ssh/ssh_host_rsa_key.pub` no es la práctica recomendada para autenticación de usuarios; ese archivo es la clave pública del host y no debe usarse como `authorized_keys` de un usuario. Aquí asumimos que el objetivo es permitir que `pedroperez` inicie sesión por clave pública, por lo que usamos `~/.ssh/id_rsa.pub` del cliente.
+
+6) Verificar acceso por clave (desde el Equipo B):
+
+```bash
+ssh pedroperez@X.X.X.X
+# Si la copia de la clave fue correcta, la conexión no pedirá contraseña.
+```
+
+7) Comprobaciones y permisos (en Equipo A):
+
+- Asegúrese de que el servicio SSH está activo y escuchando:
+
+```bash
+sudo systemctl status ssh
+# o
+sudo ss -tlnp | grep sshd
+```
+
+- Verifique permisos de los ficheros `.ssh` y `authorized_keys` en `/home/pedroperez` (deben ser 700 para el directorio y 600 para el fichero, y pertenecer al usuario).
+
+---
+
 ### Resultados obtenidos
 
 El archivo generado por CUPP con las posibles contraseñas basadas en la información personal se encuentra en el siguiente enlace:
@@ -180,6 +258,8 @@ Cómo descargar el archivo desde el Gist (opcional):
 ```
 
 Nota: el enlace apunta al Gist público del repositorio del alumno; al descargar y usar el diccionario recuerde aplicar las medidas de seguridad y sólo emplearlo en entornos de laboratorio autorizados.
+
+
 
 ---
 
