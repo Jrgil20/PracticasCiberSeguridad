@@ -1,9 +1,16 @@
 |![](Aspose.Words.f2c0a3f5-2c2a-4913-87d4-d4f658549340.001.png)|**Ciberseguridad 202615**|
 | :- | :- |
 
-**Práctica Nro. 8**
+# Práctica Nro. 8: Escaneo de Vulnerabilidades y Explotación Avanzada (Enfoque de Ataque Integral en Equipo)
 
-**Escaneo de Vulnerabilidades y Explotación Avanzada (Enfoque de Ataque Integral en Equipo)**
+## Datos de Identificación
+
+| Apellido, Nombre | Cédula de Identidad | Nro. de Práctica | Fecha |
+| :--- | :---: | :---: | :--- |
+| Gil, Jesús | 30175126 | 8 | 14-11-2025|
+| Guilarte, Andrés | 30246084 | 8 | 014-11-2025 |
+
+**Grupo:** 4
 
 **📋 INFORMACIÓN GENERAL**
 
@@ -75,17 +82,24 @@ Luego de ello, se procedió a crear el directorio de trabajo con el comando mkdi
 -----
 **🎯 TÉCNICA 1: Explotación de Binarios SUID**
 
-El primer método a probar la explotación de los archivos con bit SUID ya que estos se ejecutan con los permisos del propietario (generalmente root), no del usuario que los ejecuta.
+El primer método a probar es la explotación de los archivos con bit SUID ya que estos se ejecutan con los permisos del propietario (generalmente root), no del usuario que los ejecuta.
 
 El SUID(**Set User ID**) es un permiso especial en los sistemas operativos tipo UNIX que como se estableció arriba permite que cualquier usuario ejecuta los archivos con los permisos que posee el usuario propietario del archivo, esto es una vulnerabilidad que puede ser explotada con el motivo de conseguir acceso no autorizado al sistema.
 
 **Paso 1: Identificar Binarios SUID**
 
-`find / -perm -4000 -type f 2>/dev/null > suid\_binaries.txt`
+Se ejecutó el comando `find / -perm -4000 -type f 2>/dev/null > suid\_binaries.txt` para encontrar los archivos con el bit SUID activado, la parte del comando `find / -perm -4000 -type f` se encarga de realizar la búsqueda de los archivos con el bit SUID, a continuacion se presenta una explicación de las estrucutra del comando:
+   * **find /:** Inicia la búsqueda desde la raíz del sistema (/) y recorre todo el árbol de directorios.
+   * **-perm -4000 :** Filtra archivos que tienen el bit SUID activado. En notación octal `4000` es la máscara SUID; el prefijo `-` en `find` significa “coincide si todos los bits indicados están presentes” (es decir, al menos la SUID).
+   * **-type f:** Limita la búsqueda a archivos regulares (no directorios, enlaces, dispositivos, etc.).
 
-`cat suid\_binaries.txt`
+La partes restantes del comando, `2>/dev/null > suid\_binaries.txt`, se encaragan de dos cosas:
+   * La parte que esta antes del operador mayor que ( > ), `2>/dev/null`, se encarga de redigir la salidad de error a null y por ello no se obsevan mensajes de error al ejecutar el comando en la terminal.
+   * La parte restante, `> suid\_binaries.txt`, se encaraga de redirigir la salida exitosa del comando hacia el archivo de texto suid_binarie.txt. Esto se logra ya que el operador mayor que ( > ) es el usado para indicar una redirección de salida en sistemas operativos Unix.
 
-`find / -perm -4000 -type f 2>/dev/null | grep -E "nmap|vim|find|bash|more|less|nano|cp"`
+Luego de la ejecución anterior se ejecutó `cat suid\_binaries.txt` para visualizar en la terminal el contenido del archivo creado anteriormente para verificar si se encontraron resultados exitosos del comando find.
+
+Se ejecutó el comando `find / -perm -4000 -type f 2>/dev/null | grep -E "nmap|vim|find|bash|more|less|nano|cp"` para poder encontrar los archivos con el bit SUID que cumplan con la expresión regular establecida, esto se logra ya que el operador pip ( | ) permite conectar dos comandos y en este caso se está conectando la primera parte del comando anterior con el comando `grep -E "nmap|vim|find|bash|more|less|nano|cp"` ya que este tiene como fin filtrar la lista formada por la primera parte para que solo se visualicen los comandos que cumplan con la expresión regular `"nmap|vim|find|bash|more|less|nano|cp", la bandera `-E` en el comando grep habilitar el uso de las expresiones regulares extendidas como criterio de filtro y el pipe dentro de la expresion permite concatenar las condiciones haciendo que funcione como un operador lógico OR.
 
 **Paso 2: Explotar nmap (si está con SUID)**
 
