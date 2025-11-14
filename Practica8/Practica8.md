@@ -75,7 +75,9 @@ Luego de ello, se procedió a crear el directorio de trabajo con el comando mkdi
 -----
 **🎯 TÉCNICA 1: Explotación de Binarios SUID**
 
-Los archivos con bit SUID se ejecutan con los permisos del propietario (generalmente root), no del usuario que los ejecuta.
+El primer método a probar la explotación de los archivos con bit SUID ya que estos se ejecutan con los permisos del propietario (generalmente root), no del usuario que los ejecuta.
+
+El SUID(**Set User ID**) es un permiso especial en los sistemas operativos tipo UNIX que como se estableció arriba permite que cualquier usuario ejecuta los archivos con los permisos que posee el usuario propietario del archivo, esto es una vulnerabilidad que puede ser explotada con el motivo de conseguir acceso no autorizado al sistema.
 
 **Paso 1: Identificar Binarios SUID**
 
