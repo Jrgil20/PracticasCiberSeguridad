@@ -32,11 +32,13 @@ Este repositorio puede servir como referencia para estudiantes, docentes o cualq
 | Práctica | Título | Nota |
 |----------|----------------------------------------------------------|------|
 | 2        | Information Gathering II                              | 20   |
-| 3        | [Análisis de Vulnerabilidades](Practica3/)                             | 19   |
-| 4        | [Web Application Analysis](Practica4/)                                 | 20   |
-| 5        | [Web Application Analysis II & SQL Injection](Practica5/)              | 20   |
-| 6        | [Exploration & Vulnerabilities](Practica6/)                            | 17   |
-| 7        | [Criptografía & Password Attack](Practica7/)                           | 20   |
+| 3        | [Análisis de Vulnerabilidades](Practica3\practica3.md)                             | 19   |
+| 4        | [Web Application Analysis](Practica4\practica4.md)                                 | 20   |
+| 5        | [Web Application Analysis II & SQL Injection](Practica5\Practica5.md)              | 20   |
+| 6        | [Exploration & Vulnerabilities](Practica6\Practica6.md)                            | 17   |
+| 7        | [Criptografía & Password Attack](Practica7\Practica7.md)                           | 20   |
+| 8        | [Escaneo de Vulnerabilidades y Explotación Avanzada](Practica8\Practica8.md)       | Pendiente |
+
 
 ## Estructura del repositorio
 
