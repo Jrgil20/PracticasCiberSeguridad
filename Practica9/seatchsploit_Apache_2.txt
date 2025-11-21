@@ -1,0 +1,46 @@
+ searchsploit apache 2.2
+------------------------------------------- ---------------------------------
+ Exploit Title                             |  Path
+------------------------------------------- ---------------------------------
+Apache + PHP < 5.3.12 / < 5.4.2 - cgi-bin  | php/remote/29290.c
+Apache + PHP < 5.3.12 / < 5.4.2 - Remote C | php/remote/29316.py
+Apache 1.3.35/2.0.58/2.2.2 - Arbitrary HTT | linux/remote/28424.txt
+Apache 1.4/2.2.x - APR 'apr_fnmatch()' Den | linux/dos/35738.php
+Apache 2.2 (Windows) - Local Denial of Ser | windows/dos/15319.pl
+Apache 2.2 - Scoreboard Invalid Free On Sh | linux/dos/41768.txt
+Apache 2.2.14 mod_isapi - Dangling Pointer | windows/remote/11650.c
+Apache 2.2.15 mod_proxy - Reverse Proxy Se | linux/remote/36663.txt
+Apache 2.2.2 - CGI Script Source Code Info | multiple/remote/28365.txt
+Apache 2.2.4 - 413 Error HTTP Request Meth | unix/remote/30835.sh
+Apache 2.2.6 (Windows) - Share PHP File Ex | windows/remote/30901.txt
+Apache 2.2.6 mod_negotiation - HTML Inject | linux/remote/31052.java
+Apache < 1.3.37/2.0.59/2.2.3 mod_rewrite - | multiple/remote/2237.sh
+Apache < 2.0.64 / < 2.2.21 mod_setenvif -  | linux/dos/41769.txt
+Apache < 2.2.34 / < 2.4.27 - OPTIONS Memor | linux/webapps/42745.py
+Apache cocoon 2.14/2.2 - Directory Travers | multiple/remote/23282.txt
+Apache CXF < 2.5.10/2.6.7/2.7.4 - Denial o | multiple/dos/26710.txt
+Apache James Server 2.2 - SMTP Denial of S | multiple/dos/27915.pl
+Apache mod_gzip (with debug_mode) 1.2.26.1 | linux/remote/126.c
+Apache mod_jk 1.2.19/1.2.20 - Remote Buffe | multiple/remote/4093.pl
+Apache mod_ssl < 2.8.7 OpenSSL - 'OpenFuck | unix/remote/21671.c
+Apache mod_ssl < 2.8.7 OpenSSL - 'OpenFuck | unix/remote/47080.c
+Apache mod_ssl < 2.8.7 OpenSSL - 'OpenFuck | unix/remote/764.c
+Apache OpenMeetings 1.9.x < 3.1.0 - '.ZIP' | linux/webapps/39642.txt
+Apache Struts 2 < 2.3.1 - Multiple Vulnera | multiple/webapps/18329.txt
+Apache Struts 2.0.0 < 2.2.1.1 - XWork 's:s | multiple/remote/35735.txt
+Apache Struts 2.0.1 < 2.3.33 / 2.5 < 2.5.1 | multiple/remote/44556.py
+Apache Struts 2.2.1.1 - Remote Command Exe | multiple/remote/18984.rb
+Apache Struts 2.2.3 - Multiple Open Redire | multiple/remote/38666.txt
+Apache Struts < 1.3.10 / < 2.3.16.2 - Clas | multiple/remote/41690.rb
+Apache Struts < 2.2.0 - Remote Command Exe | multiple/remote/17691.rb
+Apache Struts2 2.0.0 < 2.3.15 - Prefixed P | multiple/webapps/44583.txt
+Apache Tomcat < 5.5.17 - Remote Directory  | multiple/remote/2061.txt
+Apache Tomcat < 6.0.18 - 'utf8' Directory  | multiple/remote/6229.txt
+Apache Tomcat < 6.0.18 - 'utf8' Directory  | unix/remote/14489.c
+Apache Tomcat < 9.0.1 (Beta) / < 8.5.23 /  | jsp/webapps/42966.py
+Apache Tomcat < 9.0.1 (Beta) / < 8.5.23 /  | windows/webapps/42953.txt
+Apache Tomcat mod_jk 1.2.20 - Remote Buffe | windows/remote/16798.rb
+Apache Xerces-C XML Parser < 3.1.2 - Denia | linux/dos/36906.txt
+Webfroot Shoutbox < 2.32 (Apache) - Local  | linux/remote/34.pl
+------------------------------------------- ---------------------------------
+Shellcodes: No Results
