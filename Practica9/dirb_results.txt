@@ -1,0 +1,31 @@
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+OUTPUT_FILE: dirb_results.txt
+START_TIME: Fri Nov 21 08:56:48 2025
+URL_BASE: http://192.168.100.20/
+WORDLIST_FILES: /usr/share/wordlists/dirb/common.txt
+OPTION: Not Recursive
+
+-----------------
+
+GENERATED WORDS: 4612
+
+---- Scanning URL: http://192.168.100.20/ ----
++ http://192.168.100.20/cgi-bin/ (CODE:403|SIZE:295)
+==> DIRECTORY: http://192.168.100.20/dav/
++ http://192.168.100.20/index (CODE:200|SIZE:891)
++ http://192.168.100.20/index.php (CODE:200|SIZE:891)
++ http://192.168.100.20/phpinfo (CODE:200|SIZE:48089)
++ http://192.168.100.20/phpinfo.php (CODE:200|SIZE:48101)
+==> DIRECTORY: http://192.168.100.20/phpMyAdmin/
++ http://192.168.100.20/server-status (CODE:403|SIZE:300)
+==> DIRECTORY: http://192.168.100.20/test/
+==> DIRECTORY: http://192.168.100.20/twiki/
+
+-----------------
+END_TIME: Fri Nov 21 08:56:50 2025
+DOWNLOADED: 4612 - FOUND: 6
