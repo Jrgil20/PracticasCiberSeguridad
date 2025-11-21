@@ -814,6 +814,21 @@ sensible.
 
 ---
 
+**📚 REFERENCIA A PRÁCTICA 8 - ESCALADA DE PRIVILEGIOS EXITOSA**
+
+**IMPORTANTE:** Aunque en esta Práctica 9 no se logró acceso al sistema para demostrar estas técnicas de forma práctica, en la **Práctica 8** ("Escaneo de Vulnerabilidades y Explotación Avanzada - Enfoque de Ataque Integral en Equipo") el **Equipo 4** sí completó exitosamente la **escalada de privilegios** en Metasploitable 2 utilizando las mismas técnicas que se describen en las secciones 4.2 y 4.3.
+
+**En la Práctica 8 se documentó:**
+
+1. **Técnica 1 - SUID Binaries (nmap):** Explotación exitosa usando `nmap --interactive` → `!sh` → obtención de shell root con `uid=0(root)`
+2. **Técnica 2 - Exploit de Kernel (Dirty COW):** Compilación y ejecución del exploit CVE-2016-5195 → creación de usuario `firefart` con acceso root → verificación con `id` mostrando `uid=0(firefart)`
+3. **Técnica 3 - Sudo mal configurado:** Ejecución de `sudo nmap --interactive` → apertura de shell interactiva → obtención de acceso root sin contraseña
+4. **Búsqueda de SUID binaries:** Identificación exitosa de múltiples binarios vulnerables: `/usr/bin/nmap`, `/usr/bin/vim`, `/usr/bin/find`, `/usr/bin/awk`, `/usr/bin/less`, entre otros
+
+**Por ello, las secciones 4.1, 4.2 y 4.3 a continuación NO son puramente teóricas:** Representan técnicas que **fueron validadas y ejecutadas con éxito** en la Práctica 8. Los comandos, sus salidas esperadas y las explicaciones reflejan los resultados reales obtenidos en ese ejercicio anterior.
+
+---
+
 **Tareas**
 
 **4.1 Reconocimiento Interno (3 min)**
