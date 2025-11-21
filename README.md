@@ -47,3 +47,11 @@ Este repositorio puede servir como referencia para estudiantes, docentes o cualq
 ## Notas
 
 Las notas reflejan la calificación obtenida en cada informe/práctica.
+
+---
+
+## 📘 Guía de Estándares
+
+Para mantener la calidad y consistencia de los informes en este repositorio, se ha creado una guía basada en las mejores prácticas identificadas (especialmente de la Práctica 8).
+
+Consulta el documento completo aquí: [**Guía de Estándares para Informes de Práctica**](GUIA_ESTANDARES.md)
