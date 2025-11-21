@@ -37,8 +37,7 @@ Este repositorio puede servir como referencia para estudiantes, docentes o cualq
 | 5        | [Web Application Analysis II & SQL Injection](Practica5\Practica5.md)              | 20   |
 | 6        | [Exploration & Vulnerabilities](Practica6\Practica6.md)                            | 17   |
 | 7        | [Criptografía & Password Attack](Practica7\Practica7.md)                           | 20   |
-| 8        | [Escaneo de Vulnerabilidades y Explotación Avanzada](Practica8\Practica8.md)       | Pendiente |
-
+| 8        | [Escaneo de Vulnerabilidades y Explotación Avanzada](Practica8\Practica8.md)       | [20](Practica8\nota.md)   |
 
 ## Estructura del repositorio
 
