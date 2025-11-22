@@ -566,9 +566,6 @@ nikto -h http://192.168.100.20 -o nikto_scan.txt
 ### **Conclusión de la Fase 2:**
 El escaneo con Nikto confirmó que Metasploitable 2 presenta **vulnerabilidades web críticas de acceso inmediato** (phpinfo, phpMyAdmin, directorios listables), permitiendo recolectar información para fases posteriores de explotación.
 
-**\
-**
-
 ## **FASE 3: EXPLOTACIÓN Y ACCESO (20 minutos)**
 
 ### **Objetivo**
@@ -791,16 +788,6 @@ sqlmap -u "http://192.168.100.20/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#"
 
 - **Opción A (vsftpd backdoor)**: 
 - **Opción C (SQLi)**: ⏳ EN ESPERA - Requiere validación de sesión antes de continuar
-
-**Lecciones aprendidas:**
-
-
-
-**\
-**
-
-**\
-**
 
 ## **FASE 4: POST-EXPLOTACIÓN Y EVIDENCIAS (10 minutos)**
 
