@@ -449,7 +449,7 @@ Shellcodes: No Results
 
 ---
 
-![Prueba de vulnerabilidades encontradas](image.png)
+![Prueba de vulnerabilidades encontradas](https://i.imgur.com/vfurVyY.png)
 
 > **Comentario adicional:**  
 > La imagen anterior muestra evidencia visual de los resultados obtenidos durante el escaneo de vulnerabilidades. Este tipo de pruebas es fundamental para validar la presencia de servicios inseguros y confirmar la exposición de vectores de ataque críticos antes de proceder con la explotación. Documentar capturas de pantalla y outputs relevantes fortalece la trazabilidad y profesionalismo del reporte final.
@@ -584,7 +584,7 @@ msfconsole
 
 \# Ejemplo para vsftpd 2.3.4
 
-![alt text](image-1.png)
+![Ejemplo para vsftpd 2.3.4](https://i.imgur.com/PB4Tfuf.png)
 
 msf6 \> search vsftpd
 
@@ -729,7 +729,7 @@ msf6 exploit(vsftpd_234_backdoor) > exploit
 
 
 
-![Imagen de prueba - Exploit esperando respuesta](image-3.png)
+![Imagen de prueba - Exploit esperando respuesta](https://i.imgur.com/s3jXPPZ.png)
 
 
 **Conclusión A**: El exploit se disparó contra vsftpd pero quedó en espera sin completar la sesión interactiva.
@@ -765,7 +765,7 @@ sqlmap -u "http://192.168.100.20/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#"
 [*] ending @ 09:20:16 /2025-11-21/
 ```
 
-![Imagen de prueba - Fallo de SQLMap](image-4.png)
+![Imagen de prueba - Fallo de SQLMap](https://i.imgur.com/CIjWqU1.png)
 
 ##### **Análisis del Resultado:**
 
@@ -1093,30 +1093,17 @@ entregarlo en MarkDown (.md)
 
 \-\--
 
-**\*\*Conclusión:\*\*** \[1-2 líneas sobre la postura de seguridad del
-objetivo\]
+**\*\*Conclusión:\*\***
 
 En vista de que no se pudo completar con éxito la prueba de penetración, no se tiene un postura concreta sobre la seguridad del objetivo no obstante se pueden observar claramente fallas de seguridad por lo cual se recomienda encaracidamente revisar las vulnerabilidades y mitigarlas con prontitud.
 
-**SECCIÓN DE CONCLUSIÓN Y REFLEXIÓN CRÍTICA**
+## **SECCIÓN DE CONCLUSIÓN Y REFLEXIÓN CRÍTICA**
 
-**ANÁLISIS POST-PRÁCTICA**
+### **PREGUNTAS DE REFLEXIÓN Y ANÁLISIS CRÍTICO**
 
-Una vez completada la Operación \"CIPHER BREACH\", es fundamental que
-reflexionen sobre la experiencia, analicen decisiones técnicas y
-profundicen en conceptos de ciberseguridad. Esta sección está diseñada
-para desarrollar pensamiento crítico y comprensión estratégica más allá
-de la ejecución técnica.
+#### **Bloque 1 — Metodología y toma de decisiones**
 
-**Nota importante:** Como equipo de dos analistas, deben discutir y
-consensuar sus respuestas, integrando las perspectivas de ambos miembros
-del equipo.
-
-**PREGUNTAS DE REFLEXIÓN Y ANÁLISIS CRÍTICO**
-
-## Bloque 1 — Metodología y toma de decisiones
-
-### 1. Análisis de la cadena de ataque
+##### **1. Análisis de la cadena de ataque**
 
 - **a) ¿Cuál fue el vector de entrada más efectivo y por qué?**
   - Vector más efectivo: **Servicios web expuestos (phpMyAdmin, WebDAV, phpinfo)** y **vsftpd 2.3.4**.
@@ -1132,7 +1119,7 @@ del equipo.
 - **d) Trabajo en equipo: cómo dividieron tareas y si fue efectivo**
   - División típica: uno en reconocimiento de red/servicios (`nmap`, `enum4linux`, `dirb`), otro en análisis web y explotación (`nikto`, `sqlmap`, Metasploit, payloads). Fue efectiva porque permitió paralelizar tareas y reducir tiempos de espera; recomendación: mantener comunicación constante y compartir artefactos (cookies, paths, credenciales) en tiempo real.
 
-### 2. Gestión del tiempo y priorización
+##### **2. Gestión del tiempo y priorización**
 
 - **a) ¿Qué fase consumió más tiempo y por qué?**
   - Fase 2-3 (análisis de vulnerabilidades y explotación) consumió más tiempo. Causas: escaneos profundos, validación de sesiones/cookies (ej. `sqlmap` falló por cookie inválida) y exploits pendientes en Metasploit que requirieron reintentos.
@@ -1149,7 +1136,7 @@ del equipo.
 - **e) Dinámica de equipo: desacuerdos y resolución**
   - Desacuerdos menores (priorizar web vs servicios) se resolvieron con criterio: impacto potencial (¿da root rápido?) y estimación de tiempo. Si persiste desacuerdo, usar matriz Impacto×Probabilidad para decidir.
 
-### 3. Comparación de vectores de ataque
+##### **3. Comparación de vectores de ataque**
 
 - **a) Ranking por efectividad (mayor → menor):**
   1. vsftpd 2.3.4 (Backdoor) — RCE directo y reproducible.
@@ -1171,9 +1158,9 @@ del equipo.
 
 ---
 
-## Bloque 2 — Comprensión técnica profunda
+#### **Bloque 2 — Comprensión técnica profunda**
 
-### 4. Análisis de vulnerabilidades críticas (ejemplo: vsftpd 2.3.4)
+##### **4. Análisis de vulnerabilidades críticas (ejemplo: vsftpd 2.3.4)**
 
 - **4.a Investigación — contexto histórico:**
   - `vsftpd 2.3.4` sufrió un incidente en 2011 (CVE-2011-2523): un tarball distribuido estaba comprometido con un backdoor. Fue notable porque la propia distribución se entregó con código malicioso que abría acceso remoto.
@@ -1195,7 +1182,7 @@ del equipo.
 - **4.e División de investigación:**
   - Recomendación: uno investiga la PoC/CVE/exploit-db y reproducibilidad; el otro define mitigaciones operativas, reglas IDS y planes de hardening.
 
-### 5. Escalada de privilegios y post-explotación
+##### **5. Escalada de privilegios y post-explotación**
 
 - **5.a Técnicas para escalar a root si se entra como usuario normal:**
   - `sudo -l` para detectar entradas NOPASSWD; si existe, `sudo su -` para root.
@@ -1215,7 +1202,7 @@ del equipo.
 - **5.e Colaboración durante post-explotación:**
   - Dividir roles (uno analiza entorno interno y documentación, otro ejecuta escalada y extracción) es más efectivo que trabajar simultáneamente en la misma shell, porque reduce colisiones y mejora cobertura.
 
-### 6. SQL Injection — más allá de la explotación básica
+##### **6. SQL Injection — más allá de la explotación básica**
 
 - **6.a Diferencias entre In-band, Blind y Out-of-band:**
   - **In-band:** los resultados de la inyección se muestran en la misma respuesta HTTP (ej. UNION, error-based). Rápido y directo.
@@ -1244,9 +1231,9 @@ Nota: ajustar el número y tipo de columnas según la consulta objetivo.
 
 ---
 
-## Bloque 3 — Perspectiva defensiva, negocio y ética
+#### **Bloque 3 — Perspectiva defensiva, negocio y ética**
 
-### 7. Del Red Team al Blue Team
+##### **7. Del Red Team al Blue Team**
 
 - **7.a Reglas y alertas concretas para detectar los ataques realizados:**
   - Regla Suricata/Snort para detectar patrones de usernames anómalos en FTP y firmas de `vsftpd` backdoor.
@@ -1270,7 +1257,7 @@ Nota: ajustar el número y tipo de columnas según la consulta objetivo.
 - **7.d Estrategias defensivas en ejercicio rol:**
   - Como Blue: implementar WAF, EDR/XDR y segmentación; establecer reglas de detección adaptativas. Como Red (para pruebas): usar técnicas de bajo ruido y validar detecciones.
 
-### 8. Análisis de riesgo empresarial
+##### **8. Análisis de riesgo empresarial**
 
 - **8.a Impacto financiero (resumen):**
   - Brecha que exponga datos de clientes puede implicar multas regulatorias (GDPR), pérdida reputacional, costes de mitigación y potencial litigio: coste potencial desde decenas de miles hasta millones según escala.
@@ -1286,7 +1273,7 @@ Nota: ajustar el número y tipo de columnas según la consulta objetivo.
 - **8.d Consenso de equipo:**
   - Prioridades se decidieron combinando impacto y facilidad de mitigación (matriz Impacto×Esfuerzo).
 
-### 9. Contexto real vs laboratorio
+##### 9. **Contexto real vs laboratorio**
 
 - **9.a Realismo:**
   - Es poco frecuente en infra bien gestionada, pero común en sistemas legacy, dispositivos olvidados o instancias públicas mal configuradas.
@@ -1303,7 +1290,7 @@ Nota: ajustar el número y tipo de columnas según la consulta objetivo.
 - **9.e División de investigación:**
   - Repartir casos reales permitió comparar lecciones y ver que la raíz común suele ser falta de gobernanza y parcheo.
 
-### 10. Ética, responsabilidad profesional y dinámica de equipo
+##### **10. Ética, responsabilidad profesional y dinámica de equipo**
 
 - **10.a Línea ética (ejemplos):**
   - Hacking ético: pruebas con autorización y reporte responsable de fallos. Ejemplo: pentest contratado y documentado.
@@ -1325,91 +1312,3 @@ Nota: ajustar el número y tipo de columnas según la consulta objetivo.
   - Uno fuerte en enumeración y exploits públicos; otro en análisis web, scripting y post-explotación — combinación efectiva.
 
 ---
-
-**CRITERIOS DE EVALUACIÓN DE REFLEXIONES**
-
-  -----------------------------------------------------------------------
-  CRITERIO             DESCRIPCIÓN
-  -------------------- --------------------------------------------------
-  Profundidad técnica  Demuestran comprensión más allá de la ejecución
-                       mecánica
-
-  Pensamiento crítico  Analizan decisiones, comparan alternativas,
-                       justifican elecciones
-
-  Investigación        Incorporan información externa, CVEs, casos reales
-  adicional            
-
-  Perspectiva          Integran visión ofensiva, defensiva y empresarial
-  holística            
-
-  Colaboración         Demuestran trabajo en equipo, complementariedad y
-  efectiva             consenso
-
-                       
-  -----------------------------------------------------------------------
-
-**RECURSOS PARA INVESTIGACIÓN**
-
-Para responder las preguntas de investigación, consulten:
-
-**Bases de datos de vulnerabilidades:**
-
--   CVE Details: <https://www.cvedetails.com>
-
--   NVD (National Vulnerability Database): <https://nvd.nist.gov>
-
--   Exploit-DB: <https://www.exploit-db.com>
-
-**Casos de estudio de ataques reales:**
-
--   Krebs on Security: <https://krebsonsecurity.com>
-
--   CISA
-    Alerts: <https://www.cisa.gov/news-events/cybersecurity-advisories>
-
--   MITRE ATT&CK: <https://attack.mitre.org>
-
-**Códigos de ética profesional:**
-
--   (ISC)² Code of Ethics: <https://www.isc2.org/Ethics>
-
--   EC-Council Code of
-    Ethics: <https://www.eccouncil.org/code-of-ethics/>
-
--   SANS Cyber Security Ethics: <https://www.sans.org/about/ethics/>
-
-**Técnicas defensivas:**
-
--   OWASP Top 10: <https://owasp.org/www-project-top-ten/>
-
--   CIS Benchmarks: <https://www.cisecurity.org/cis-benchmarks>
-
--   NIST Cybersecurity Framework: <https://www.nist.gov/cyberframework>
-
-**Trabajo en equipo en ciberseguridad:**
-
--   SANS: Building Effective Security Teams
-
--   Red Team vs Blue Team Dynamics
-
--   Collaborative Penetration Testing Best Practices
-
-**REFLEXIÓN FINAL**
-
-**\"Un pentester técnicamente competente puede explotar
-vulnerabilidades. Un equipo de profesionales de ciberseguridad
-excepcional comprende el contexto, anticipa consecuencias, se
-complementa mutuamente y comunica riesgos efectivamente.\"**
-
-Las preguntas anteriores están diseñadas para transformarlos de
-ejecutores de técnicas en pensadores estratégicos de ciberseguridad.
-Tómense el tiempo necesario para reflexionar profundamente sobre cada
-una, discutir entre ustedes y llegar a conclusiones consensuadas.
-
-**La diferencia entre dos hackers trabajando en paralelo y un equipo
-profesional de Red Team no está en las herramientas que usan, sino en
-cómo colaboran, se complementan y aprenden juntos de la experiencia.**
-
-|Noviembre 2025|Elaborado por Gustavo Lara Jr.|
-| :- | -: |
