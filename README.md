@@ -2,6 +2,7 @@
 
 Este repositorio contiene los informes y materiales de varias prácticas realizadas en el ámbito de la ciberseguridad. Cada carpeta corresponde a una práctica diferente, abordando temáticas como análisis de vulnerabilidades, análisis de aplicaciones web, ataques de contraseñas, criptografía, y técnicas de exploración de sistemas.
 
+
 ## Objetivo
 
 El objetivo principal de este repositorio es documentar y compartir el proceso de aprendizaje en diferentes áreas de la ciberseguridad, mostrando ejemplos prácticos, análisis de resultados y reflexiones sobre cada ejercicio realizado.
