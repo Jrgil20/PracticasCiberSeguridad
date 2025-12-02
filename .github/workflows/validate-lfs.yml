@@ -1,0 +1,161 @@
+name: Validate Git LFS
+
+on:
+  pull_request:
+    paths:
+      - '**.png'
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.gif'
+      - '**.webp'
+      - '**.bmp'
+      - '**.tif'
+      - '**.tiff'
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - '**.png'
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.gif'
+      - '**.webp'
+      - '**.bmp'
+      - '**.tif'
+      - '**.tiff'
+
+jobs:
+  validate-lfs:
+    runs-on: ubuntu-latest
+    name: Validate images in Git LFS
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout LFS objects
+        run: git lfs checkout
+
+      - name: Validate LFS tracking
+        run: |
+          set -e
+          
+          # Colores (simulados para GitHub Actions)
+          RED='[31m'
+          GREEN='[32m'
+          YELLOW='[33m'
+          NC='[0m'
+          
+          # Obtener lista de archivos modificados en el PR
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "📋 Validando cambios en el PR..."
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          else
+            echo "📋 Validando push a ${{ github.ref }}..."
+            if [[ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]]; then
+              CHANGED_FILES=$(git ls-files)
+            else
+              CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}...HEAD)
+            fi
+          fi
+          
+          # Extensiones de imagen
+          IMAGE_EXTENSIONS=("png" "jpg" "jpeg" "gif" "webp" "bmp" "tif" "tiff")
+          
+          # Función para obtener extensión
+          get_extension() {
+            echo "${1##*.}" | tr '[:upper:]' '[:lower:]'
+          }
+          
+          # Función para verificar si es imagen
+          is_image_file() {
+            local ext=$(get_extension "$1")
+            for image_ext in "${IMAGE_EXTENSIONS[@]}"; do
+              if [[ "$ext" == "$image_ext" ]]; then
+                return 0
+              fi
+            done
+            return 1
+          }
+          
+          # Función para verificar si está en LFS
+          is_tracked_by_lfs() {
+            local file="$1"
+            git lfs ls-files --name-only | grep -F "$file" > /dev/null 2>&1
+            return $?
+          }
+          
+          images_checked=0
+          images_in_lfs=0
+          errors=0
+          images_not_in_lfs=()
+          
+          echo "🔍 Analizando archivos modificados..."
+          echo ""
+          
+          while IFS= read -r file; do
+            if [[ -z "$file" ]]; then
+              continue
+            fi
+            
+            if is_image_file "$file"; then
+              ((images_checked++))
+              
+              if is_tracked_by_lfs "$file"; then
+                ((images_in_lfs++))
+                echo "✓ $file (en LFS)"
+              else
+                ((errors++))
+                images_not_in_lfs+=("$file")
+                echo "✗ $file (NO está en LFS)"
+              fi
+            fi
+          done <<< "$CHANGED_FILES"
+          
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "Resumen de validación:"
+          echo "  Imágenes encontradas: $images_checked"
+          echo "  Imágenes en LFS: $images_in_lfs"
+          echo "  Imágenes NO en LFS: $errors"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          
+          if [[ $errors -gt 0 ]]; then
+            echo "❌ ERROR: Se encontraron imágenes no rastreadas en Git LFS"
+            echo ""
+            echo "Archivos que deben estar en LFS:"
+            for file in "${images_not_in_lfs[@]}"; do
+              echo "  • $file"
+            done
+            echo ""
+            echo "🔧 Para resolver:"
+            echo "  1. Hacer pull de los cambios locales"
+            echo "  2. Ejecutar: git lfs install"
+            echo "  3. Re-agregar los archivos: git add <archivo>"
+            echo "  4. Crear nuevo commit: git commit -m 'Fix LFS tracking'"
+            echo "  5. Hacer push nuevamente"
+            echo ""
+            exit 1
+          fi
+          
+          if [[ $images_checked -gt 0 ]]; then
+            echo "✅ Todas las imágenes están correctamente rastreadas en Git LFS"
+          else
+            echo "ℹ️  No se encontraron cambios en archivos de imagen"
+          fi
+
+      - name: Check .gitattributes
+        run: |
+          if [[ ! -f .gitattributes ]]; then
+            echo "⚠️  Advertencia: No se encontró .gitattributes"
+            echo "Se requiere .gitattributes para Git LFS"
+            exit 1
+          fi
+          
+          echo "✓ .gitattributes encontrado"
+          echo ""
+          echo "Contenido:"
+          cat .gitattributes

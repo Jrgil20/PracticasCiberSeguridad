@@ -1,0 +1,114 @@
+#!/bin/bash
+#
+# Pre-commit hook: Validar que todas las imágenes estén rastreadas con Git LFS
+# Este hook previene que imágenes se suban directamente sin usar Git LFS
+#
+# Instalar: ejecuta `bash .github/setup-hooks.sh`
+
+set -e
+
+# Colores para output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Extensiones de imagen a validar (deben coincidir con .gitattributes)
+IMAGE_EXTENSIONS=("png" "jpg" "jpeg" "gif" "webp" "bmp" "tif" "tiff")
+
+# Función para validar si un archivo está en Git LFS
+is_tracked_by_lfs() {
+    local file="$1"
+    git lfs ls-files --name-only | grep -F "$file" > /dev/null 2>&1
+    return $?
+}
+
+# Función para obtener extensión de archivo
+get_extension() {
+    echo "${1##*.}" | tr '[:upper:]' '[:lower:]'
+}
+
+# Función para validar si es una extensión de imagen
+is_image_file() {
+    local ext=$(get_extension "$1")
+    for image_ext in "${IMAGE_EXTENSIONS[@]}"; do
+        if [[ "$ext" == "$image_ext" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Obtener lista de archivos staged
+staged_files=$(git diff --cached --name-only --diff-filter=ACM)
+
+# Contador de errores
+errors=0
+images_checked=0
+images_in_lfs=0
+images_not_in_lfs=()
+
+echo -e "${YELLOW}🔍 Validando imágenes en Git LFS...${NC}"
+echo ""
+
+# Iterar sobre archivos staged
+while IFS= read -r file; do
+    if [[ -z "$file" ]]; then
+        continue
+    fi
+    
+    # Verificar si es una imagen
+    if is_image_file "$file"; then
+        ((images_checked++))
+        
+        # Verificar si está tracked en LFS
+        if is_tracked_by_lfs "$file"; then
+            ((images_in_lfs++))
+            echo -e "${GREEN}✓${NC} $file (en LFS)"
+        else
+            ((errors++))
+            images_not_in_lfs+=("$file")
+            echo -e "${RED}✗${NC} $file (NO está en LFS)"
+        fi
+    fi
+done <<< "$staged_files"
+
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "Resumen de validación:"
+echo "  Imágenes encontradas: $images_checked"
+echo "  Imágenes en LFS: $images_in_lfs"
+echo "  Imágenes NO en LFS: $errors"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+# Si hay imágenes sin LFS, rechazar el commit
+if [[ $errors -gt 0 ]]; then
+    echo -e "${RED}❌ ERROR: No se puede hacer commit con imágenes no rastreadas en Git LFS${NC}"
+    echo ""
+    echo "Archivos que deben ser rastreados por LFS:"
+    for file in "${images_not_in_lfs[@]}"; do
+        echo -e "  ${RED}•${NC} $file"
+    done
+    echo ""
+    echo "🔧 Para resolver, ejecuta:"
+    echo "  1. Deshacer cambios staged: git reset"
+    echo "  2. Instalar Git LFS si no está instalado: git lfs install"
+    echo "  3. Rastrear extensiones en .gitattributes (ya configurado)"
+    echo "  4. Volver a agregar los archivos: git add <archivo>"
+    echo "  5. Reintentar commit: git commit -m 'mensaje'"
+    echo ""
+    echo "O simplemente:"
+    echo "  git lfs track '*.png' '*.jpg' '*.jpeg' '*.gif' '*.webp' '*.bmp' '*.tif' '*.tiff'"
+    echo "  git add .gitattributes"
+    echo "  git commit -m 'Configure Git LFS tracking'"
+    echo ""
+    exit 1
+fi
+
+if [[ $images_checked -gt 0 ]]; then
+    echo -e "${GREEN}✅ Todas las imágenes están correctamente rastreadas en Git LFS${NC}"
+    echo ""
+fi
+
+exit 0
