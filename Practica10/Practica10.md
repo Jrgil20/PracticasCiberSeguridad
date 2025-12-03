@@ -2,9 +2,12 @@
 
 ## 📊 Tabla de Identificación
 
-| Apellido, Nombre | Cédula | Práctica/Proyecto | Fecha | Equipo |
-|------------------|--------|-------------------|-------|--------|
-| [Nombre del Estudiante] | [Cédula] | Práctica N° 10 | 03-12-2025 | [Equipo] |
+| Apellido, Nombre | Cédula de Identidad | Nro. de Práctica | Fecha |
+| :--- | :---: | :---: | :--- |
+| Gil, Jesús | 30175126 | 10 | 28-11-2025|
+| Guilarte, Andrés | 30246084 | 10 | 28-11-2025 |
+
+**Grupo:** 4
 
 ## 🎭 Contexto del Escenario
 
