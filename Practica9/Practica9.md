@@ -1,4 +1,4 @@
-# **Práctica Nro. 9: Pentesting Integral Metodología de Red Team Assessment(Reconocimiento, Análisis de Vulnerabilidades, Explotación y Post-Explotación con Nmap, Metasploit, SQLMap, Hydra y Técnicas de Escalada de Privilegios)**
+# **Práctica Nro. 9: Pentesting Integral: Metodología de Red Team Assessment(Reconocimiento, Análisis de Vulnerabilidades, Explotación y Post-Explotación con Nmap, Metasploit, SQLMap, Hydra y Técnicas de Escalada de Privilegios)**
 
 ## Datos de Identificación
 

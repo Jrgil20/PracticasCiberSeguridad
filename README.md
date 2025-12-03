@@ -38,6 +38,7 @@ Este repositorio puede servir como referencia para estudiantes, docentes o cualq
 | 6        | [Exploration & Vulnerabilities](Practica6\Practica6.md)                            | 17   |
 | 7        | [Criptografía & Password Attack](Practica7\Practica7.md)                           | 20   |
 | 8        | [Escaneo de Vulnerabilidades y Explotación Avanzada](Practica8/Practica8.md)       | [20](Practica8/nota.md)   |
+| 9        | [Pentesting Integral: Metodología de Red Team Assessment(Reconocimiento, Análisis de Vulnerabilidades, Explotación y Post-Explotación con Nmap, Metasploit, SQLMap, Hydra y Técnicas de Escalada de Privilegios)](Practica9/Practica9.md)                                                                                   | 20   |
 
 ## Estructura del repositorio
 
