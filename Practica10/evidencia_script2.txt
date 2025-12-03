@@ -1,0 +1,79 @@
+================================================
+  CONFIGURACIÓN DE ESTRUCTURA DE PROYECTO
+================================================
+
+[2025-12-02 18:10:09] Creando estructura de directorios...
+[✓] Creado: symmetric-encryption/keys
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/symmetric-encryption/keys
+[✓] Creado: symmetric-encryption/data
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/symmetric-encryption/data
+[✓] Creado: symmetric-encryption/encrypted
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/symmetric-encryption/encrypted
+[✓] Creado: symmetric-encryption/decrypted
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/symmetric-encryption/decrypted
+[✓] Creado: asymmetric-encryption/private-keys
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/asymmetric-encryption/private-keys
+[✓] Creado: asymmetric-encryption/certificates
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/asymmetric-encryption/certificates
+[✓] Creado: asymmetric-encryption/csr
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/asymmetric-encryption/csr
+[✓] Creado: web-security/config
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/web-security/config
+[✓] Creado: web-security/logs
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/web-security/logs
+[✓] Creado: documentation
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/documentation
+[✓] Creado: backup
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/backup
+[✓] Creado: scripts
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/scripts
+[✓] Creado: logs
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/logs
+[✓] Creado: config
+[2025-12-02 18:10:09] Directorio creado: /home/kali/cybersecure-project/config
+
+[2025-12-02 18:10:09] Configurando permisos de seguridad...
+[2025-12-02 18:10:09] Permisos 700 aplicados a: symmetric-encryption/keys
+[2025-12-02 18:10:09] Permisos 700 aplicados a: asymmetric-encryption/private-keys
+[2025-12-02 18:10:09] Permisos 755 aplicados a: scripts
+[2025-12-02 18:10:09] Archivo README.md creado
+
+Estructura de directorios creada:
+/home/kali/cybersecure-project
+├── asymmetric-encryption
+│   ├── certificates
+│   ├── csr
+│   └── private-keys
+├── backup
+├── config
+├── documentation
+├── logs
+├── README.md
+├── scripts
+│   ├── 01_verify_environment.sh
+│   ├── 02_setup_structure.sh
+│   ├── 03_generate_master_keys.sh
+│   ├── 04_encrypt_data.sh
+│   ├── 05_decrypt_data.sh
+│   ├── 06_setup_pki.sh
+│   ├── 07_secure_backup.sh
+│   ├── 08_configure_apache_ssl.sh
+│   ├── 09_crypto_management.sh
+│   └── cleanup_project.sh
+├── setup.log
+├── symmetric-encryption
+│   ├── data
+│   ├── decrypted
+│   ├── encrypted
+│   └── keys
+└── web-security
+    ├── config
+    └── logs
+
+18 directories, 12 files
+
+================================================
+  CONFIGURACIÓN COMPLETADA EXITOSAMENTE
+================================================
+[2025-12-02 18:10:09] Configuración de estructura completada
+                                                                   

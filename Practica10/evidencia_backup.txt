@@ -1,0 +1,67 @@
+└─$ sudo /home/kali/cybersecure-project/scripts/07_secure_backup.sh
+================================================
+  SISTEMA DE BACKUP CIFRADO
+  CyberSecure Solutions Inc.
+================================================
+
+[2025-12-02 19:01:46] Iniciando proceso de backup
+[1/4] Creando backup comprimido...
+[2025-12-02 19:01:46] Comprimiendo: /home/kali/cybersecure-project/symmetric-encryption/data
+[⚙] Comprimiendo archivos...
+[✓] Backup comprimido creado (4.0K)
+[2025-12-02 19:01:46] Backup comprimido: /home/kali/cybersecure-project/backup/backup_20251202_190146.tar.gz (4.0K)
+
+[2/4] Cifrando backup...
+[2025-12-02 19:01:46] Cifrando backup
+[⚙] Aplicando cifrado AES-256-CBC...
+[✓] Backup cifrado (4.0K)
+[2025-12-02 19:01:46] Backup cifrado: /home/kali/cybersecure-project/backup/backup_20251202_190146.tar.gz.enc
+
+[3/4] Generando hash de verificación...
+[2025-12-02 19:01:46] Generando hash SHA-256
+[✓] Hash SHA-256 generado
+[2025-12-02 19:01:46] Hash creado: /home/kali/cybersecure-project/backup/backup_20251202_190146.sha256
+
+[4/4] Limpieza y verificación...
+[⚙] Eliminando backup sin cifrar...
+[✓] Backup sin cifrar eliminado de forma segura
+[2025-12-02 19:01:46] Backup sin cifrar eliminado
+[⚙] Verificando integridad...
+/home/kali/cybersecure-project/backup/backup_20251202_190146.tar.gz.enc: OK
+[✓] Integridad verificada
+[2025-12-02 19:01:46] Integridad del backup verificada
+
+================================================
+  BACKUP COMPLETADO
+================================================
+
+Información del backup:
+-------------------------------------------
+Archivo cifrado: backup_20251202_190146.tar.gz.enc
+Tamaño: 4.0K
+SHA-256: 248ab09877e0db289f2c78de4245062ae1b01002fe8919b1d6baca749be09580
+Ubicación: /home/kali/cybersecure-project/backup
+
+Parámetros de cifrado:
+  Algoritmo: AES-256-CBC
+  Derivación: PBKDF2 (100,000 iteraciones)
+  Compresión: gzip
+
+Backups disponibles:
+  /home/kali/cybersecure-project/backup/backup_20251202_181634.tar.gz.enc (128)
+  /home/kali/cybersecure-project/backup/backup_20251202_190146.tar.gz.enc (336)
+
+
+================================================
+  PROCESO FINALIZADO EXITOSAMENTE
+================================================
+
+[!] RECORDATORIOS:
+  1. Copie el backup a ubicación externa segura
+  2. Mantenga backup de la clave maestra separado
+  3. Documente el backup en el registro de auditoría
+
+[2025-12-02 19:01:46] Proceso de backup completado: /home/kali/cybersecure-project/backup/backup_20251202_190146.tar.gz.enc
+[✓] Metadatos del backup guardados
+[2025-12-02 19:01:46] Metadatos creados: /home/kali/cybersecure-project/backup/backup_20251202_190146.tar.gz.enc.info
+                                       

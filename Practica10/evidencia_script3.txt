@@ -1,0 +1,50 @@
+└─$ sudo /home/kali/cybersecure-project/scripts/03_generate_master_keys.sh
+================================================
+  GENERACIÓN DE CLAVES MAESTRAS AES-256
+================================================
+
+[2025-12-02 18:12:22] Generando clave maestra principal...
+[✓] Clave maestra generada: master_key_20251202_181222.key
+[2025-12-02 18:12:22] Clave maestra creada: /home/kali/cybersecure-project/symmetric-encryption/keys/master_key_20251202_181222.key
+[2025-12-02 18:12:22] Generando clave de backup...
+[✓] Clave de backup generada: backup_key_20251202_181222.key
+[2025-12-02 18:12:22] Clave de backup creada: /home/kali/cybersecure-project/symmetric-encryption/keys/backup_key_20251202_181222.key
+[2025-12-02 18:12:22] Generando hash de verificación...
+[✓] Hash SHA-256 generado para verificación
+[2025-12-02 18:12:22] Hash de verificación creado: /home/kali/cybersecure-project/symmetric-encryption/keys/master_key_20251202_181222.key.sha256
+
+Información de las claves generadas:
+-------------------------------------------
+Clave Maestra:
+  Archivo: master_key_20251202_181222.key
+  Tamaño: 65 bytes
+  Permisos: -rw-------
+  SHA-256: d7c52065012111dcc75417b44b648afee2e7913eb27c0b31d7063f1f5b9806a6
+
+Clave de Backup:
+  Archivo: backup_key_20251202_181222.key
+  Tamaño: 65 bytes
+  Permisos: -rw-------
+  SHA-256: f97b20ca307507a509469cb5ca11f3ebb1feecf31e556bb7a38fabb4270c41ae
+
+[2025-12-02 18:12:22] Enlace simbólico creado: current_master_key.key
+[✓] Archivo de metadatos creado
+[2025-12-02 18:12:22] Metadatos guardados: key_metadata_20251202_181222.txt
+
+Claves disponibles en el sistema:
+-rw------- 1 root root 65 Dec  2 18:12 /home/kali/cybersecure-project/symmetric-encryption/keys/backup_key_20251202_181222.key
+lrwxrwxrwx 1 root root 87 Dec  2 18:12 /home/kali/cybersecure-project/symmetric-encryption/keys/current_master_key.key -> /home/kali/cybersecure-project/symmetric-encryption/keys/master_key_20251202_181222.key
+-rw------- 1 root root 65 Dec  2 18:12 /home/kali/cybersecure-project/symmetric-encryption/keys/master_key_20251202_181222.key
+
+================================================
+  GENERACIÓN DE CLAVES COMPLETADA
+================================================
+
+[!] RECORDATORIO DE SEGURIDAD:
+  1. Realizar backup de las claves en ubicación segura
+  2. No compartir claves por correo o mensajería
+  3. Documentar la generación en el registro de auditoría
+  4. Programar rotación de claves según política
+
+[2025-12-02 18:12:22] Proceso de generación de claves completado exitosamente
+                                                                                   

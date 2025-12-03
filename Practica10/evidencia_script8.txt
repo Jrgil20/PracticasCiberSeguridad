@@ -1,0 +1,87 @@
+└─$ sudo /home/kali/cybersecure-project/scripts/08_configure_apache_ssl.sh
+================================================
+  CONFIGURACIÓN DE APACHE CON SSL/TLS
+================================================
+
+[1/8] Verificando certificados...
+[✓] Certificados encontrados
+[2025-12-02 19:58:13] Certificados verificados
+
+[2/8] Habilitando módulos de Apache...
+Considering dependency mime for ssl:
+Module mime already enabled
+Considering dependency socache_shmcb for ssl:
+Module socache_shmcb already enabled
+Module ssl already enabled
+Module rewrite already enabled
+Enabling module headers.
+To activate the new configuration, you need to run:
+  systemctl restart apache2
+Module socache_shmcb already enabled
+[✓] Módulos habilitados
+[2025-12-02 19:58:14] Módulos de Apache habilitados
+
+[3/8] Creando estructura web...
+[✓] Directorio web creado
+[2025-12-02 19:58:14] Directorio web: /var/www/cybersecure
+
+[4/8] Creando página de prueba...
+[✓] Página HTML creada
+[2025-12-02 19:58:14] Página HTML creada: /var/www/cybersecure/index.html
+
+[5/8] Creando configuración SSL...
+[✓] Configuración SSL creada
+[2025-12-02 19:58:14] Configuración SSL: /etc/apache2/sites-available/cybersecure-ssl.conf
+
+[6/8] Configurando /etc/hosts...
+[!] Entradas ya existen en /etc/hosts
+
+[7/8] Habilitando sitio y verificando configuración...
+Enabling site cybersecure-ssl.
+To activate the new configuration, you need to run:
+  systemctl reload apache2
+Site 000-default disabled.
+To activate the new configuration, you need to run:
+  systemctl reload apache2
+[⚙] Verificando configuración de Apache...
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message
+Syntax OK
+[✓] Configuración válida
+[2025-12-02 19:58:14] Configuración de Apache verificada
+
+[8/8] Reiniciando Apache...
+[✓] Apache reiniciado correctamente
+[2025-12-02 19:58:14] Apache reiniciado exitosamente
+
+================================================
+  VERIFICACIONES FINALES
+================================================
+
+[⚙] Verificando puerto 443...
+[✓] Apache escuchando en puerto 443
+
+[⚙] Probando conexión SSL...
+[✓] Conexión SSL exitosa
+
+================================================
+  CONFIGURACIÓN COMPLETADA EXITOSAMENTE
+================================================
+
+Información del sitio:
+-------------------------------------------
+URL: https://secure.cybersecure.local
+Directorio web: /var/www/cybersecure
+Certificado: /home/kali/cybersecure-project/asymmetric-encryption/certificates/server_certificate.pem
+Clave privada: /home/kali/cybersecure-project/asymmetric-encryption/private-keys/server_private_key.pem
+
+Comandos útiles:
+  Ver logs de error:  sudo tail -f /var/log/apache2/cybersecure_ssl_error.log
+  Ver logs de acceso: sudo tail -f /var/log/apache2/cybersecure_ssl_access.log
+  Reiniciar Apache:   sudo systemctl restart apache2
+  Probar SSL:         curl -k https://secure.cybersecure.local
+
+[✓] Abra su navegador y visite: https://secure.cybersecure.local
+[!] Acepte la advertencia de certificado autofirmado
+
+[2025-12-02 19:58:15] Configuración de Apache con SSL completada
+                                                                      

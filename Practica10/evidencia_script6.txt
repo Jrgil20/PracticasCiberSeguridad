@@ -1,0 +1,94 @@
+└─$ sudo /home/kali/cybersecure-project/scripts/06_setup_pki.sh         
+================================================
+  CONFIGURACIÓN DE INFRAESTRUCTURA PKI
+  CyberSecure Solutions Inc.
+================================================
+
+[1/4] Generando Autoridad Certificadora (CA)...
+[2025-12-02 19:55:22] Iniciando generación de CA
+[⚙] Generando clave privada de CA (RSA-4096)...
+Ingrese contraseña para proteger la clave privada de la CA:
+....+......+........................+..........................+.+.....+.+...+..+.......+++++++++++++++++++++++++++++++++++++++++++++*..+.......+..+.+..+..........+...+........+.........+.+......+.........+..+...+.+...........+...+....+..+..........+++++++++++++++++++++++++++++++++++++++++++++*....+.......+...+...+......+...+......+..+...+.......+...+......+...+.................+.+..+............+.+..................+..............+............+......+...+.+........+...+...+...............+.+.........+......+...+...............+...+...+..............+................+.....+.+...+......+..+...+.......+...+......+..................+..+...+...+.......+++++
+.+.+++++++++++++++++++++++++++++++++++++++++++++*.+...+.+.....+...+.+.....+.......+..+...+...+....+........+....+.........+.....+....+..+.+.................+......+++++++++++++++++++++++++++++++++++++++++++++*............+.................+.+..+..........+...........+..........+............+........+......+...+...+..........+..+...+.......+..+.........+....+..+......+....+...+..+....+..+....+...+...+.....+............+.............+.........+...+............+..............+..........+....................+.......+..+.............+...+..............+...+...+......+...+..................+.............+...........+...+.+.....+.+......+...+.........+...+........+................+...+...+.....+...............+.......+........+....+.........+.........+...+..+.+..+....+.....+........................+...............+....+......+.....+.......+............+..+...+++++
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:
+[✓] Clave privada de CA generada
+[2025-12-02 19:55:35] Clave privada de CA creada: /home/kali/cybersecure-project/asymmetric-encryption/private-keys/ca_private_key.pem
+[⚙] Generando certificado raíz de CA...
+Enter pass phrase for /home/kali/cybersecure-project/asymmetric-encryption/private-keys/ca_private_key.pem:
+[✓] Certificado raíz de CA generado (válido por 10 años)
+[2025-12-02 19:55:40] Certificado de CA creado: /home/kali/cybersecure-project/asymmetric-encryption/certificates/ca_certificate.pem
+
+[2/4] Generando clave privada del servidor...
+[2025-12-02 19:55:40] Generando clave privada del servidor
+[⚙] Generando clave RSA-2048...
+......+....+++++++++++++++++++++++++++++++++++++++*.........+...+.......+..............+..........+.....+.......+...+..+....+...+..+....+.....+...............+++++++++++++++++++++++++++++++++++++++*.....+.+........+......+.+......+.........+.....+.+.....+..........+..+.+.........+..+...+................+..+....+...++++++
+....+......+......+++++++++++++++++++++++++++++++++++++++*...+.+......+........+......+...+.......+...+..+....+......+......+...+..+...+......+.+++++++++++++++++++++++++++++++++++++++*..........+...............+...+..+...+......+....+.........+......+.....+.......+.....+....+.....+...............+.........+....+.....+..........+......+.........+.....+...+....+...+.....+......+.+........+...+....+.....................+.....+...+......+.............+..+....+...........+......+.........+....+.........+......+..+...+........................+......+.+...++++++
+[✓] Clave privada del servidor generada
+[2025-12-02 19:55:41] Clave privada del servidor creada: /home/kali/cybersecure-project/asymmetric-encryption/private-keys/server_private_key.pem
+
+[3/4] Creando Certificate Signing Request (CSR)...
+[2025-12-02 19:55:41] Creando CSR
+[⚙] Generando CSR...
+[✓] CSR generado
+[2025-12-02 19:55:41] CSR creado: /home/kali/cybersecure-project/asymmetric-encryption/csr/server_certificate.csr
+
+[4/4] Firmando certificado del servidor con CA...
+[2025-12-02 19:55:41] Firmando certificado
+[⚙] Firmando certificado (válido por 1 año)...
+Certificate request self-signature ok
+subject=C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=IT Department, CN=secure.cybersecure.local
+Enter pass phrase for /home/kali/cybersecure-project/asymmetric-encryption/private-keys/ca_private_key.pem:
+[✓] Certificado del servidor firmado
+[2025-12-02 19:55:46] Certificado del servidor creado: /home/kali/cybersecure-project/asymmetric-encryption/certificates/server_certificate.pem
+
+================================================
+  INFRAESTRUCTURA PKI COMPLETADA
+================================================
+
+Archivos generados:
+-------------------------------------------
+Autoridad Certificadora (CA):
+  Clave privada: ca_private_key.pem
+  Certificado: ca_certificate.pem
+
+Servidor:
+  Clave privada: server_private_key.pem
+  CSR: server_certificate.csr
+  Certificado: server_certificate.pem
+
+Información del Certificado de CA:
+-------------------------------------------
+subject=C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+issuer=C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+notBefore=Dec  3 00:55:40 2025 GMT
+notAfter=Dec  1 00:55:40 2035 GMT
+SHA1 Fingerprint=2F:92:FB:6B:DC:39:BE:E6:28:F3:AF:97:C2:B5:14:CA:EE:9E:27:D8
+
+Información del Certificado del Servidor:
+-------------------------------------------
+subject=C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=IT Department, CN=secure.cybersecure.local
+issuer=C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+notBefore=Dec  3 00:55:41 2025 GMT
+notAfter=Dec  3 00:55:41 2026 GMT
+SHA1 Fingerprint=ED:61:A5:C1:1B:C3:C9:B3:81:B9:6D:76:94:00:02:66:55:B6:D0:EC
+
+[⚙] Verificando cadena de certificados...
+/home/kali/cybersecure-project/asymmetric-encryption/certificates/server_certificate.pem: OK
+[✓] Cadena de certificados válida
+[2025-12-02 19:55:46] Verificación exitosa de la cadena de certificados
+
+[⚙] Generando configuración de referencia para Apache...
+[✓] Configuración de referencia guardada en: apache_ssl_config.txt
+
+================================================
+  CONFIGURACIÓN PKI FINALIZADA
+================================================
+
+[!] PRÓXIMOS PASOS:
+  1. Configurar Apache con los certificados generados
+  2. Ejecutar: 07_secure_backup.sh (opcional)
+  3. Ejecutar: 08_configure_apache_ssl.sh
+  4. Verificar la configuración SSL
+
+[2025-12-02 19:55:46] Configuración PKI completada exitosamente

@@ -1,0 +1,127 @@
+┌──(kali㉿kali)-[~]
+└─$ # Probar conexión SSL
+openssl s_client -connect localhost:443 -servername secure.cybersecure.local
+
+# Verificar certificado
+openssl x509 -in /home/kali/cybersecure-project/asymmetric-encryption/certificates/server_certificate.pem -text -noout
+
+# Probar con curl
+curl -k -I https://secure.cybersecure.local
+Connecting to ::1
+CONNECTED(00000003)
+depth=1 C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+verify error:num=19:self-signed certificate in certificate chain
+verify return:1
+depth=1 C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+verify return:1
+depth=0 C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=IT Department, CN=secure.cybersecure.local
+verify return:1
+---
+Certificate chain
+ 0 s:C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=IT Department, CN=secure.cybersecure.local
+   i:C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+   a:PKEY: RSA, 2048 (bit); sigalg: sha256WithRSAEncryption
+   v:NotBefore: Dec  3 00:55:41 2025 GMT; NotAfter: Dec  3 00:55:41 2026 GMT
+ 1 s:C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+   i:C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+   a:PKEY: RSA, 4096 (bit); sigalg: sha256WithRSAEncryption
+   v:NotBefore: Dec  3 00:55:40 2025 GMT; NotAfter: Dec  1 00:55:40 2035 GMT
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+MIIFBTCCAu2gAwIBAgIUIr/k93XX6yshx21fNrZiPnWG9+YwDQYJKoZIhvcNAQEL
+BQAwgZoxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRYwFAYDVQQH
+DA1TYW4gRnJhbmNpc2NvMSIwIAYDVQQKDBlDeWJlclNlY3VyZSBTb2x1dGlvbnMg
+SW5jMRwwGgYDVQQLDBNTZWN1cml0eSBEZXBhcnRtZW50MRwwGgYDVQQDDBNDeWJl
+clNlY3VyZSBSb290IENBMB4XDTI1MTIwMzAwNTU0MVoXDTI2MTIwMzAwNTU0MVow
+gZkxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRYwFAYDVQQHDA1T
+YW4gRnJhbmNpc2NvMSIwIAYDVQQKDBlDeWJlclNlY3VyZSBTb2x1dGlvbnMgSW5j
+MRYwFAYDVQQLDA1JVCBEZXBhcnRtZW50MSEwHwYDVQQDDBhzZWN1cmUuY3liZXJz
+ZWN1cmUubG9jYWwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCLSZlm
+dDhNoPUOOHbqZAYLR8mk8rJcPrYRrmM/JCN1uH8NBb+TlLn4jPHH1ZiPUZMm6eLU
+gvTiEmABIoNBjVEb0rEtKG34T/VGIYecpkLi8Jh/rpfPZQJwzMouuZAisAe6cb4l
+FT0MP0u9N7NWNcFDW0L6zrJnJmPYRrMGb0lrVeMKXVk7fLMW0M1JzOrdd0QIFCR8
+Y2TymGdfnPMDjmGRSPGll/d5vDHTENChOIl8AggchN1kG/NDJZIv+mVz/qHmkjhm
+34O7MF7P2gc6ReAAjIgd7FdSV3T2Jazc1YbQUYKHW/VNUK0ScGsoV4gZNUK9iaXh
+nTVcU57LDWacmHodAgMBAAGjQjBAMB0GA1UdDgQWBBTyqfLpvh2CYqnjoaLzeMoT
+etBnJzAfBgNVHSMEGDAWgBQ9DOLB7ic6ZpMWbiVSRb6cCk91LTANBgkqhkiG9w0B
+AQsFAAOCAgEANaVoQOEma1w4nOtkM4hqcmB7VSvX3nVaGOulSd5EDd2UDnbkXdLr
+9/yXe4p40pyoMgXnf5QHB5pxcEoOQBeTKiDgTOdwHMauU7stYUBhM5x4imiONbaw
+no/1u2i9FN8NbidbNdm4RsjlGun3NFXhkG7yoyaDubg5VvSUDaCizp7QBF+Gzi3O
+RGksLf3caXProUcZdrEEm4NPsuCnKlPypwgwXyUSEgvo1nKK2hOMmTmreHwuAb4H
+j0BCbavpQpgA1bZ9JS2dxJKod2WTGchdBlt3RVF/L40XAm+fdniiDpGFlbGIa4ZF
+/+CANTQjYCo5eKWGwAIWKCjdAQRKV4FpIb1+j6AiqisEl62WApuKcm2J8JnhfwBJ
+v78/dVDZ62Dj4d+gN1weHYTfD6cvGiS25f55ljPK3Qx0BI8aM7jg0mMzHXXcRlA0
+FgQjJsWZWhBGpY8P8BjtS+zyZ7h7QKyKP4ah+vQfLO7ZOHr6X6RJYYcGhWNJtfC5
+gDYbNAuwrPHRrlmT1hTkdNgRDR1eCCPvN5G01EfhKiOTxibpeIJguOcI/H4sCl+m
+UNga6yPK8Ce/9dTDAc44xDfDfad8u83gIy7aQkR1GosCif1my33dqJOymNuvJxw8
+rjtKQKpwkzXT4ofy0bcRq3b2GXRU5m/Hlf7KUnyJcj8LmDuycVAz/m4=
+-----END CERTIFICATE-----
+subject=C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=IT Department, CN=secure.cybersecure.local
+issuer=C=US, ST=California, L=San Francisco, O=CyberSecure Solutions Inc, OU=Security Department, CN=CyberSecure Root CA
+---
+No client certificate CA names sent
+Peer signing digest: SHA256
+Peer signature type: rsa_pss_rsae_sha256
+Negotiated TLS1.3 group: X25519MLKEM768
+---
+SSL handshake has read 4505 bytes and written 1773 bytes
+Verification error: self-signed certificate in certificate chain
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+Protocol: TLSv1.3
+Server public key is 2048 bit
+This TLS version forbids renegotiation.
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 19 (self-signed certificate in certificate chain)
+---
+---
+Post-Handshake New Session Ticket arrived:
+SSL-Session:
+    Protocol  : TLSv1.3
+    Cipher    : TLS_AES_256_GCM_SHA384
+    Session-ID: 959BEAAD6A2BA5237F3BC80E63A16F8808494566F28517A5BB676C4EBAE00D12
+    Session-ID-ctx: 
+    Resumption PSK: 411154156225EE630C510E844F7FEE88948538E0F69BD3587C78B8CCB4757ADF8562ABF3069670FAE07A3CFAF573D772
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    TLS session ticket lifetime hint: 300 (seconds)
+    TLS session ticket:
+    0000 - c8 fd 32 de 66 3e 8e 03-65 c5 13 d7 05 5a 9e 30   ..2.f>..e....Z.0
+    0010 - 0d 2f be 1b c9 e1 6e ea-7c 59 e7 96 ed 9a eb 9a   ./....n.|Y......
+
+    Start Time: 1764723994
+    Timeout   : 7200 (sec)
+    Verify return code: 19 (self-signed certificate in certificate chain)
+    Extended master secret: no
+    Max Early Data: 0
+---
+read R BLOCK
+---
+Post-Handshake New Session Ticket arrived:
+SSL-Session:
+    Protocol  : TLSv1.3
+    Cipher    : TLS_AES_256_GCM_SHA384
+    Session-ID: F9023CBECB0794BCC0927DB235D1992F31DA0E448BD278A58E916A17A329B7EB
+    Session-ID-ctx: 
+    Resumption PSK: 0A1696D3DB2CD461315E8500FBD5B6520EBF676E6F18652273FF64E7CFD241E8B373F09E50FF1E44AE06CB8C50EF57D7
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    TLS session ticket lifetime hint: 300 (seconds)
+    TLS session ticket:
+    0000 - 94 62 fe 0d 51 17 c5 f9-6b 5b 85 49 1e 09 f1 e9   .b..Q...k[.I....
+    0010 - 9a 7d 8e c4 68 65 99 17-e5 92 9b 1a c1 23 e1 e5   .}..he.......#..
+
+    Start Time: 1764723994
+    Timeout   : 7200 (sec)
+    Verify return code: 19 (self-signed certificate in certificate chain)
+    Extended master secret: no
+    Max Early Data: 0
+---
+read R BLOCK
+

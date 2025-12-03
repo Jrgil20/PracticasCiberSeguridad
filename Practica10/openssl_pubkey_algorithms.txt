@@ -1,0 +1,12 @@
+ Name: OpenSSL RSA method
+	OID: rsaEncryption
+	PEM string: RSA
+ Name: rsa
+	Alias for: rsaEncryption
+ Name: OpenSSL RSA-PSS method
+	OID: rsassaPss
+	PEM string: RSA-PSS
+  Name: OpenSSL RSA implementation
+    IDs: { 1.2.840.113549.1.1.1, 2.5.8.1.1, RSA, rsaEncryption } @ default
+  Name: OpenSSL RSA-PSS implementation
+    IDs: { 1.2.840.113549.1.1.10, RSA-PSS, RSASSA-PSS, rsassaPss } @ default

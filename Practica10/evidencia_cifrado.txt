@@ -1,0 +1,53 @@
+sudo /home/kali/cybersecure-project/scripts/04_encrypt_data.sh /home/kali/cybersecure-project/symmetric-encryption/data/customer_database.txt
+[sudo] password for kali: 
+================================================
+  CIFRADO DE DATOS CON AES-256-CBC
+================================================
+
+Información del archivo:
+  Archivo de entrada: /home/kali/cybersecure-project/symmetric-encryption/data/customer_database.txt
+  Tamaño: 4.0K
+  Archivo de salida: /home/kali/cybersecure-project/symmetric-encryption/encrypted/customer_database.txt_encrypted_20251202_185419.bin
+
+[2025-12-02 18:54:20] Iniciando cifrado de: /home/kali/cybersecure-project/symmetric-encryption/data/customer_database.txt
+[⚙] Cifrando archivo...
+[✓] Archivo cifrado exitosamente
+[2025-12-02 18:54:20] Cifrado exitoso: /home/kali/cybersecure-project/symmetric-encryption/data/customer_database.txt -> /home/kali/cybersecure-project/symmetric-encryption/encrypted/customer_database.txt_encrypted_20251202_185419.bin
+[⚙] Generando hash de verificación...
+[✓] Hash SHA-256 generado
+
+Resultados del cifrado:
+-------------------------------------------
+Archivo original:
+  Ruta: /home/kali/cybersecure-project/symmetric-encryption/data/customer_database.txt
+  Tamaño: 186 bytes
+
+Archivo cifrado:
+  Ruta: /home/kali/cybersecure-project/symmetric-encryption/encrypted/customer_database.txt_encrypted_20251202_185419.bin
+  Tamaño: 208 bytes
+  SHA-256: 2b53629b87c71cd08f05488dfa575eac0ff3a5395a93159ada7c1267606290dd
+
+Parámetros de cifrado:
+  Algoritmo: AES-256-CBC
+  Derivación de clave: PBKDF2
+  Iteraciones: 100,000
+  Salt: Aleatorio (incluido en archivo)
+
+[⚙] Verificando cifrado...
+[✓] Verificación: Archivo cifrado correctamente (datos binarios)
+[✓] Metadatos guardados en: customer_database.txt_encrypted_20251202_185419.bin.metadata
+[2025-12-02 18:54:20] Metadatos creados: /home/kali/cybersecure-project/symmetric-encryption/encrypted/customer_database.txt_encrypted_20251202_185419.bin.metadata
+
+================================================
+  CIFRADO COMPLETADO EXITOSAMENTE
+================================================
+
+[!] RECORDATORIOS:
+  1. El archivo original NO ha sido eliminado
+  2. Elimine manualmente el archivo original si es necesario:
+     shred -vfz -n 3 '/home/kali/cybersecure-project/symmetric-encryption/data/customer_database.txt'
+  3. Mantenga backup de la clave maestra
+  4. Para descifrar use: 05_decrypt_data.sh
+
+[2025-12-02 18:54:20] Proceso de cifrado completado: /home/kali/cybersecure-project/symmetric-encryption/encrypted/customer_database.txt_encrypted_20251202_185419.bin
+                                                                            
