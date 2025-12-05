@@ -1,0 +1,74 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            d4:d3:55:39:a3:e5:6b:61:0e:15:5d:a0:59:51:ec:ee
+        Signature Algorithm: ecdsa-with-SHA256
+        Issuer: C = US, O = Google Trust Services, CN = WE1
+        Validity
+            Not Before: Nov 28 16:23:29 2025 GMT
+            Not After : Feb 26 17:23:27 2026 GMT
+        Subject: CN = www.linuxquestions.org
+        Subject Public Key Info:
+            Public Key Algorithm: id-ecPublicKey
+                Public-Key: (256 bit)
+                pub:
+                    04:19:dc:8e:17:33:4d:26:34:64:dd:d5:a7:82:fd:
+                    6f:72:4e:a6:6b:11:f9:ba:02:37:bd:9c:3e:95:98:
+                    d6:ee:07:b2:70:50:ad:9b:d1:29:ce:06:e2:ad:77:
+                    a2:dd:ae:de:a5:45:81:5e:6d:04:4c:13:05:53:c8:
+                    c7:40:55:39:79
+                ASN1 OID: prime256v1
+                NIST CURVE: P-256
+        X509v3 extensions:
+            X509v3 Key Usage: critical
+                Digital Signature
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                A6:0B:43:9B:48:1A:FA:BF:F8:DC:DB:EE:F1:33:51:A4:DA:2A:6B:8C
+            X509v3 Authority Key Identifier: 
+                90:77:92:35:67:C4:FF:A8:CC:A9:E6:7B:D9:80:79:7B:CC:93:F9:38
+            Authority Information Access: 
+                OCSP - URI:http://o.pki.goog/s/we1/1NM
+                CA Issuers - URI:http://i.pki.goog/we1.crt
+            X509v3 Subject Alternative Name: 
+                DNS:www.linuxquestions.org
+            X509v3 Certificate Policies: 
+                Policy: 2.23.140.1.2.1
+            X509v3 CRL Distribution Points: 
+                Full Name:
+                  URI:http://c.pki.goog/we1/WCuuEb_Odnw.crl
+            CT Precertificate SCTs: 
+                Signed Certificate Timestamp:
+                    Version   : v1 (0x0)
+                    Log ID    : 96:97:64:BF:55:58:97:AD:F7:43:87:68:37:08:42:77:
+                                E9:F0:3A:D5:F6:A4:F3:36:6E:46:A4:3F:0F:CA:A9:C6
+                    Timestamp : Nov 28 17:23:29.507 2025 GMT
+                    Extensions: none
+                    Signature : ecdsa-with-SHA256
+                                30:46:02:21:00:80:03:DA:97:00:F3:F0:39:95:0D:2C:
+                                96:89:63:73:68:E4:97:9E:73:4D:90:12:B2:FB:79:A2:
+                                0C:2E:9A:C6:D1:02:21:00:E1:03:F7:54:B8:EC:69:F1:
+                                9F:2C:F8:4B:23:98:B3:29:9A:2F:66:9D:0D:2E:42:91:
+                                FA:99:8A:A3:03:FA:F1:4A
+                Signed Certificate Timestamp:
+                    Version   : v1 (0x0)
+                    Log ID    : CB:38:F7:15:89:7C:84:A1:44:5F:5B:C1:DD:FB:C9:6E:
+                                F2:9A:59:CD:47:0A:69:05:85:B0:CB:14:C3:14:58:E7
+                    Timestamp : Nov 28 17:23:29.521 2025 GMT
+                    Extensions: none
+                    Signature : ecdsa-with-SHA256
+                                30:46:02:21:00:DA:99:83:E9:76:94:14:65:F0:41:8C:
+                                49:D7:3F:B9:95:1F:E4:5F:CB:3F:EB:03:D5:E9:75:3E:
+                                7F:92:96:E8:71:02:21:00:96:98:1B:50:F0:11:D3:B9:
+                                4A:1F:C8:C1:63:D8:9F:E9:1A:3E:DA:EB:F0:03:33:24:
+                                1B:1F:C5:62:AD:33:51:74
+    Signature Algorithm: ecdsa-with-SHA256
+    Signature Value:
+        30:45:02:21:00:f1:74:24:86:34:2b:6b:bd:76:c9:a9:34:78:
+        0a:b1:b6:4f:f3:79:0f:b7:9f:2a:8f:bd:5a:28:b5:aa:48:66:
+        ce:02:20:36:7d:da:44:22:eb:81:3f:f6:ec:7d:0d:c7:0a:c9:
+        d6:89:e3:95:9b:50:79:a0:34:fa:ad:e3:ea:55:35:d6:cc

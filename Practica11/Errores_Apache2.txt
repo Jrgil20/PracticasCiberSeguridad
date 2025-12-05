@@ -1,0 +1,41 @@
+                                                                             
+┌──(root㉿kali)-[/home/kali]
+└─# systemctl enable apache2
+Synchronizing state of apache2.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable apache2
+Created symlink /etc/systemd/system/multi-user.target.wants/apache2.service → /usr/lib/systemd/system/apache2.service.
+                                                                             
+┌──(root㉿kali)-[/home/kali]
+└─# systemctl status apache2
+○ apache2.service - The Apache HTTP Server
+     Loaded: loaded (/usr/lib/systemd/system/apache2.service; enabled; prese>
+     Active: inactive (dead)
+       Docs: https://httpd.apache.org/docs/2.4/
+
+                                                                             
+┌──(root㉿kali)-[/home/kali]
+└─# systemctl start apache2 
+                                                                             
+┌──(root㉿kali)-[/home/kali]
+└─# systemctl status apache2
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/usr/lib/systemd/system/apache2.service; enabled; prese>
+     Active: active (running) since Fri 2025-12-05 08:30:24 EST; 2s ago
+       Docs: https://httpd.apache.org/docs/2.4/
+    Process: 13244 ExecStart=/usr/sbin/apachectl start (code=exited, status=>
+   Main PID: 13260 (apache2)
+      Tasks: 6 (limit: 4612)
+     Memory: 19.6M (peak: 19.9M)
+        CPU: 74ms
+     CGroup: /system.slice/apache2.service
+             ├─13260 /usr/sbin/apache2 -k start
+             ├─13263 /usr/sbin/apache2 -k start
+             ├─13264 /usr/sbin/apache2 -k start
+             ├─13265 /usr/sbin/apache2 -k start
+             ├─13266 /usr/sbin/apache2 -k start
+             └─13267 /usr/sbin/apache2 -k start
+
+Dec 05 08:30:24 kali systemd[1]: Starting apache2.service - The Apache HTTP >
+Dec 05 08:30:24 kali apachectl[13259]: AH00558: apache2: Could not reliably >
+Dec 05 08:30:24 kali systemd[1]: Started apache2.service - The Apache HTTP S>
+lines 1-20/20 (END)

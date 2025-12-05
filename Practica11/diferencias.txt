@@ -1,0 +1,1474 @@
+--- original_index.html       2025-12-05 08:59:09.107398533 -0500
++++ cloned_index.html   2025-12-05 08:57:45.153439227 -0500
+@@ -1 +1,1468 @@
+-<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{box-sizing:border-box;margin:0;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%;color:#313131;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"}body{display:flex;flex-direction:column;height:100vh;min-height:100vh}.main-content{margin:8rem auto;padding-left:1.5rem;max-width:60rem}@media (width <= 720px){.main-content{margin-top:4rem}}.h2{line-height:2.25rem;font-size:1.5rem;font-weight:500}@media (width <= 720px){.h2{line-height:1.5rem;font-size:1.25rem}}#challenge-error-text{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI0IyMEYwMyIgZD0iTTE2IDNhMTMgMTMgMCAxIDAgMTMgMTNBMTMuMDE1IDEzLjAxNSAwIDAgMCAxNiAzbTAgMjRhMTEgMTEgMCAxIDEgMTEtMTEgMTEuMDEgMTEuMDEgMCAwIDEtMTEgMTEiLz48cGF0aCBmaWxsPSIjQjIwRjAzIiBkPSJNMTcuMDM4IDE4LjYxNUgxNC44N0wxNC41NjMgOS41aDIuNzgzem0tMS4wODQgMS40MjdxLjY2IDAgMS4wNTcuMzg4LjQwNy4zODkuNDA3Ljk5NCAwIC41OTYtLjQwNy45ODQtLjM5Ny4zOS0xLjA1Ny4zODktLjY1IDAtMS4wNTYtLjM4OS0uMzk4LS4zODktLjM5OC0uOTg0IDAtLjU5Ny4zOTgtLjk4NS40MDYtLjM5NyAxLjA1Ni0uMzk3Ii8+PC9zdmc+");background-repeat:no-repeat;background-size:contain;padding-left:34px}@media (prefers-color-scheme: dark){body{background-color:#222;color:#d9d9d9}}</style><meta http-equiv="refresh" content="360"></head><body><div class="main-wrapper" role="main"><div class="main-content"><noscript><div class="h2"><span id="challenge-error-text">Enable JavaScript and cookies to continue</span></div></noscript></div></div><script>(function(){window._cf_chl_opt = {cvId: '3',cZone: 'www.linuxquestions.org',cType: 'managed',cRay: '9a940ffcea872524',cH: 'oSwSK7fcsBoW7kA1JBLeijrEM1Yghe_1tUgJJmoXXE8-1764943149-1.2.1.1-ydwSbMYTviHN2pRnJq8hfuZgU4pwrP4f5wmRxDLiaDdxnfP7u46yUgNcuTtbDpu4',cUPMDTk:"\/?__cf_chl_tk=Y6KSiCcpkgTMIojT2Hw_biPP_QBWjK_A5rxJ_3o0xIE-1764943149-1.0.1.1-OLRf0vLY2V5P0MzjGWNhCr0CCEhqN9W.d2AJ5ybWoV0",cFPWv: 'g',cITimeS: '1764943149',cTplC:0,cTplV:5,cTplB: '0',fa:"\/?__cf_chl_f_tk=Y6KSiCcpkgTMIojT2Hw_biPP_QBWjK_A5rxJ_3o0xIE-1764943149-1.0.1.1-OLRf0vLY2V5P0MzjGWNhCr0CCEhqN9W.d2AJ5ybWoV0",md: '64zGP8iYrkxaYG_pQbnVX7HV4L0GArNXd6sowKgZzu4-1764943149-1.2.1.1-rpGL2HGAZm0zxN6ZQkySCISSSA0Ru74NYWsurGM9gC7fN3ywhN3wIIsJaBobIQ4p4Auvn9QytcNfmvOeB2nY5.3vby3kNt5abzmaO54rpHYY7v6_dJ91g.fkGqbZWbHLoCqTVBPZWuWuMhhXijZRJfccQoAha1w._lNxy5gLN0hnRybkKkzJLLrB5ObCAsvOVcfkgMl0k1p35mIOFvgFLdJqDK4VE9MmiQ4uaP9edGNXKtZHDcO2Wsz_Oy_IJiS_Pc7pvR5vwh8nSukY5EaZoa0le9hQmp3rQZSN1PRi2KruT7r7uWgGJ5UIYMbGuqrLpba0ZZl21c57.2bUDAt8.zEhTijax5OuqaizOHvJXAjPauWGemKW0F9.mKticj4ZACX6ghPFvZ8bS6k0ntiJol8ubVtggLbJfOkiWJLGh6GdwJk4fqhT7IIuZuwHInQNdZ55nTd2ntXHUHF5Px5ekUOMhQJIbRjid6DpdzgdR0mKYxQv5v5AjWCe17IQE4TKxUy.XPvaLBinqQO3WbRCV6WtUPENQZT_kI8PUCq4jurDJXeaPq.K0jeyds3kimCx2VvO496VlrogknBB1LM9dvLx40Bi2e7oFpnafPAbkONoq6eZ1NH6x7WlmPLcy5YbzLkd5RA4ZevVvTsSBaosD37BSnYjtQ8uCDBa8SemqF15aC2xdjDRDPlNrWSeRSL1e_zas6X18XaTaqer1be_nB4aW3IQiP3lVCUCgkQJT_IPV.j7yBiCEvC4mpNfDsBMSmT8jyD3WFDDo2HIS_jsmyjaSyQBq1zAXen2.Y5sujoA6T.TR.RGhu5HYhCbyer7G3Ir_h2xVmV01q3CKD3br0UaxSix45vnPBEEry0rLqLjM3ImRbTWF11FFcoaBI4j9pS_zBoA0V_XAU4leUL6AA',mdrd: '5furii3RyKNF3UMK_2lerlwt0wHNmo9OD.e6.Lwtlx8-1764943149-1.2.1.1-RNdD9r_eNLu6b9GeGy_BzYoHZ_8WuPpNjRNqY.7hgPv9yoKnXCfiL_soea0Cvg88TkpdqY_0Q98z6mF0qP6_Zzi7HcvGcSRJ6uY.31ArphgoI4MXUuXMnFXZgwxzTqudxmO9YYqj8exMe77X4zERpjWVXyKhIXFgwfar2.9N2a1DAqa5H3Ysc31esr0Z3EFhe2nfD6hGwiobNVCLi5SrsuqqwOy0WOtpvCoDck1IU1tFQx34X46J9g9UDPlHot9tPMDmUmwMoSY6UIFO5_uX_zDqjrxIgclVhQXYqLHLIRC9NI_uQK2PC2OO_el6RMFHkNi.9pimgkYYBbRvQ.WZk1vR6XPmlrLAuNDU2gTiD4imsF4lfqs8kkyRp8Wn4W1kspC6M9oLQyLSp_Y5BZMMwz5.LWiGCgXuujnDLevFoy4_t9Wux4Jz8W5M4y9RtJLYheqvjqt4Cy9i31oxm3wE8e1AjNtSehx.7_Th3J56XkUEE2CvR.HVTusqpbLqHjlW6MHzLN9RBs4z.2P.YQP6EOLJCcxJ.3M.hHutiErl8y6bX_izJ2TN_LXy2t13gpUp3QPWLIo4ItBd1F7HZ0vbwEBwtyDnDEjsbZOL2cFgjcJCIecmzoGM.bpzpSJF1AdmTFbYjRPOKdhX57lRcRGLaOGkRd24SLcmM3jsh0TQYUxNNgdKMsHkO2cgNbBe3lQ9ArXg.8e68bB.6p4xBQaoh6jmF4XTTx84QouTng2u7HrtlJqrnSt_OzPBoHBi5KmoVsYKOJqKOwHuDU4xIv7U6kS1wFOdD3AyAbJ_3e_bODeIZWn1Ws1eycHbtglEIWpRucsFMr2_yZ9Hoa9wGIQQ8Hgv7uuu3pXiD67anJWthQba9gECuPbJrnlaf2PjyiudjKP0ZIBOcLMdYJ9jVJX7SM6bq52VT33_2GIAZjCB9TCHDaqWeFBtpIud96IhoNEktdfPWyDIUrzwKewpHK8jO7HbDKqUhBTs7BQdrjwrCM3593I0nH3ZRof9gJujcax1Nd0bgwEz5Tb0vOTvt.1uEoPtU2a38G.KX6cuSJ5.LsfTLy6Z6qGhyOcqgc6z86m80L7LGcdk23qwn0B5ouhLeEOa7rEn.U_oY1aqn.qjCSBnB4mUxbuzYxv.6Lc4tehTJRbmGx8dH6Fzx26x54CM7JNpkKBlAdEcGxtP.9sW1zeqfOFcOBU3kUPQ_jotjB4aiAPOkkpzZAeQrkf05.6SDGFJd8GkgOSyW5lMluIbfypqALR1PwNm1ms7MNQ96bI72VR297eCdbQE.7gOiTU.SsZ06PVQYq20zSQ8vBUY6vsFeNs4lWXye.xv4r2L0ELd3SqT6eRpzQAspcPu.mkLLAgn9_cs40U3e7HQyXDVXeRHNY5JFlHumYeMw_3Xj0P4K0_EuylEmUuOrs6kx_PHklbn6drG2wX8R1CYkmlU_TiGhcdWtBwymr7BDvQRkEPmvxNk1E2XaeFtLb584KMkNyohBDmn_low4Mc4S.ExObnI9urDgElQJCbnNONRUE3BZI.oND6Sr_YakylPkO3G_rFBW2BL_u2vWqnTVMuu9mIc.9RZMbrLDfZA7KnkkLSbCFu.RbOFTK_WOu34bAHP8lbfp_eHkoNXg9EXdcOxh61tMkxnTahqVZ6QsjA4mUO3KuMalhzsZaF127tP5j.SZot7GuaXxIvidGfaFUmEhzvp0va9kCZYn7kfvgHgjZNOfH.yIN4tZlnM2t.XPdLQyFGFb1i6JMw7EBTMYSxtwzKAGEhJuJWJPKbXzseSmAQoeD0gnpVmreW21c7NnZlIFJY0lm3KDtQJhyqCUjAxv4ZeR6Yj3DNpyxBcVxl0FfwaNKStEmI.OkkBKWqdlaW1xqWXLuwUf9VoykV5Qh80G931gGOEARXzDVmKS6zKu7GO5Gm0b3UDV3qagobjEtcVDl3ix2wjVzcMLq6dWhjkHA5An8sX9XT8EoOUWvxoBXT_D3cl71rFUA5ayBvTt.dE55DjZplTHo.FBKjeR_hn5GIOcp35xVgkFYChNVcYVpoKjdT5dbJczUBIF3bHbtCQvHO_bYpKj3C_qzlXvWAunaufx6LsouZhVI1QNE1FVJB0naiHAvCv3Oh06Mcx.JJMaL2iS6dHY6vjn4MAm0Ky4blLJOJ0Whyy4uy7imq0VSRX9zuFa1OO8DSV9y9oBh2y17yJT_UyUkLYHRO2MVsMa2D1ui1kpBj_8ayuO7GFQN573xym3ZchkRo6XJqf5uaErgWoyJA2qAgbf23Wvxdz8i7vZ93BqQhGkXASgKoSkUXfJt3TpJfTStXTLMTkPqmBdoznLzrp0K3_RFQLMGFxedknf6Zgu9hFs2DC3ljhDv2sFRtLhsBBFjcLKGSxhr5OnneHtdCB75pUS7pOkoRxHwisdfYC9pvBrveIV3PrpxKdfbYzVoFey.y2vlMy3WhG0Gs9.JmKjfGnJlbnDmZZHyGU4gQwHrFy_YoLHBXiiuz_joaFJ7i5Qy57COUoBbhX7QsLfL7SoQMiaLHIkJsNtR0bkl4tJQdNaaXxKX4XuPdsTFEThPCdDx8FeZ6ZOrS47snUMMiajtpjRDihnOWxn37tDbXuIwzX1TA7r1aGLGLiytx9JLji55NHS0jNCviQUw',};var a = document.createElement('script');a.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1?ray=9a940ffcea872524';window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;history.replaceState(null, null,"\/?__cf_chl_rt_tk=Y6KSiCcpkgTMIojT2Hw_biPP_QBWjK_A5rxJ_3o0xIE-1764943149-1.0.1.1-OLRf0vLY2V5P0MzjGWNhCr0CCEhqN9W.d2AJ5ybWoV0"+ window._cf_chl_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());</script></body></html>
+\ No newline at end of file
++<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
++<html dir="ltr" lang="en" xmlns="http://www.w3.org/1999/xhtml">
++<head>
++
++       <meta http-equiv="Cache-Control" content="no-cache" />
++       <meta http-equiv="Pragma" content="no-cache" />
++       <meta http-equiv="Expires" content="0" />
++
++
++<title>LinuxQuestions.org </title>
++
++<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
++
++<meta name="keywords" content="Linux,how to,tutorial,operating system,linux,red hat,mandrake,security,linux help,installation,question,forum" />
++<meta name="description" content="LinuxQuestions.org offers a free Linux forum where Linux newbies can ask questions and Linux experts can offer advice. Topics include security, installation, networking and much more." />
++
++
++<!-- CSS Stylesheet -->
++<style type="text/css" id="vbulletin_css">
++/**
++* vBulletin 3.8.10 Beta 1 CSS
++* Style: 'LQ Style - child of default'; Style ID: 7
++*/
++body
++{
++       background: #FFFFFF;
++       color: #000000;
++       font: 10pt Verdana,Arial,Helvetica,sans-serif;
++       margin: 5px 10px 10px 10px;
++       padding: 0px;
++}
++a:link, body_alink
++{
++       color: #22229C;
++}
++a:visited, body_avisited
++{
++       color: #22229C;
++}
++a:hover, a:active, body_ahover
++{
++       color: #FF3300;
++}
++.page
++{
++       background: #FFFFFF;
++       color: #000000;
++       border:0px
++}
++.tborder
++{
++       background: #FFFFFF;
++       color: #000000;
++       border: 1px solid #0B198C;
++}
++.tcat
++{
++       background: #354F81 url(https://www.linuxquestions.org/questions/images/gradients/gradient_tcat.gif) repeat-x top left;
++       color: #FFFFFF;
++       font-weight: bold;
++}
++.tcat a:link, .tcat_alink
++{
++       color: #ffffff;
++       text-decoration: none;
++}
++.tcat a:visited, .tcat_avisited
++{
++       color: #ffffff;
++       text-decoration: none;
++}
++.tcat a:hover, .tcat a:active, .tcat_ahover
++{
++       color: #FFFF66;
++       text-decoration: underline;
++}
++.thead
++{
++       background: #354F81 url(https://www.linuxquestions.org/questions/images/gradients/gradient_thead.gif) repeat-x top left;
++       color: #FFFFFF;
++       font-size: 11px;
++       font-weight: bold;
++}
++.thead a:link, .thead_alink
++{
++       color: #FFFFFF;
++}
++.thead a:visited, .thead_avisited
++{
++       color: #FFFFFF;
++}
++.thead a:hover, .thead a:active, .thead_ahover
++{
++       color: #FFFF00;
++}
++.tfoot
++{
++       background: #3E5C92;
++       color: #E0E0F6;
++}
++.tfoot a:link, .tfoot_alink
++{
++       color: #E0E0F6;
++}
++.tfoot a:visited, .tfoot_avisited
++{
++       color: #E0E0F6;
++}
++.tfoot a:hover, .tfoot a:active, .tfoot_ahover
++{
++       color: #FFFF66;
++}
++.alt1, .alt1Active
++{
++       background: #E6E6E6;
++       color: #000000;
++       font-size: 10pt;
++       padding:3px;
++}
++.alt2, .alt2Active
++{
++       background: #CFD9FF;
++       color: #000000;
++       font-size: 10pt;
++       padding:3px;
++}
++.inlinemod
++{
++       background: #FFFFCC;
++       color: #000000;
++}
++.wysiwyg
++{
++       background: #F5F5FF;
++       color: #000000;
++       font-size: 10pt;
++}
++textarea, .bginput
++{
++       font-size: 10pt;
++}
++.bginput option, .bginput optgroup
++{
++       font-size: 10pt;
++}
++.button
++{
++       font-size: 11px;
++}
++select
++{
++       font-size: 11px;
++}
++option, optgroup
++{
++       font-size: 11px;
++}
++.smallfont
++{
++       font-size: 11px;
++}
++.time
++{
++       color: #666686;
++}
++.navbar
++{
++       font-size: 11px;
++}
++.highlight
++{
++       color: #FF0000;
++       font-weight: bold;
++}
++.fjsel
++{
++       background: #3E5C92;
++       color: #E0E0F6;
++}
++.fjdpth0
++{
++       background: #F7F7F7;
++       color: #000000;
++}
++.panel
++{
++       background: #E6E6E6;
++       color: #000000;
++       border: 2px outset;
++}
++.panelsurround
++{
++       background: #D5D8E5;
++       color: #000000;
++}
++legend
++{
++       color: #22229C;
++       font-size: 11px;
++}
++.vbmenu_control
++{
++       background: #354F81 url(https://www.linuxquestions.org/questions/images/gradients/gradient_tcat.gif) repeat-x top left;
++       color: #FFFFFF;
++       font-size: 11px;
++       font-weight: bold;
++       padding: 3px 6px 3px 6px;
++       white-space: nowrap;
++}
++.vbmenu_control a:link, .vbmenu_control_alink
++{
++       color: #FFFFFF;
++       text-decoration: none;
++}
++.vbmenu_control a:visited, .vbmenu_control_avisited
++{
++       color: #FFFFFF;
++       text-decoration: none;
++}
++.vbmenu_control a:hover, .vbmenu_control a:active, .vbmenu_control_ahover
++{
++       color: #FFFFFF;
++       text-decoration: underline;
++}
++.vbmenu_popup
++{
++       background: #FFFFFF;
++       color: #000000;
++       border: 1px solid #0B198C;
++}
++.vbmenu_option
++{
++       background: #BBC7CE;
++       color: #000000;
++       font-size: 11px;
++       white-space: nowrap;
++       cursor: pointer;
++}
++.vbmenu_option a:link, .vbmenu_option_alink
++{
++       color: #22229C;
++       text-decoration: none;
++}
++.vbmenu_option a:visited, .vbmenu_option_avisited
++{
++       color: #22229C;
++       text-decoration: none;
++}
++.vbmenu_option a:hover, .vbmenu_option a:active, .vbmenu_option_ahover
++{
++       color: #FFFFFF;
++       text-decoration: none;
++}
++.vbmenu_hilite
++{
++       background: #8A949E;
++       color: #FFFFFF;
++       font-size: 11px;
++       white-space: nowrap;
++       cursor: pointer;
++}
++.vbmenu_hilite a:link, .vbmenu_hilite_alink
++{
++       color: #FFFFFF;
++       text-decoration: none;
++}
++.vbmenu_hilite a:visited, .vbmenu_hilite_avisited
++{
++       color: #FFFFFF;
++       text-decoration: none;
++}
++.vbmenu_hilite a:hover, .vbmenu_hilite a:active, .vbmenu_hilite_ahover
++{
++       color: #FFFFFF;
++       text-decoration: none;
++}
++/* ***** styling for 'big' usernames on postbit etc. ***** */
++.bigusername { font-size: 12pt; }
++
++/* ***** small padding on 'thead' elements ***** */
++td.thead, div.thead { padding: 4px; }
++
++/* ***** basic styles for multi-page nav elements */
++.pagenav a { text-decoration: none; }
++.pagenav td { padding: 2px 4px 2px 4px; }
++
++/* ***** define margin and font-size for elements inside panels ***** */
++.fieldset { margin-bottom: 6px; }
++.fieldset, .fieldset td, .fieldset p, .fieldset li { font-size: 11px; }
++
++/* ***** don't change the following ***** */
++form { display: inline; }
++label { cursor: default; }
++.normal { font-weight: normal; }
++.inlineimg { vertical-align: middle; }
++ul.lqrightmenu a{text-decoration:none;font-size:10pt}
++ul.lqrightmenu{padding-left:10px;margin-left:10px;font-size:4pt}
++div.lqitemlabel{font-size:12pt;font-weight:bold}
++.lqvsmallfont{font-size:8pt}
++.alt1 .bbcodeblock{background-color:#CFD9FF}
++.alt2 .bbcodeblock{background-color:#E6E6E6}
++
++td.lqtags{font-size:8pt}
++</style>
++<link rel="stylesheet" type="text/css" href="https://www.linuxquestions.org/questions/clientscript/vbulletin_important.css?v=3810b1" />
++
++
++<!-- / CSS Stylesheet -->
++
++<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/yui/2.9.0/yahoo-dom-event/yahoo-dom-event.js?v=3810b1"></script>
++<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/yui/2.9.0/connection/connection-min.js?v=3810b1"></script>
++<script type="text/javascript">
++<!--
++var SESSIONURL = "s=a73d0e4fb7b0e5255bfea2f2b5564cb4&";
++var SECURITYTOKEN = "guest";
++var IMGDIR_MISC = "https://www.linuxquestions.org/questions/images/misc";
++var vb_disable_ajax = parseInt("0", 10);
++// -->
++</script>
++
++<script type="text/javascript" src="https://www.linuxquestions.org/questions/clientscript/vbulletin_global.js?v=3810b1"></script>
++<script type="text/javascript" src="https://www.linuxquestions.org/questions/clientscript/vbulletin_menu.js?v=3810b1"></script>
++<link rel="shortcut icon" href="https://www.linuxquestions.org/favicon.ico" type="image/x-icon" />
++<link rel="alternate" type="application/rss+xml" title="LQ Latest Threads" href="https://www.linuxquestions.org/syndicate/lqlatest.xml" />
++<link rel="alternate" type="application/rss+xml" title="LQ News and Articles" href="https://www.linuxquestions.org/syndicate/lqnews.rss" />
++<link rel="alternate" type="application/rss+xml" title="LQ Zero Reply Threads" href="https://www.linuxquestions.org/syndicate/lqnoreplies.xml" />
++<link rel="search" type="application/opensearchdescription+xml" title="LinuxQuestions.org" href="https://www.linuxquestions.org/lq-osd.xml" />
++
++
++
++
++
++<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4420048478783872"
++     crossorigin="anonymous"></script>
++<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4420048478783872"
++     crossorigin="anonymous"></script>
++
++
++
++<script>
++ (function(h,o,u,n,d) {
++   h=h[d]=h[d]||{q:[],onReady:function(c){h.q.push(c)}}
++   d=o.createElement(u);d.async=1;d.src=n
++   n=o.getElementsByTagName(u)[0];n.parentNode.insertBefore(d,n)
++})(window,document,'script','https://www.datadoghq-browser-agent.com/datadog-rum.js','DD_RUM')
++  DD_RUM.onReady(function() {
++    DD_RUM.init({
++      clientToken: 'pubdfe3d3f97883d30bebd7d86fb4401f1d',
++      applicationId: '86c29c7b-d36b-44bb-a819-211494f32b57',
++      site: 'datadoghq.com',
++      service: 'LQ',
++      sampleRate: 100,
++      trackInteractions: true,
++    })
++  })
++</script>
++<script type="text/javascript">
++<!--
++function vba_attach_win(threadid)
++{
++       openWindow('https://www.linuxquestions.org/questions/misc.php?s=a73d0e4fb7b0e5255bfea2f2b5564cb4&amp;do=showattachments&t=' + threadid, 480, 300);
++}
++-->
++</script><script type="text/javascript">
++<!--
++function bb2_addLoadEvent(func) {
++       var oldonload = window.onload;
++       if (typeof window.onload != 'function') {
++               window.onload = func;
++       } else {
++               window.onload = function() {
++                       oldonload();
++                       func();
++               }
++       }
++}
++
++bb2_addLoadEvent(function() {
++       for ( i=0; i < document.forms.length; i++ ) {
++               if (document.forms[i].method == 'post') {
++                       var myElement = document.createElement('input');
++                       myElement.setAttribute('type', 'hidden');
++                       myElement.name = 'bb2_screener_';
++                       myElement.value = '1764941994 200.2.8.164 200.2.8.164, 172.71.238.103, 35.244.195.25, 35.191.75.182';
++                       document.forms[i].appendChild(myElement);
++               }
++       }
++});
++// --></script>
++               
++<script type="text/javascript" src="https://www.linuxquestions.org/questions/clientscript/vbulletin_lightbox.js?v=3810b1"></script>
++
++
++<script type="text/javascript"><!--
++window.google_analytics_uacct = 'UA-71419-4'; var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-71419-4'], ['_trackPageview'], ['_trackPageLoadTime']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
++//--></script>
++</head>
++<body>
++
++<div id="header"></div>
++<!-- logo -->
++<a name="top"></a>
++<table border="0" width="100%" cellpadding="0" cellspacing="0" align="center">
++<tr>
++    <td align="left"><a href="https://www.linuxquestions.org/questions/"><img src="https://www.linuxquestions.org/questions/images/LinuxQuestions.png" border="0" alt="LinuxQuestions.org" /></a></td>
++    <td align="right">
++     <div align="right">Welcome to the most active <strong><a href="https://www.linuxquestions.org/questions/">Linux Forum</a></strong> on the web.</div>
++    </td>
++</tr>
++</table>
++<!-- /logo -->
++<!--INFOLINKS_OFF-->
++<!-- content table -->
++<!-- open content container -->
++
++<div align="center">
++       <div class="page" style="width:100%; text-align:left">
++               <div style="padding:0px 0px 0px 0px" align="left">
++
++
++
++
++
++<div class="vbmenu_popup" id="vbbloglinks_menu" style="display:none;margin-top:3px" align="left">
++       <table cellpadding="4" cellspacing="1" border="0">
++       <tr>
++               <td class="thead"><a href="https://www.linuxquestions.org/questions/blog/">Blogs</a></td>
++       </tr>
++       
++       <tr>
++               <td class="vbmenu_option"><a href="https://www.linuxquestions.org/questions/blog/recent-entries/">Recent Entries</a></td>
++       </tr>
++       <tr>
++               <td class="vbmenu_option"><a href="https://www.linuxquestions.org/questions/blog/best-entries/">Best Entries</a></td>
++       </tr>
++       <tr>
++               <td class="vbmenu_option"><a href="https://www.linuxquestions.org/questions/blog/best-blogs/">Best Blogs</a></td>
++       </tr>
++       <tr>
++               <td class="vbmenu_option"><a href="https://www.linuxquestions.org/questions/blog/all/">Blog List</a></td>
++       </tr>
++       
++       <tr>
++               <td class="vbmenu_option"><a rel="nofollow" href="https://www.linuxquestions.org/questions/blog_search.php?do=search">Search Blogs</a></td>
++       </tr>
++       
++       </table>
++</div>
++
++<script type="text/javascript">
++<!--
++function log_out()
++{
++    ht = document.getElementsByTagName("html");
++    ht[0].style.filter = "progid:DXImageTransform.Microsoft.BasicImage(grayscale=1)";
++    if (confirm('Are you sure you want to log out?'))
++    {
++        return true;
++    }
++    else
++    {
++        ht[0].style.filter = "";
++        return false;
++    }
++}
++//-->
++</script>
++<div style="text-align:center;margin-bottom:15px" align="center"> 
++</div>
++<div id="995afa2479" class="pagefair-acceptable"></div>
++
++<!-- START: LQ Table Top -->
++<table cellpadding="0" cellspacing="0" border="0" width="100%" align="center">
++<tr>
++<td class="page" valign="top">
++<!-- END: LQ Table Top -->
++<!-- nav buttons bar -->
++<div align="center">
++       <table class="tborder" cellpadding="3" cellspacing="0" border="0" width="100%" align="center" style="border-top-width:0px">
++       <tr align="center">
++               <td class="vbmenu_control"><a href="index.html" accesskey="1">Home</a></td>
++               <td class="vbmenu_control"><a href="https://www.linuxquestions.org/questions/">Forums</a></td>
++<!--           <td class="vbmenu_control"><a href="/reviews/">Reviews</a></td> -->
++               <td class="vbmenu_control"><a href="https://www.linuxquestions.org/linux/answers/">Tutorials</a></td>
++               <td class="vbmenu_control"><a href="https://www.linuxquestions.org/linux/articles/">Articles</a></td>
++               
++                       <td class="vbmenu_control"><a href="https://www.linuxquestions.org/questions/register.php" rel="nofollow">Register</a></td>
++               
++                               
++                       
++                               <td id="navbar_search" class="vbmenu_control"><a href="https://www.linuxquestions.org/questions/search.php" accesskey="4" rel="nofollow">Search</a> <script type="text/javascript"> vbmenu_register("navbar_search"); </script></td>
++                       
++                       
++               
++               
++       </tr>
++       </table>
++</div>
++<!-- / nav buttons bar -->
++
++
++<!-- NAVBAR POPUP MENUS -->
++       
++       
++       <!-- header quick search form -->
++       <div class="vbmenu_popup" id="navbar_search_menu" style="display:none">
++               <table cellpadding="4" cellspacing="1" border="0">
++               <tr>
++                       <td class="thead">Search Forums</td>
++               </tr>
++               <tr>
++                       <td class="vbmenu_option" title="nohilite">
++                       <form action="http://192.168.100.8/search.php" method="post">
++                               <input type="hidden" name="do" value="process" />
++                               <input type="hidden" name="showposts" value="1" />
++                               <input type="hidden" name="quicksearch" value="1" />
++                               <input type="hidden" name="s" value="a73d0e4fb7b0e5255bfea2f2b5564cb4" />
++                               <input type="hidden" name="searchdate" value="560" />
++                               <input type="hidden" name="beforeafter" value="after" />
++       <input type="hidden" name="securitytoken" value="guest" />
++                               <input type="text" class="bginput" name="query" size="20" /><input type="submit" class="button" value="Go"  /><br />
++                       </form>
++                       </td>
++               </tr>
++               <tr>
++                       <td class="vbmenu_option"><a href="https://www.linuxquestions.org/questions/search.php" accesskey="4" rel="nofollow">Advanced Search</a></td>
++               </tr>
++
++               <tr>
++                       <td class="thead">Search Tags</td>
++               </tr>
++               <tr>
++                       <td class="vbmenu_option" title="nohilite"><form action="http://192.168.100.8/search.php" method="post"><input type="text" class="bginput" name="tag" size="20" /><input type="hidden" name="do" value="process" /><input type="hidden" name="posttags" value="1" /><input type="hidden" name="s" value="a73d0e4fb7b0e5255bfea2f2b5564cb4" />
++       <input type="hidden" name="securitytoken" value="guest" /><input type="submit" class="button" value="Go"  /><br /></form>
++                       </td>
++               </tr>
++
++               <tr>
++                       <td class="thead">Search LQ Wiki</td>
++               </tr>
++<!--           <tr>
++                       <td class="vbmenu_option" title="nohilite">
++            <form action="http://wiki.linuxquestions.org/wiki/Special:Search">
++              <input name="fulltext" value="Search" type="hidden">              <input name="search" class="bginput" type="text" size="20"><input type="submit" class="button" value="Go"  /><br />
++            </form>
++                       </td>
++               </tr> -->
++
++               <tr>
++                       <td class="thead">Search Tutorials/Articles</td>
++               </tr>
++               <tr>
++                       <td class="vbmenu_option" title="nohilite">
++               <form action="http://192.168.100.8/node" method="post">
++                       <input name="op" value="Search" type="hidden">
++                       <input class="bginput" name="edit[keys]" size="20" type="text"><input type="submit" class="button" value="Go"  /><br />
++               </form>
++                       </td>
++               </tr>
++
++               <tr>
++                       <td class="thead">Search Reviews</td>
++               </tr>
++               <tr>
++                       <td class="vbmenu_option" title="nohilite">
++               <form method="get" action="https://www.linuxquestions.org/reviews/showcat.php">
++                       <input name="cat" value="all" type="hidden">
++                       <input name="stype" value="1" type="hidden">
++                       <input name="si" size="20" class="bginput" type="text"><input type="submit" class="button" value="Go"  /><br />
++               </form>
++                       </td>
++               </tr>
++
++               <tr>
++                       <td class="thead">Search ISOs</td>
++               </tr>
++<!--           <tr>
++                       <td class="vbmenu_option" title="nohilite">
++               <form method="get" action="http://iso.linuxquestions.org/search.php">
++                       <input name="query" size="20" class="bginput" type="text"><input type="submit" class="button" value="Go"  /><br />
++               </form>
++                       </td>
++               </tr> -->
++               </table>
++       </div>
++       <!-- / header quick search form -->
++       
++
++       
++<!-- / NAVBAR POPUP MENUS -->
++
++<!-- PAGENAV POPUP -->
++
++       <div class="vbmenu_popup" id="pagenav_menu" style="display:none">
++               <table cellpadding="4" cellspacing="1" border="0">
++               <tr>
++                       <td class="thead" nowrap="nowrap">Go to Page...</td>
++               </tr>
++               <tr>
++                       <td class="vbmenu_option" title="nohilite">
++                       <form action="https://www.linuxquestions.org/index.php" method="get" onsubmit="return this.gotopage()" id="pagenav_form">
++                               <input type="text" class="bginput" id="pagenav_itxt" style="font-size:11px" size="4" />
++                               <input type="button" class="button" id="pagenav_ibtn" value="Go" />
++                       </form>
++                       </td>
++               </tr>
++               </table>
++       </div>
++
++<!-- / PAGENAV POPUP -->
++
++
++<!-- breadcrumb, login, pm info -->
++<table class="tborder" cellpadding="3" cellspacing="1" border="0" width="100%" align="center" style="border-top:0px">
++<tr>
++       <td class="alt1" width="100%">
++               
++                       <div class="navbar" style="font-size:10pt"><a href="https://www.linuxquestions.org/questions/" accesskey="1"><img class="inlineimg" src="https://www.linuxquestions.org/questions/images/misc/navbits_start.gif" alt="" border="0" /></a> <strong>LinuxQuestions.org - where Linux users come for help</strong></div>
++               
++       </td>   
++       
++       
++               
++               <td class="alt2" nowrap="nowrap" style="padding:0px">
++                       
++               <!-- login form -->
++               <form action="http://192.168.100.8/login.php" method="post" onsubmit="md5hash(vb_login_password, vb_login_md5password, vb_login_md5password_utf, 0)">
++               <script type="text/javascript" src="https://www.linuxquestions.org/questions/clientscript/vbulletin_md5.js?v=3810b1"></script>
++               <table cellpadding="0" cellspacing="3" border="0">
++               <tr>
++                       <td class="smallfont">User Name</td>
++                       <td><input type="text" class="bginput" style="font-size: 11px" name="vb_login_username" id="navbar_username" size="10" accesskey="u" tabindex="101" value="User Name" onfocus="if (this.value == 'User Name') this.value = '';" /></td>
++                       <td class="smallfont" colspan="2" nowrap="nowrap"><label for="cb_cookieuser_navbar"><input type="checkbox" name="cookieuser" value="1" tabindex="103" id="cb_cookieuser_navbar" accesskey="c" checked="checked" />Remember Me?</label></td>
++               </tr>
++               <tr>
++                       <td class="smallfont">Password</td>
++                       <td><input type="password" class="bginput" style="font-size: 11px" name="vb_login_password" size="10" accesskey="p" tabindex="102" /></td>
++                       <td><input type="submit" class="button" value="Log in" tabindex="104" title="Enter your username and password in the boxes provided to login, or click the 'register' button to create a profile for yourself." accesskey="s" /></td>
++               </tr>
++               </table>
++               <input type="hidden" name="s" value="a73d0e4fb7b0e5255bfea2f2b5564cb4" />
++       <input type="hidden" name="securitytoken" value="guest" />
++               <input type="hidden" name="do" value="login" />         
++               <input type="hidden" name="vb_login_md5password" />
++               <input type="hidden" name="vb_login_md5password_utf" />
++               </form>
++               <!-- / login form -->
++                       
++               </td>
++               
++               
++       
++</tr>
++</table>
++<!-- / breadcrumb, login, pm info -->
++
++
++
++
++
++       <br />
++       <table class="tborder" cellpadding="3" cellspacing="1" border="0" width="100%" align="center">
++       <tr>
++               <td class="thead">Notices</td>
++       </tr>
++       <tr>
++               <td class="alt1"><div class="navbar_notice" id="navbar_notice_1">
++       Welcome to <strong>LinuxQuestions.org</strong>, a friendly and active Linux Community. <br /><br />
++You are currently viewing LQ as a guest.  By joining our community you will have the ability to post topics, receive our newsletter, use the advanced search, subscribe to threads and access many other special features. Registration is quick, simple and absolutely free. <a href="https://www.linuxquestions.org/questions/register.php"><strong>Join our community</strong></a> today!<br /><br />
++<strong>Note that registered members see fewer ads, and ContentLink is completely disabled once you log in.</strong><br /><br />
++Are you new to LinuxQuestions.org?  Visit the following links:<br />
++<a href="https://www.linuxquestions.org/linux/answers/LinuxQuestions_org/How_to_Use_LinuxQuestions_org">Site Howto</a> |
++<a href="https://www.linuxquestions.org/questions/faq.php">Site FAQ</a> |
++<a href="https://www.linuxquestions.org/linux/sitemap.html">Sitemap</a> | 
++<a href="https://www.linuxquestions.org/questions/register.php">Register Now</a>
++<br /><br />If you have any problems with the registration process or your account login, please <a href="https://www.linuxquestions.org/questions/sendmessage.php">contact us</a>.  If you need to reset your password, <a rel="nofollow" href="https://www.linuxquestions.org/questions/login.php?do=lostpw">click here</a>.<br /><br />
++<strong>Having a problem logging in? Please visit <a href="https://www.linuxquestions.org/removecookies.php">this page</a> to clear all LQ-related cookies.</strong>
++</div><div class="navbar_notice" id="navbar_notice_18">
++       <br />
++<!--
++<table>
++<tr><td>
++<a href="http://linuxquestions.tradepub.com/free/w_mach01/prgm.cgi" rel="nofollow"><img src="//www.linuxquestions.org/ads/w_mach01c.gif" border="0" align="left" /></a></td><td>
++
++<em>Introduction to Linux - A Hands on Guide</em>
++<br /><br />
++This guide was created as an overview of the Linux Operating System, geared toward new users as an exploration tour and getting started guide, with exercises at the end of each chapter.
++For more advanced trainees it can be a desktop reference, and a collection of the base knowledge needed to proceed with system and network administration. This book contains many real life examples derived from the author's experience as a Linux system and network administrator, trainer and consultant. They hope these examples will help you to get a better understanding of the Linux system and that you feel encouraged to try out things on your own. 
++<br />
++
++<br /><br />
++<a href="http://linuxquestions.tradepub.com/free/w_mach01/" rel="nofollow" target="_blank">Click Here</a> to receive this Complete Guide absolutely free.</td></tr>
++</table>
++-->
++
++Get a <a href="https://www.shells.com/l/en-US/linux-questions-org-exclusive?_a=RCzIFy" rel="nofollow" target="_blank">virtual cloud desktop</a> with the Linux distro that you want in less than five minutes with Shells! With over 10 pre-installed distros to choose from, the worry-free installation life is here! Whether you are a digital nomad or just looking for flexibility, Shells can put your Linux machine on the device that you want to use.
++<br /></br />
++Exclusive for LQ members, get up to 45% off per month. <a href="https://www.shells.com/l/en-US/linux-questions-org-exclusive?_a=RCzIFy" rel="nofollow">Click here</a> for more info.
++<br /></br />
++</div> <div style="text-align: center; width: 100%"> <br /> 
++</div></td>
++       </tr>
++       </table>
++
++
++
++       <br />
++
++<!-- <div style="text-align:center;margin-bottom:15px"> 
++google_leaderboard_white_text
++</div>-->
++<div class="KonaBody"><!--INFOLINKS_ON-->
++
++
++
++<table align="center" class="page" cellspacing="0" cellpadding="0" width="100%">
++       <tr valign="top">
++               
++                       <td width="175" style="padding-right: 15px">
++                               <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++       <thead>
++               <tr>
++                       <td class="tcat" colspan="0">   
++                       <span class="smallfont"><strong>FAQ</strong></span></td>
++               </tr>
++       </thead>
++       <tbody id="collapseobj_module-hpleft1" style="">
++<tr>
++
++<td class="alt1">
++<div class="smallfont">
++Visit the most active <a href="https://www.linuxquestions.org/questions/">Linux Forum</a> on the web!<br /><br />
++Q. How much is membership?<br />
++A. There is absolutely no cost associated with becoming a member.<br />
++<br />
++Q. Do I HAVE to register?<br />
++A. No, but becoming a member does have its benefits.<br />
++<br />
++Q. What are the benefits of registration?<br />
++A. - You cannot post without being a member.<br />
++   - You become part of a community.<br />
++   - You can give something back.<br />
++   - You can subscribe to threads and receive email updates.<br />
++   - The board keeps track of which threads you have read.<br />
++   - Much More!<br />
++<br />
++Q. Where do I signup?<br />
++A. Right <a href="https://www.linuxquestions.org/questions/register.php">here</a>.<br />
++<br />
++Q. Do you have a sitemap?<br />
++A. Our <a href="https://www.linuxquestions.org/linux/sitemap.html">sitemap</a>
++</div>
++</td>
++</tr>  
++       </tbody>
++</table>
++<br />
++<table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++       <thead>
++               <tr>
++                       <td class="tcat" colspan="0">   
++                       <span class="smallfont"><strong>We Sponsor</strong></span></td>
++               </tr>
++       </thead>
++       <tbody id="collapseobj_module-hpleft2" style="">
++<tr>
++<td class="alt1">
++<div class="smallfont" align="center">
++
++<a href="http://bit.ly/opensource19eu" rel="nofollow" target="_blank"><img src="https://www.linuxquestions.org/ads/OSSEU_Ads1_250x250.png" border="0" alt="Open Source Summit" /><br /><br/ >
++
++
++<br />
++</div>
++</td>
++</tr>  
++       </tbody>
++</table>
++<br /><form action="http://192.168.100.8/search.php" method="post" name="search"> <input name="s" type="hidden" value="" /> <input name="do" type="hidden" value="process" /> <input name="sortby" type="hidden" value="lastpost" /> <input name="forumchoice" type="hidden" value="0" /><input type="hidden" name="securitytoken" value="guest" />
++
++<div style="padding-bottom:15px">
++       <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++               <thead>
++                       <tr>
++                               <td class="tcat" colspan="0">
++                               
++                                       <a href="index.html#top" onclick="return toggle_collapse('module_10')" style="float:right"><img alt="" border="0" id="collapseimg_module_10" src="https://www.linuxquestions.org/questions/images/buttons/collapse_tcat.gif" /></a>
++                               
++                               <span class="smallfont"><strong>&raquo; <a href="https://www.linuxquestions.org/questions/search.php">Search Forums</a></strong></span></td>
++                       </tr>
++               </thead>
++               <tbody id="collapseobj_module_10" style="">
++                       
++                               <tr>
++<td class="alt2">
++       <input class="bginput" name="query" size="13" type="text" /> <input type="submit" class="button" value="Go"  />
++       <div class="smallfont">&raquo; <a href="https://www.linuxquestions.org/questions/search.php">Advanced Search</a></div>
++</td>
++</tr>
++                       
++               </tbody>
++       </table>
++</div>
++</form>
++                       </td>
++               
++               
++                       <td valign="top">
++                               <script src="https://www.linuxquestions.org/questions/clientscript/vbulletin_md5.js" type="text/javascript"></script> <form action="http://192.168.100.8/login.php" method="post" onsubmit="md5hash(vb_login_password,vb_login_md5password)"> <input name="vb_login_md5password" type="hidden" /> <input name="s" type="hidden" value="" /> <input name="do" type="hidden" value="login" /><input type="hidden" name="securitytoken" value="guest" />
++
++<div style="padding-bottom:15px">
++       <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++               <thead>
++                       <tr>
++                               <td class="tcat" colspan="2">
++                               
++                                       <a href="index.html#top" onclick="return toggle_collapse('module_9')" style="float:right"><img alt="" border="0" id="collapseimg_module_9" src="https://www.linuxquestions.org/questions/images/buttons/collapse_tcat.gif" /></a>
++                               
++                               <span class="smallfont"><strong>&raquo; Log in</strong></span></td>
++                       </tr>
++               </thead>
++               <tbody id="collapseobj_module_9" style="">
++                       
++                               <tr>
++       <td class="alt1">
++
++               
++
++                       <table width="100%" cellspacing="3" cellpadding="0">
++                               <tr>
++                                       <td style="white-space: nowrap" class="smallfont">User Name</td>
++                                       <td><input class="bginput" name="vb_login_username" size="12" type="text" tabindex="577" /></td>
++                                       <td style="white-space: nowrap" class="smallfont"><input checked="checked" class="bginput" name="cookieuser" id="cb_cookieuser" type="checkbox" value="1" /><label for="cb_cookieuser">Remember Me?</label></td>
++                                       <td align="center" rowspan="2" width="100%">Not a member yet?<br />
++<a href="https://www.linuxquestions.org/questions/register.php">Register Now!</a></td>
++                               </tr>
++                               <tr>
++                                       <td class="smallfont">Password</td>
++                                       <td><input class="bginput" name="vb_login_password" size="12" type="password" tabindex="578" /></td>
++                                       <td><input class="button" type="submit" value="Log in" tabindex="579" /></td>
++                               </tr>
++                       </table>
++
++               
++
++       </td>
++</tr>
++
++                       
++               </tbody>
++       </table>
++</div>
++</form><div id="vba_news4">
++
++<div style="padding-bottom:15px">
++       <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++               <thead>
++                       <tr>
++                               <td class="tcat" colspan="0">
++                               
++                                       <a href="index.html#top" onclick="return toggle_collapse('module_4_4175708100')" style="float:right"><img alt="" border="0" id="collapseimg_module_4_4175708100" src="https://www.linuxquestions.org/questions/images/buttons/collapse_tcat.gif" /></a>
++                               
++                               <span class="smallfont"><strong>  <a href="https://www.linuxquestions.org/questions/linux-news-59/2021-linuxquestions-org-members-choice-award-winners-4175708100/">2021 LinuxQuestions.org Members Choice Award Winners</a></strong></span></td>
++                       </tr>
++               </thead>
++               <tbody id="collapseobj_module_4_4175708100" style="">
++                       
++                               
++<tr>
++       <td class="thead">
++               
++               Feb 15, 2022 - 7:30 PM - by <a href="https://www.linuxquestions.org/questions/user/jeremy-1/" rel="nofollow">jeremy</a>
++       </td>
++</tr>
++<tr>
++       <td align="left" class="alt1" valign="top">
++               
++               
++               The polls are closed and the results are in. We once again had some extremely close races (and multiple ties) and the large number of new categories this year certainly kept things interesting. Congratulations to each and every nominee. The official results:<br />
++<br />
++<div style="margin:20px; margin-top:5px; ">
++       <div class="smallfont" style="margin-bottom:2px">Quote:</div>
++       <table cellpadding="3" cellspacing="0" border="0" width="100%">
++       <tr>
++               <td class="bbcodeblock" style="border:1px inset"></td></tr></table></div>... <span class="smallfont">[<a href="https://www.linuxquestions.org/questions/linux-news-59/2021-linuxquestions-org-members-choice-award-winners-4175708100/">Read More</a>]</span>
++
++               
++
++               </td>
++       </tr>
++
++       
++
++       <tr class="alt2" valign="middle">
++       <td valign="middle">
++               <span style="float:right">
++               
++
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/sendmessage.php?do=sendtofriend&amp;t=4175708100"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/sendtofriend.gif" title="Send to Friend" /></a>
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/linux-news-59/2021-linuxquestions-org-members-choice-award-winners-4175708100-print/"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/printer.gif" title="Show Printable Version" /></a>
++               
++               </span>
++
++               <span class="smallfont">
++               26 Replies | 31,673 Views</span>
++       </td>
++</tr>
++                       
++               </tbody>
++       </table>
++</div>
++
++
++<div style="padding-bottom:15px">
++       <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++               <thead>
++                       <tr>
++                               <td class="tcat" colspan="0">
++                               
++                                       <a href="index.html#top" onclick="return toggle_collapse('module_4_4175690667')" style="float:right"><img alt="" border="0" id="collapseimg_module_4_4175690667" src="https://www.linuxquestions.org/questions/images/buttons/collapse_tcat.gif" /></a>
++                               
++                               <span class="smallfont"><strong>  <a href="https://www.linuxquestions.org/questions/linux-news-59/2020-linuxquestions-org-members-choice-award-winners-4175690667/">2020 LinuxQuestions.org Members Choice Award Winners</a></strong></span></td>
++                       </tr>
++               </thead>
++               <tbody id="collapseobj_module_4_4175690667" style="">
++                       
++                               
++<tr>
++       <td class="thead">
++               
++                       <span style="float:right">
++                               
++                                       <img alt="" src="https://www.linuxquestions.org/questions/images/rating/rating_5.gif" title="Thread Rating: 2 votes, 5.00 average." />
++                               
++
++                               
++                       </span>
++               
++               Feb 17, 2021 - 12:36 PM - by <a href="https://www.linuxquestions.org/questions/user/jeremy-1/" rel="nofollow">jeremy</a>
++       </td>
++</tr>
++<tr>
++       <td align="left" class="alt1" valign="top">
++               
++               
++               The polls are closed and the results are in. We once again had some extremely close races (including our first 3 way tie) and the large number of new categories this year certainly kept things interesting. Congratulations to each and every nominee. The official results:<br />
++<br />
++<div style="margin:20px; margin-top:5px; ">
++       <div class="smallfont" style="margin-bottom:2px">Quote:</div>
++       <table cellpadding="3" cellspacing="0" border="0" width="100%">
++       <tr>
++               <td class="bbcodeblock" style="border:1px inset"></td></tr></table></div>... <span class="smallfont">[<a href="https://www.linuxquestions.org/questions/linux-news-59/2020-linuxquestions-org-members-choice-award-winners-4175690667/">Read More</a>]</span>
++
++               
++
++               </td>
++       </tr>
++
++       
++
++       <tr class="alt2" valign="middle">
++       <td valign="middle">
++               <span style="float:right">
++               
++
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/sendmessage.php?do=sendtofriend&amp;t=4175690667"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/sendtofriend.gif" title="Send to Friend" /></a>
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/linux-news-59/2020-linuxquestions-org-members-choice-award-winners-4175690667-print/"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/printer.gif" title="Show Printable Version" /></a>
++               
++               </span>
++
++               <span class="smallfont">
++               36 Replies | 63,569 Views</span>
++       </td>
++</tr>
++                       
++               </tbody>
++       </table>
++</div>
++
++
++<div style="padding-bottom:15px">
++       <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++               <thead>
++                       <tr>
++                               <td class="tcat" colspan="0">
++                               
++                                       <a href="index.html#top" onclick="return toggle_collapse('module_4_4175669458')" style="float:right"><img alt="" border="0" id="collapseimg_module_4_4175669458" src="https://www.linuxquestions.org/questions/images/buttons/collapse_tcat.gif" /></a>
++                               
++                               <span class="smallfont"><strong>  <a href="https://www.linuxquestions.org/questions/linux-news-59/2019-linuxquestions-org-members-choice-award-winners-4175669458/">2019 LinuxQuestions.org Members Choice Award Winners</a></strong></span></td>
++                       </tr>
++               </thead>
++               <tbody id="collapseobj_module_4_4175669458" style="">
++                       
++                               
++<tr>
++       <td class="thead">
++               
++                       <span style="float:right">
++                               
++                                       <img alt="" src="https://www.linuxquestions.org/questions/images/rating/rating_5.gif" title="Thread Rating: 4 votes, 4.50 average." />
++                               
++
++                               
++                       </span>
++               
++               Feb 12, 2020 - 12:19 PM - by <a href="https://www.linuxquestions.org/questions/user/jeremy-1/" rel="nofollow">jeremy</a>
++       </td>
++</tr>
++<tr>
++       <td align="left" class="alt1" valign="top">
++               
++               
++               The polls are closed and the results are in. We once again had some extremely close races (including 2 ties) and the large number of new categories this year certainly kept things interesting. Congratulations to each and every nominee. The official results:<br />
++<br />
++<div style="margin:20px; margin-top:5px; ">
++       <div class="smallfont" style="margin-bottom:2px">Quote:</div>
++       <table cellpadding="3" cellspacing="0" border="0" width="100%">
++       <tr>
++               <td class="bbcodeblock" style="border:1px inset"></td></tr></table></div>... <span class="smallfont">[<a href="https://www.linuxquestions.org/questions/linux-news-59/2019-linuxquestions-org-members-choice-award-winners-4175669458/">Read More</a>]</span>
++
++               
++
++               </td>
++       </tr>
++
++       
++
++       <tr class="alt2" valign="middle">
++       <td valign="middle">
++               <span style="float:right">
++               
++
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/sendmessage.php?do=sendtofriend&amp;t=4175669458"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/sendtofriend.gif" title="Send to Friend" /></a>
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/linux-news-59/2019-linuxquestions-org-members-choice-award-winners-4175669458-print/"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/printer.gif" title="Show Printable Version" /></a>
++               
++               </span>
++
++               <span class="smallfont">
++               17 Replies | 86,485 Views</span>
++       </td>
++</tr>
++                       
++               </tbody>
++       </table>
++</div>
++
++
++<div style="padding-bottom:15px">
++       <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++               <thead>
++                       <tr>
++                               <td class="tcat" colspan="0">
++                               
++                                       <a href="index.html#top" onclick="return toggle_collapse('module_4_4175656444')" style="float:right"><img alt="" border="0" id="collapseimg_module_4_4175656444" src="https://www.linuxquestions.org/questions/images/buttons/collapse_tcat.gif" /></a>
++                               
++                               <span class="smallfont"><strong>  <a href="https://www.linuxquestions.org/questions/linux-news-59/linuxquestions-org-turns-nineteen-4175656444/">LinuxQuestions.org Turns Nineteen</a></strong></span></td>
++                       </tr>
++               </thead>
++               <tbody id="collapseobj_module_4_4175656444" style="">
++                       
++                               
++<tr>
++       <td class="thead">
++               
++                       <span style="float:right">
++                               
++                                       <img alt="" src="https://www.linuxquestions.org/questions/images/rating/rating_3.gif" title="Thread Rating: 2 votes, 3.00 average." />
++                               
++
++                               
++                       </span>
++               
++               Jun 26, 2019 - 3:20 PM - by <a href="https://www.linuxquestions.org/questions/user/jeremy-1/" rel="nofollow">jeremy</a>
++       </td>
++</tr>
++<tr>
++       <td align="left" class="alt1" valign="top">
++               
++               
++               I'm proud to announce that LQ turned 19 yesterday! Id like to once again thank each and every LQ member for their participation and feedback. While there is always room for improvement, that LQ has remained a friendly and welcoming place for new Linux members despite its constantly growing member-base and geographic distribution is a testament to the community.<br />
++<br />
++To say that feedback has been absolutely critical to our success is an understatement. As has become tradition, I'd... <span class="smallfont">[<a href="https://www.linuxquestions.org/questions/linux-news-59/linuxquestions-org-turns-nineteen-4175656444/">Read More</a>]</span>
++
++               
++
++               </td>
++       </tr>
++
++       
++
++       <tr class="alt2" valign="middle">
++       <td valign="middle">
++               <span style="float:right">
++               
++
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/sendmessage.php?do=sendtofriend&amp;t=4175656444"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/sendtofriend.gif" title="Send to Friend" /></a>
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/linux-news-59/linuxquestions-org-turns-nineteen-4175656444-print/"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/printer.gif" title="Show Printable Version" /></a>
++               
++               </span>
++
++               <span class="smallfont">
++               69 Replies | 87,398 Views</span>
++       </td>
++</tr>
++                       
++               </tbody>
++       </table>
++</div>
++
++
++<div style="padding-bottom:15px">
++       <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++               <thead>
++                       <tr>
++                               <td class="tcat" colspan="0">
++                               
++                                       <a href="index.html#top" onclick="return toggle_collapse('module_4_4175648153')" style="float:right"><img alt="" border="0" id="collapseimg_module_4_4175648153" src="https://www.linuxquestions.org/questions/images/buttons/collapse_tcat.gif" /></a>
++                               
++                               <span class="smallfont"><strong>  <a href="https://www.linuxquestions.org/questions/linux-news-59/2018-linuxquestions-org-members-choice-award-winners-4175648153/">2018 LinuxQuestions.org Members Choice Award Winners</a></strong></span></td>
++                       </tr>
++               </thead>
++               <tbody id="collapseobj_module_4_4175648153" style="">
++                       
++                               
++<tr>
++       <td class="thead">
++               
++                       <span style="float:right">
++                               
++                                       <img alt="" src="https://www.linuxquestions.org/questions/images/rating/rating_4.gif" title="Thread Rating: 3 votes, 3.67 average." />
++                               
++
++                               
++                       </span>
++               
++               Feb 12, 2019 - 1:07 PM - by <a href="https://www.linuxquestions.org/questions/user/jeremy-1/" rel="nofollow">jeremy</a>
++       </td>
++</tr>
++<tr>
++       <td align="left" class="alt1" valign="top">
++               
++               
++               The polls are closed and the results are in. We once again had some extremely close races and the large number of new categories this year certainly kept things interesting. Congratulations to each and every nominee. The official results:<br />
++<br />
++<div style="margin:20px; margin-top:5px; ">
++       <div class="smallfont" style="margin-bottom:2px">Quote:</div>
++       <table cellpadding="3" cellspacing="0" border="0" width="100%">
++       <tr>
++               <td class="bbcodeblock" style="border:1px inset"></td></tr></table></div>... <span class="smallfont">[<a href="https://www.linuxquestions.org/questions/linux-news-59/2018-linuxquestions-org-members-choice-award-winners-4175648153/">Read More</a>]</span>
++
++               
++
++               </td>
++       </tr>
++
++       
++
++       <tr class="alt2" valign="middle">
++       <td valign="middle">
++               <span style="float:right">
++               
++
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/sendmessage.php?do=sendtofriend&amp;t=4175648153"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/sendtofriend.gif" title="Send to Friend" /></a>
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/linux-news-59/2018-linuxquestions-org-members-choice-award-winners-4175648153-print/"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/printer.gif" title="Show Printable Version" /></a>
++               
++               </span>
++
++               <span class="smallfont">
++               32 Replies | 108,089 Views</span>
++       </td>
++</tr>
++                       
++               </tbody>
++       </table>
++</div>
++
++
++<div style="padding-bottom:15px">
++       <table align="center" border="0" cellpadding="3" cellspacing="1" class="tborder" width="100%">
++               <thead>
++                       <tr>
++                               <td class="tcat" colspan="0">
++                               
++                                       <a href="index.html#top" onclick="return toggle_collapse('module_4_4175632663')" style="float:right"><img alt="" border="0" id="collapseimg_module_4_4175632663" src="https://www.linuxquestions.org/questions/images/buttons/collapse_tcat.gif" /></a>
++                               
++                               <span class="smallfont"><strong>  <a href="https://www.linuxquestions.org/questions/linux-news-59/linuxquestions-org-turns-eighteen-4175632663/">LinuxQuestions.org Turns Eighteen</a></strong></span></td>
++                       </tr>
++               </thead>
++               <tbody id="collapseobj_module_4_4175632663" style="">
++                       
++                               
++<tr>
++       <td class="thead">
++               
++                       <span style="float:right">
++                               
++                                       <img alt="" src="https://www.linuxquestions.org/questions/images/rating/rating_5.gif" title="Thread Rating: 2 votes, 5.00 average." />
++                               
++
++                               
++                       </span>
++               
++               Jun 25, 2018 - 8:46 PM - by <a href="https://www.linuxquestions.org/questions/user/jeremy-1/" rel="nofollow">jeremy</a>
++       </td>
++</tr>
++<tr>
++       <td align="left" class="alt1" valign="top">
++               
++               
++               I'm proud to announce that LQ turned 18 today! Id like to once again thank each and every LQ member for their participation and feedback. While there is always room for improvement, that LQ has remained a friendly and welcoming place for new Linux members despite its size is a testament to the community.<br />
++<br />
++To say that feedback has been absolutely critical to our success is an understatement. As has become tradition, I'd like to use this thread to collect as much feedback as... <span class="smallfont">[<a href="https://www.linuxquestions.org/questions/linux-news-59/linuxquestions-org-turns-eighteen-4175632663/">Read More</a>]</span>
++
++               
++
++               </td>
++       </tr>
++
++       
++
++       <tr class="alt2" valign="middle">
++       <td valign="middle">
++               <span style="float:right">
++               
++
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/sendmessage.php?do=sendtofriend&amp;t=4175632663"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/sendtofriend.gif" title="Send to Friend" /></a>
++               
++
++               
++                       <a rel="nofollow" href="https://www.linuxquestions.org/questions/linux-news-59/linuxquestions-org-turns-eighteen-4175632663-print/"><img alt="" border="0" src="https://www.linuxquestions.org/questions/images/buttons/printer.gif" title="Show Printable Version" /></a>
++               
++               </span>
++
++               <span class="smallfont">
++               64 Replies | 138,070 Views</span>
++       </td>
++</tr>
++                       
++               </tbody>
++       </table>
++</div>
++</div>
++       <script type="text/javascript">
++       <!--
++       vBulletin.register_control("vB_Lightbox_Container", "vba_news4", 1);
++       //-->
++       </script>
++                       </td>
++               
++               
++       </tr>
++</table>
++
++<!-- Do NOT remove this copyright notice. Doing so is a violation of your user agreement! -->
++
++<div align="center" class="smallfont"> </div></div>
++
++<br />
++<div align="center"><span style="float: left; margin-left: 20%;"></span>&nbsp;&nbsp;<span style="float: left; margin-left: 20px;"> </span></div><br />
++<div style="clear: both;"><br /></div>
++
++<br />
++<div class="smallfont" align="center">All times are GMT -5. The time now is <span class="time">08:39 AM</span>.</div>
++<br />
++<!-- /content area table -->
++
++<form action="https://www.linuxquestions.org/index.php" method="get">
++<table cellpadding="3" cellspacing="0" border="0" width="100%" class="page" align="center">
++<tr>
++       
++       
++       <td class="tfoot" align="right" width="100%">
++               <div class="smallfont">
++                       <strong>
++                               <a href="https://www.linuxquestions.org/questions/sendmessage.php" rel="nofollow">Contact Us</a> -
++                               <a href="https://www.linuxquestions.org/linux/adinfo.html">Advertising Info</a> - 
++                               <a href="https://www.linuxquestions.org/linux/rules.html">Rules</a> - <a href="https://www.linuxquestions.org/linux/privacy.html">Privacy</a> - 
++                               <a href="http://www.zazzle.com/linuxquestions* " rel="nofollow">LQ Merchandise</a> - 
++                               <a href="https://www.linuxquestions.org/linux/donation.html">Donations</a> - 
++                               <a href="https://www.linuxquestions.org/linux/member.html">Contributing Member</a> - 
++                               <a href="https://www.linuxquestions.org/linux/sitemap.html" rel="nofollow">LQ Sitemap</a> - 
++                               
++                               
++                               
++                       </strong>
++               </div>
++       </td>
++</tr>
++</table>
++
++</form>
++
++
++<!-- START: LQ Table Bottom -->
++</td>
++<td width="165px" class="page" style="padding-left:5px" valign="top">
++<table style="margin-bottom:5px" cellpadding="2" cellspacing="0" border="0" width="100%" class="tborder" align="center">
++<tr><td class="vbmenu_control">Main Menu</td></tr>
++<tr><td class="alt1">
++<ul class="lqrightmenu">
++<li><a href="https://www.linuxquestions.org/questions/">Linux Forum</a></li>
++<li><a href="https://www.linuxquestions.org/questions/search.php">Search</a></li>
++<li><a href="https://www.linuxquestions.org/questions/tags/" rel="nofollow">LQ Tags</a></li>
++<li><a href="https://www.linuxquestions.org/linux/answers/">Linux Tutorials</a></li>
++<li><a href="https://deals.linuxquestions.org/" target="_blank">LQ Deals</a></li>
++<li><a href="http://wiki.linuxquestions.org/">Linux Wiki</a></li>
++<!-- <li><a href="/reviews/index.php/cat/2">Distro Reviews</a></li>
++<li><a href="/reviews/index.php/cat/15">Book Reviews</a></li> -->
++<li><a href="http://iso.linuxquestions.org/">Download Linux</a></li>
++<!-- <li><a href="http://radio.linuxquestions.org/linux/lq-podcasts/">Linux Podcast</a></li> -->
++<li><a href="https://www.linuxquestions.org/questions/groups/">Social Groups</a></li>
++<li><a href="https://www.linuxquestions.org/questions/blog/">LQ Blogs</a></li>
++<!-- <li><a href="http://radio.linuxquestions.org/">LQ Radio</a></li> -->
++</ul>
++<div align="center"><a href="index.html#main_cont">(Con't)</a></div>
++</td></tr>
++</table>
++
++
++<div style="text-align:center;margin-bottom:5px">
++<table style="margin-bottom:5px" cellpadding="2" cellspacing="0" border="0" width="100%" class="tborder" align="center">
++<tr><td class="vbmenu_control">Advertisement</td></tr></table>
++</div>
++
++
++
++<div style="text-align:center;margin-bottom:5px">
++<table style="margin-bottom:5px" cellpadding="2" cellspacing="0" border="0" width="100%" class="tborder" align="center">
++<tr><td class="vbmenu_control">Advertisement</td></tr></table></div>
++<div style="text-align:center;margin-bottom:5px" class="alt1">
++
++</div>
++
++
++<!-- netseer_side -->
++
++<table style="margin-bottom:5px" cellpadding="2" cellspacing="0" border="0" width="100%" class="tborder" align="center">
++<tr><td class="vbmenu_control">My LQ</td></tr>
++<tr><td class="alt1"><ul class="lqrightmenu">
++<li><a href="https://www.linuxquestions.org/questions/lqlogin.php">Login</a></li>
++<li><a href="https://www.linuxquestions.org/questions/register.php">Register</a></li>
++
++</ul>
++<div style="text-align:center;margin-bottom:5px" class="alt1">
++
++</div>
++</td></tr>
++</table>
++
++<table style="margin-bottom:5px" cellpadding="2" cellspacing="0" border="0" width="100%" class="tborder" align="center">
++<tr><td class="vbmenu_control">Write for LQ</td></tr>
++<tr><td class="alt1">
++LinuxQuestions.org is looking for people interested in writing
++Editorials, Articles, Reviews, and more. If you'd like to contribute
++content, <a href="https://www.linuxquestions.org/questions/sendmessage.php">let us know</a>.
++</td></tr>
++</table>
++
++<table style="margin-bottom:5px" cellpadding="2" cellspacing="0" border="0" width="100%" class="tborder" align="center">
++<tr><td class="vbmenu_control" id="main_cont">Main Menu</td></tr>
++<tr><td class="alt1">
++<ul class="lqrightmenu">
++<li><a href="https://www.linuxquestions.org/questions/calendar.php">LQ Calendar</a></li>
++<li><a href="https://www.linuxquestions.org/linux/rules.html">LQ Rules</a></li>
++<li><a href="https://www.linuxquestions.org/linux/sitemap.html">LQ Sitemap</a></li>
++<li><a href="https://www.linuxquestions.org/questions/faq.php">Site FAQ</a></li>
++<li><a rel="nofollow" href="https://www.linuxquestions.org/questions/search.php?do=getnew">View New Posts</a></li>
++<li><a rel="nofollow" href="https://www.linuxquestions.org/questions/lqsearch.php?do=getnew&amp;daysprune=7">View Latest Posts</a></li>
++<li><a rel="nofollow" href="https://www.linuxquestions.org/questions/lqsearch.php?do=noreplies">Zero Reply Threads</a></li>
++<li><a href="http://wiki.linuxquestions.org/wiki/Special:Wantedpages">LQ Wiki Most Wanted</a></li>
++<li><a href="http://jeremy.linuxquestions.org/">Jeremy's Blog</a></li>
++<li><a href="https://www.linuxquestions.org/questions/project.php">Report LQ Bug</a></li>
++</ul>
++</td></tr>
++</table>
++<table style="margin-bottom:5px" cellpadding="2" cellspacing="0" border="0" width="100%" class="tborder" align="center">
++<tr><td class="vbmenu_control">Syndicate</td></tr>
++<tr><td class="alt1">
++<a href="http://www.linuxquestions.org/syndicate/lqlatest.xml"><img src="https://www.linuxquestions.org/questions/images/misc/rss.gif" alt="RSS1" border="0" width="16" height="16" /></a>&nbsp; Latest Threads<br />
++<a href="http://www.linuxquestions.org/syndicate/lqnews.rss"><img src="https://www.linuxquestions.org/questions/images/misc/rss.gif" alt="RSS1" border="0" width="16" height="16" /></a>&nbsp; LQ News<br />
++<!-- <a href="http://radio.linuxquestions.org/syndicate/lqpodcast.php"><img src="https://www.linuxquestions.org/questions/images/misc/rss.gif" alt="RSS2" border="0" width="16" height="16" /></a>&nbsp; LQ Podcast<br />
++<a href="http://radio.linuxquestions.org/syndicate/lqradio.php"><img src="https://www.linuxquestions.org/questions/images/misc/rss.gif" alt="RSS2" border="0" width="16" height="16" /></a>&nbsp; LQ Radio<br /> -->
++<div class="smallfont">Twitter: <a href="http://twitter.com/linuxquestions" rel="nofollow">@linuxquestions</a><br />
++
++</div>
++</td></tr>
++</table>
++</td>
++</tr>
++</table>
++<!-- END: LQ Table Bottom -->
++
++
++               </div>
++       </div>
++</div>
++
++<!-- / close content container -->
++
++<div align="center">
++       <div class="smallfont" align="center">
++<a href="http://www.lqconsulting.com/">Open Source Consulting</a> |
++<a href="http://www.lqconsulting.com/client/check.php">Domain Registration</a>
++</div><br /><br />
++       
++       <div class="smallfont" align="center">
++       
++       </div>
++</div>
++
++
++<script type="text/javascript">
++<!--
++       // Main vBulletin Javascript Initialization
++       vBulletin_init();
++//-->
++</script>
++
++
++
++<!-- Google tag (gtag.js) -->
++<script async src="https://www.googletagmanager.com/gtag/js?id=G-2K5S76M65W"></script>
++<script>
++  window.dataLayer = window.dataLayer || [];
++  function gtag(){dataLayer.push(arguments);}
++  gtag('js', new Date());
++
++  gtag('config', 'G-2K5S76M65W');
++</script>
++
++
++<!-- vBadvanced 2-9-9-5 -->
++
++<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a93f3c39a24a9e4',t:'MTc2NDk0MTk5Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
++</html>
+\ No newline at end of file

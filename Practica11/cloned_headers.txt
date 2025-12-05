@@ -1,0 +1,6 @@
+HTTP/1.0 501 Unsupported method ('HEAD')
+Server: BaseHTTP/0.6 Python/3.11.8
+Date: Fri, 05 Dec 2025 14:06:42 GMT
+Connection: close
+Content-Type: text/html;charset=utf-8
+Content-Length: 357
