@@ -1,4 +1,4 @@
-# Auditoría de Implementación: Sistema Integral de Gestión Criptográfica y Web Segura
+# **Práctica Nro. 10: Criptografía Simétrica y Asimétrica**
 
 ## 📊 Tabla de Identificación
 
