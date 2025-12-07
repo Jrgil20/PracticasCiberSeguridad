@@ -341,6 +341,30 @@ diff -y original_headers.txt cloned_headers.txt
 |**Content-Security-Policy**|(presente)|(ausente)|Falta de CSP facilita inyección de scripts|
 |**Set-Cookie**|(con flags Secure, HttpOnly)|(sin flags de seguridad)|Cookies inseguras son indicador de sitio malicioso|
 
+Es de importancia resaltar que los headers de la página clonada no se encuentran en su respectivo archivo ya que al ejecutar el comando `curl -I http://192.168.100.8 > cloned_headers.txt` la respuesta fue la no esperada. En la terminal se mostró el fallo de la instrucción debido a que el servidor no pudo soportar la operación de HTTP HEAD (operación que realiza el comando curl -I). Esto se ve reflejado en el archivo [cloned_headers.txt](cloned_headers.txt) disponible en la carpeta Practica11 del repositorio, donde consta el error de la operación.
+
+**Posibles razones del fallo del comando `curl -I http://192.168.100.8`:**
+
+1. **Apache no estaba ejecutándose:** SET requiere que el servicio Apache esté activo en puerto 80. Si el servicio se detuvo o nunca inició correctamente, curl no pudo establecer la conexión.
+   - **Verificación:** `netstat -tlnp | grep :80` para confirmar si Apache está escuchando
+   - **Solución:** Reiniciar Apache o verificar logs en `/var/log/apache2/error.log`
+
+2. **Problema de conectividad de red:** La máquina ejecutando curl podría no tener conectividad con la IP 192.168.100.8 (configuración de VirtualBox/VMware, firewall, o bridge de red)
+   - **Verificación:** `ping 192.168.100.8` para probar conectividad
+   - **Solución:** Revisar configuración de red y permisos de firewall
+
+3. **Servidor web no completó la clonación exitosamente:** El directorio de archivos clonados podría estar vacío, corrupto o con permisos insuficientes
+   - **Verificación:** `ls -lah ~/.set/web_clone/` para verificar archivos
+   - **Solución:** Reiniciar SET y completar la clonación nuevamente
+
+4. **Respuesta HTTP inesperada del servidor:** Apache podría estar retornando errores 403 (Forbidden), 500 (Internal Server Error), o content-type incompatible
+   - **Verificación:** `curl -v http://192.168.100.8` para ver detalles completos de la respuesta
+   - **Solución:** Revisar permisos de archivos en `/var/www/html` y logs de Apache
+
+5. **Configuración incorrecta de SET:** El servidor web podría estar vinculado a un puerto diferente o interfaz de red específica
+   - **Verificación:** Revisar configuración de SET durante la ejecución
+   - **Solución:** Reconfigurar SET especificando puerto y dirección IP correcta
+
 **3.5. Análisis de certificados SSL/TLS**
 
 \# Para el sitio original
@@ -370,22 +394,21 @@ Los atacantes sofisticados obtienen certificados SSL legítimos mediante técnic
 4. **Dominios de homóglifos**: Utilizar caracteres Unicode similares al dominio legítimo (ej: `α` cirilico en lugar de `a` latino). Estos certificados aparecen completamente válidos en navegadores, eliminando advertencias de seguridad y haciendo el ataque indistinguible de un sitio legítimo.
 
  A pesar del certificado válido, existen señales de alerta: dominios recién registrados (WHOIS data), falta de historial HTTPS previo (análisis de certificados históricos vía CT logs), discrepancias en Organization Name/Extended Validation (dominios typosquatting no tienen EV), comportamiento sospechoso de DNS (cambios recientes), y análisis de reputación de dominio (verificación de antiguedad con OSINT). Algunas tácticas de defensas organizacionales que se podrían implementar en la organización podemos mencionar
- 1. Implementar **HSTS Preloading**: Fuerza HTTPS y rechaza dominios typosquatting
- 2. **DNS CAA records**: Especifica qué CAs pueden emitir certificados para el dominio por lo que se previene la emisión no autorizada de certificados digitales
- 3. **Certificate Transparency monitoring**: Se emiten alertas cuando se emiten certificados para dominios críticos 
- 4. **DMARC con dominio legítimo en WHOIS verificado** 
- En el caso de los usuarios se recomienda verificar no solo el candado SSL sino también el dominio completo y Organization Name en el certificado (clic en el candado → Certificate Details).
-**
+ 1. **Implementar HSTS Preloading**: Fuerza HTTPS y rechaza dominios typosquatting
+ 2. **DNS CAA records:** Especifica qué CAs pueden emitir certificados para el dominio por lo que se previene la emisión no autorizada de certificados digitales
+ 3. **Certificate Transparency monitoring:**: Se emiten alertas cuando se emiten certificados para dominios críticos 
+ 4. **DMARC con dominio legítimo en WHOIS verificado:**: Combina SPF y DKIM para autenticar que los correos provienen legítimamente del dominio declarado. Publica un registro DNS que especifica la política ante fallos de autenticación (reject, quarantine, none), previniendo que atacantes suplan tu dominio en correos de phishing. Con DMARC en modo "reject", los intentos de suplantación son bloqueados automáticamente por proveedores como Gmail u Outlook.
 
-**Criterios de Éxito**
+Se procede a explicar que son DMARC como WHOIS para lograr que el entendimiento de la tácica 4 propuesta se hago de una mejor manera:
 
-Has completado exitosamente la práctica si:
+* **DMARC (Domain-based Message Authentication, Reporting and Conformance):**
+Es un protocolo de autenticación de correo electrónico que combina SPF (Sender Policy Framework) y DKIM (DomainKeys Identified Mail) para verificar que los correos provienen legítimamente del dominio declarado. El propietario del dominio publica un registro DNS (record) que especifica qué hacer si la autenticación falla: `none` (permitir y reportar), `quarantine` (enviar a cuarentena/spam), o `reject` (rechazar completamente). DMARC genera reportes sobre intentos de suplantación y es especialmente efectivo contra ataques BEC (Business Email Compromise) y phishing de suplantación de dominio. Por ejemplo, con DMARC en modo "reject", si un atacante intenta enviar un correo con "From: seguridad@tuempresa.com", Gmail u Outlook verificarán el registro DMARC y rechazarán automáticamente el correo si falla la autenticación.
 
-- ![ref1] Clonaste exitosamente un sitio web y capturaste credenciales de prueba
-- ![ref1] Generaste un enlace acortado y construiste un pretexto de ingeniería social convincente
-- ![ref1] Identificaste al menos 5 diferencias técnicas significativas entre el sitio original y el clonado
-- ![ref1] Analizaste los headers HTTP y documentaste las discrepancias de seguridad
-- ![ref1] Puedes articular al menos 3 métodos de detección que podrían identificar este ataque
+* **WHOIS (Who Is):**
+Es un protocolo y servicio de base de datos que permite consultar información pública de registro de dominios y direcciones IP. Al consultar WHOIS para un dominio, se obtiene información como: propietario registrado, fecha de registro, fecha de expiración, servidores DNS asociados, contacto administrativo y técnico. Los analistas de seguridad usan WHOIS para detectar dominios typosquatting recién registrados o sospechosos. Por ejemplo, si `linuxquestions.org` fue registrado en 2010, pero `linuxquestions-verify.org` fue registrado hace 2 días, esto es una indicación clara de phishing. WHOIS data es crucial para análisis forense de campañas maliciosas e identificación de infraestructura de atacantes.
+ 
+En el caso de los usuarios se recomienda verificar no solo el candado SSL sino también el dominio completo y Organization Name en el certificado (clic en el candado → Certificate Details).
+
 -----
 **Evaluación del Aprendizaje**
 
@@ -553,16 +576,3 @@ Has completado exitosamente la práctica si:
 |**El correo no llega o va a spam**|Esperado. Configure SPF/DKIM si tiene control del dominio. Use un servidor SMTP reputado. En ejercicios, coordine con el instructor para whitelist temporal.|
 |**diff muestra demasiadas diferencias**|Use diff -u | less para navegación más fácil. Enfóquese en secciones <form> y <script>. Use herramientas visuales como meld o vimdiff para comparación lado a lado.|
 |**Apache falla al iniciar en puerto 80**|Otro servicio está usando el puerto. Identifique con sudo lsof -i :80 y detenga el servicio conflictivo. O configure SET para usar puerto alternativo (requiere modificación de configuración).|
-
------
-**Próximos Pasos para continuar con sus proyectos de ingeniería social**
-
-Después de completar esta práctica, te recomiendo:
-
-1. **Profundizar en técnicas de evasión:** Estudie métodos avanzados de ofuscación, uso de infraestructura comprometida legítima, y técnicas de adversary-in-the-middle.
-1. **Explorar vectores complementarios:** Investigue smishing (phishing por SMS), vishing (phishing por voz), y ataques de compromiso de correo empresarial (BEC).
-1. **Certificaciones relevantes:** Considere prepararse para CEH (Certified Ethical Hacker), OSCP (Offensive Security Certified Professional), o GPEN (GIAC Penetration Tester).
-1. **Implementar un programa de simulación:** Utilice plataformas como GoPhish para ejecutar campañas de concienciación continuas en su organización.
-1. **Contribuir a la comunidad:** Reporte sitios de phishing a PhishTank, contribuya a proyectos open-source de seguridad, comparta IOCs (Indicators of Compromise) con la comunidad.
-|Diciembre 2025|Elaborado por Gustavo Lara Jr.|
-| :- | -: |
