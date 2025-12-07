@@ -1,9 +1,13 @@
-﻿|**Ciberseguridad 202615**|
-| :- | :- |
+﻿# **Práctica Nro. 11: Ingeniería Social**
 
-**Práctica Nro. 11** 
+## 📊 Tabla de Identificación
 
-**INGENIERÍA SOCIAL**
+| Apellido, Nombre | Cédula de Identidad | Nro. de Práctica | Fecha |
+| :--- | :---: | :---: | :--- |
+| Gil, Jesús | 30175126 | 11 | 5-12-2025|
+| Guilarte, Andrés | 30246084 | 11 | 5-12-2025 |
+
+**Grupo:** 4
 
 **Requisitos Previos**
 
@@ -99,6 +103,12 @@ Salida esperada:
 tcp6  0  0 :::80  :::\*  LISTEN  [PID]/apache2
 
 **Pregunta reflexiva:** ¿Qué implicaciones de seguridad tiene ejecutar un servidor web en el puerto 80 sin HTTPS? ¿Cómo afecta esto a la credibilidad del ataque en entornos modernos donde HTTPS es omnipresente?
+
+**Respuesta:**
+
+Ejecutar un servidor web en HTTP (puerto 80) sin HTTPS representa una vulnerabilidad crítica que anula la credibilidad del ataque en entornos modernos. La transmisión sin encriptación expone todas las credenciales capturadas a interceptación por Man-in-the-Middle, y los navegadores modernos muestran advertencias prominentes ("No seguro") que alertan inmediatamente a los usuarios. Además, sistemas de seguridad como EDR, gateways de correo y Safe Browsing de Google detectan fácilmente esta configuración, bloqueando conexiones a IPs desconocidas sobre HTTP. En 2025, cuando HTTPS es omnipresente (>95% del tráfico web), cualquier usuario con mínima conciencia de seguridad reconocerá que un sitio de "verificación de seguridad" sin HTTPS es una contradicción flagrante, reduciendo drásticamente la efectividad del ataque.
+
+Aunque SET facilita la implementación rápida, los atacantes sofisticados implementan certificados SSL legítimos (mediante Let's Encrypt o dominios typosquatting) para evadir estas defensas. La ausencia de HTTPS en este ejercicio lo convierte en una prueba de concepto educativa válida pero inefectiva en entornos reales con defenses actualizadas. Para mitigación efectiva, las organizaciones deben implementar MFA obligatorio, políticas de HTTPS requerido, entrenamiento continuo de usuarios, y sistemas EDR que detecten conexiones HTTP anómalas a sitios de autenticación.
 
 ![alt text](https://imgur.com/SlACsan)
 ![alt text](https://imgur.com/Va4sGVR)
@@ -200,7 +210,11 @@ cat ~/.set/reports/[TIMESTAMP].log
 
 **Pregunta reflexiva:** En un escenario real, ¿qué haría un atacante con estas credenciales? ¿Cuál sería la cadena de ataque posterior (lateral movement, privilege escalation)?
 
-![alt text](https://imgur.com/379hg26)
+**Respuesta:**
+
+Las credenciales capturadas son el punto de partida para una cadena de ataque multifase. El atacante primero verificaría su validez intentando autenticación en el portal legítimo de LinuxQuestions, luego aplicaría "credential stuffing" contra otros servicios comunes (Gmail, LinkedIn, GitHub, redes corporativas) bajo el supuesto de reutilización de contraseñas. Con acceso confirmado, el atacante buscaría información de valor en la cuenta (emails, perfiles, datos sensibles) y realizaría reconocimiento de la infraestructura corporativa si es empleado. El siguiente paso crítico es **movimiento lateral**: usando las credenciales para acceder a sistemas internos compartidos (intranets corporativas, VPNs, plataformas de colaboración como Slack/Teams), identificar otros usuarios y máquinas, y escalar privilegios explotando vulnerabilidades locales, misconfigurations de sudo, o servicios desprotegidos.
+
+En un ataque sofisticado, el atacante implanataría persistencia mediante backdoors, modificaría políticas de seguridad, robería datos sensibles (IP, proyectos, códigos fuente), y eventualmente establecería acceso a largo plazo para exfiltración continua. El factor crítico es la **velocidad**: entre la captura de credenciales y la detección por SIEM hay una ventana de oportunidad de horas. Defensas clave contra esta cadena incluyen: MFA obligatorio (previene lateral movement incluso con credenciales válidas), sesiones limitadas por geolocalización/dispositivo, monitorización de logins anómalos, segmentación de red, y análisis de comportamiento de usuarios (detecta patrones de ataque post-compromiso).
 
 -----
 **FASE 3: Análisis Forense y Comparativo (12 minutos)**
@@ -347,7 +361,20 @@ echo | openssl s_client -connect 198.168.100.8:443 2>/dev/null | openssl x509 -n
 
 **Pregunta reflexiva:** ¿Cómo obtienen los atacantes sofisticados certificados SSL legítimos para sitios de phishing? Investigue sobre servicios como Let's Encrypt y su uso en campañas de phishing.
 
------
+**Respuesta:**
+
+Los atacantes sofisticados obtienen certificados SSL legítimos mediante técnicas que explotan la automatización de autoridades certificadoras (CAs) como Let's Encrypt. **Let's Encrypt es especialmente vulnerable** porque utiliza validación de dominio ACME (Automated Certificate Management Environment) sin revisión humana: si un atacante controla un dominio typosquatting (ej: `linuxquestions-verify.org` en lugar de `linuxquestions.org`), puede obtener automáticamente un certificado SSL válido en minutos. Otros métodos incluyen: 
+1. **Compromiso de dominios legítimos abandonados**: Adquirir dominios vencidos con histórico de confianza y reutilizar su reputación.
+2. **Uso de subdominios de servicios legítimos**: Explotar plataformas como GitHub Pages, Firebase, o Heroku que ofrecen HTTPS gratuito.
+3. **Infraestructura comprometida**: Instalar certificados en servidores web legitimados previamente hackeados. 
+4. **Dominios de homóglifos**: Utilizar caracteres Unicode similares al dominio legítimo (ej: `α` cirilico en lugar de `a` latino). Estos certificados aparecen completamente válidos en navegadores, eliminando advertencias de seguridad y haciendo el ataque indistinguible de un sitio legítimo.
+
+ A pesar del certificado válido, existen señales de alerta: dominios recién registrados (WHOIS data), falta de historial HTTPS previo (análisis de certificados históricos vía CT logs), discrepancias en Organization Name/Extended Validation (dominios typosquatting no tienen EV), comportamiento sospechoso de DNS (cambios recientes), y análisis de reputación de dominio (verificación de antiguedad con OSINT). Algunas tácticas de defensas organizacionales que se podrían implementar en la organización podemos mencionar
+ 1. Implementar **HSTS Preloading**: Fuerza HTTPS y rechaza dominios typosquatting
+ 2. **DNS CAA records**: Especifica qué CAs pueden emitir certificados para el dominio por lo que se previene la emisión no autorizada de certificados digitales
+ 3. **Certificate Transparency monitoring**: Se emiten alertas cuando se emiten certificados para dominios críticos 
+ 4. **DMARC con dominio legítimo en WHOIS verificado** 
+ En el caso de los usuarios se recomienda verificar no solo el candado SSL sino también el dominio completo y Organization Name en el certificado (clic en el candado → Certificate Details).
 **
 
 **Criterios de Éxito**
@@ -493,42 +520,10 @@ Has completado exitosamente la práctica si:
 **Efectividad esperada:** Con alta probabilidad, este correo sería:
 
 1. Marcado como spam (70-80% probabilidad)
-1. Mostrado con advertencias prominentes si llega a bandeja de entrada
-1. Bloqueado al hacer clic en el enlace con advertencia de seguridad
-1. Reportado automáticamente si múltiples usuarios lo marcan como phishing
------
-**Variaciones y Retos Adicionales**
+2. Mostrado con advertencias prominentes si llega a bandeja de entrada
+3. Bloqueado al hacer clic en el enlace con advertencia de seguridad
+4. Reportado automáticamente si múltiples usuarios lo marcan como phishing
 
-**Para profundizar (Opcional para equipos con Ingeniería Social en su proyecto)**
-
-**Reto 1: Implementación de HTTPS en el ataque**
-
-- Genere un certificado SSL autofirmado o utilice Let's Encrypt
-- Configure SET para servir contenido sobre HTTPS
-- Analice cómo cambian las advertencias del navegador
-- Documente las diferencias en efectividad del ataque
-
-**Reto 2: Evasión de detección avanzada**
-
-- Implemente técnicas de ofuscación de JavaScript
-- Utilice dominios typosquatting en lugar de IPs
-- Configure un servidor proxy inverso para ocultar la infraestructura
-- Implemente detección de sandboxes para evitar análisis automatizado
-
-**Reto 3: Análisis de logs y forense post-ataque**
-
-- Examine los logs de Apache en /var/log/apache2/access.log
-- Identifique el User-Agent del navegador de la víctima
-- Reconstruya la timeline completa del ataque
-- Genere un informe forense profesional
-
-**Reto 4: Desarrollo de contramedidas**
-
-- Escriba reglas YARA para detectar páginas clonadas por SET
-- Implemente un script de Python que analice URLs y detecte indicadores de phishing
-- Configure un honeypot que simule caer en el ataque pero registre al atacante
------
-**Recursos Adicionales**
 
 **Documentación oficial**
 
