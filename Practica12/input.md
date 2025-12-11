@@ -282,6 +282,8 @@ inet 192.168.10.10/24 brd 192.168.10.255 scope global eth0
 **PREGUNTA DE VERIFICACIÓN #1**: ¿Por qué configuramos el gateway como
 192.168.10.1? ¿Qué dispositivo tiene esa IP?
 
+**Respuesta**: El gateway es 192.168.10.1 porque esa es la IP de la interfaz port1 del FortiGate. Kali debe usar el FortiGate como gateway para enrutar todo tráfico destinado a otras redes (como DMZ en 200.100.10.0/24) a través del firewall para que aplique políticas de seguridad.
+
 **Paso 1.4: Configurar Metasploitable2**
 
 **Acción**:
@@ -390,6 +392,8 @@ pipe 4
 **PREGUNTA DE VERIFICACIÓN #2**: ¿Por qué el ping a 200.100.10.10 falla
 si Kali está en una red diferente (192.168.10.0/24)?
 
+**Respuesta**: El ping falla porque Kali no tiene ruta hacia 200.100.10.0/24. Aunque el FortiGate está configurado con IP 200.100.10.1 en port2, sin una política de firewall que permita el tráfico ICMP entre las zonas LAN y DMZ, el FortiGate bloquea implícitamente todos los paquetes por defecto.
+
 **FASE 2: Configuración Inicial del FortiGate (15 minutos)**
 
 **Objetivo de la Fase**
@@ -488,6 +492,8 @@ end
 **PREGUNTA DE VERIFICACIÓN #3**: ¿Qué significa set allowaccess ping
 https ssh http? ¿Qué pasaría si no incluyéramos https?
 
+**Respuesta**: `set allowaccess` define qué servicios de gestión están permitidos en esa interfaz. En port1 permitimos ping (ICMP), https (GUI), ssh (acceso de consola) e http (GUI en texto). Sin https, no podrías acceder a la interfaz gráfica del FortiGate desde Kali usando navegador.
+
 **\
 **
 
@@ -579,6 +585,8 @@ https://192.168.10.1
 
 **PREGUNTA DE VERIFICACIÓN #4**: ¿Cuántas políticas de firewall existen
 actualmente? ¿Por qué Kali no puede hacer ping a Metasploitable2?
+
+**Respuesta**: No hay políticas configuradas aún (0 políticas). Kali no puede hacer ping a Metasploitable2 porque el FortiGate tiene una postura de denegación implícita: por defecto bloquea todo tráfico entre zonas hasta que se crean políticas explícitas que lo permitan.
 
 **Paso 2.7: Configuración Opcional de port3 (WAN)**
 
@@ -808,6 +816,8 @@ NO FUNCIONA
 **PREGUNTA DE VERIFICACIÓN #5**: ¿Qué Policy ID se aplicó al ping desde
 Kali hacia Metasploitable2? ¿Y en la dirección inversa?
 
+**Respuesta**: La Policy ID 1 (LAN_to_DMZ_Allow_All) se aplicó al ping desde Kali. En la dirección inversa (Metasploitable2 hacia Kali), se aplicó Policy ID 2 (DMZ_to_LAN_Allow_All) para las respuestas ICMP de retorno.
+
 **Ejercicio 2: Restringir Gestión del Firewall (GUI Solo desde LAN)**
 
 **Objetivo**
@@ -894,6 +904,8 @@ curl -k https://192.168.10.1 \| head -n 5
 
 **PREGUNTA DE VERIFICACIÓN #6**: ¿Por qué bloqueamos la gestión desde
 DMZ? ¿Qué riesgo de seguridad representa permitirla?
+
+**Respuesta**: DMZ es una zona menos confiable (servidores expuestos a Internet). Si un atacante comprometiera Metasploitable2, tendría acceso a la interfaz de administración del FortiGate, permitiéndole modificar políticas, crear backdoors o desactivar protecciones. La gestión debe restringirse a LAN confiada.
 
 **Ejercicio 3: Permitir Solo SSH (LAN → DMZ)**
 
@@ -1072,6 +1084,8 @@ fallando.
 \"filtered\" y \"closed\" en nmap? ¿Qué información revela esto sobre el
 firewall?
 
+**Respuesta**: **Filtered**: El firewall explícitamente bloquea/filtra el puerto. **Closed**: Hay un servicio rechazando activamente la conexión. Cuando nmap ve "filtered", sabe que hay un firewall presente. Esto revela que el FortiGate está funcionando correctamente, interceptando paquetes en lugar de permitir que lleguen al destino.
+
 **\
 **
 
@@ -1222,6 +1236,8 @@ automáticamente)
 el firewall stateful permite que SSH funcione sin necesidad de una
 política DMZ → LAN explícita.
 
+**Respuesta**: Un firewall stateful "recuerda" las conexiones activas. Cuando Kali inicia SSH a Metasploitable2, el FortiGate registra esta sesión en su tabla de estados. Los paquetes de respuesta desde Metasploitable2 que pertenecen a esa sesión son automáticamente permitidos porque el firewall reconoce que son parte de una conexión iniciada desde LAN.
+
 **Ejercicio 5: Cambiar Servicios Permitidos (Bloquear SSH, Permitir
 HTTP/HTTPS)**
 
@@ -1332,6 +1348,8 @@ web de Metasploitable2.
 **PREGUNTA DE VERIFICACIÓN #9**: ¿Qué información adicional proporcionan
 los logs además de accept/deny? Mencione al menos 3 campos útiles para
 auditoría.
+
+**Respuesta**: Además de accept/deny, los logs registran: (1) **Timestamp**: Cuándo ocurrió, (2) **Source/Destination IPs**: Quién comunicó con quién, (3) **Service/Port**: Qué protocolo/puerto, (4) **Policy ID**: Qué regla se aplicó, (5) **Bytes sent/received**: Volumen de transferencia, (6) **Duration**: Cuánto duró la sesión. Esencial para investigaciones de incidentes.
 
 **\
 **
@@ -1523,6 +1541,8 @@ hace **SNAT** (Source NAT) además del DNAT.
 
 **PREGUNTA DE VERIFICACIÓN #10**: ¿Cuál es la diferencia entre DNAT
 (Destination NAT) y SNAT (Source NAT)? ¿Cuál se aplica en este VIP?
+
+**Respuesta**: **DNAT** cambia la IP destino de los paquetes (192.168.10.1:1080 → 200.100.10.10:80). **SNAT** cambia la IP origen (192.168.10.10 → 200.100.10.1). En este VIP se aplican AMBAS: DNAT para redirigir el puerto, y SNAT para que Metasploitable2 vea al FortiGate (no a Kali) como origen.
 
 **Ejercicio 7: DNS Filtering (Filtrado de Categorías)**
 
@@ -1719,6 +1739,8 @@ DNS bloqueada (si es posible en su entorno).
 **PREGUNTA DE VERIFICACIÓN #11**: ¿Cuál es la ventaja de usar DNS
 filtering en el firewall en lugar de solo bloquear IPs? ¿Qué
 limitaciones tiene?
+
+**Respuesta**: **Ventajas**: Bloquea por categoría (malware, phishing) sin necesidad de mantener listas estáticas de IPs. Un sitio puede cambiar IPs y aún ser bloqueado. **Limitaciones**: No funciona si el cliente usa DNS externo (8.8.8.8), puedes hacer bypass consultando DNS público. También genera overhead al inspeccionar queries DNS.
 
 **\
 **
@@ -2015,6 +2037,8 @@ curl http://200.100.10.10
 Metasploitable2, ¿cuántos lugares debe modificar si usa objetos vs si
 usa IPs directamente en políticas?
 
+**Respuesta**: **Con objetos**: Solo 1 lugar (el address object "Host_Metasploitable"). Todas las políticas que usan este objeto se actualiza automáticamente. **Sin objetos**: Debes modificar cada política que mencione la IP directamente (podría ser 5-10 lugares). Los objetos proporcionan escalabilidad y reducen errores.
+
 **Ejercicio 9: Policy Routing (Enrutamiento Basado en Políticas)**
 
 **Objetivo**
@@ -2163,6 +2187,8 @@ traceroute 8.8.8.8
 
 **PREGUNTA DE VERIFICACIÓN #13**: ¿En qué escenarios reales sería útil
 el policy routing? Mencione al menos 2 casos de uso empresariales.
+
+**Respuesta**: (1) **Balanceo de carga**: Tráfico hacia diferentes destinos usa diferentes conexiones WAN para distribuir carga. (2) **Aplicaciones críticas**: Tráfico a servidores de misión crítica usa ISP dedicado más confiable. (3) **Cumplimiento**: Ciertos datos deben salir por ISP específico para cumplir regulaciones geográficas. (4) **QoS dinámico**: Videoconferencia usa ruta con menos latencia.
 
 **Ejercicio 10: Web Proxy Transparente**
 
@@ -2395,6 +2421,8 @@ mostrando un bloqueo (si es posible).
 explícito y un proxy transparente? ¿Cuál es más fácil de implementar en
 una organización?
 
+**Respuesta**: **Proxy explícito**: El cliente configura manualmente el proxy (navegador, aplicación). **Proxy transparente**: El firewall intercepta automáticamente sin configuración de cliente. Transparente es más fácil de implementar organizacionalmente porque no requiere cambios en dispositivos clientes, pero es más complejo técnicamente.
+
 **FASE 4: Análisis Avanzado y Optimización (10 minutos)**
 
 **Objetivo de la Fase**
@@ -2491,6 +2519,8 @@ Política C: Kali → Meta, Service: Group_Web_Services (HTTP + HTTPS)
 
 **PREGUNTA DE VERIFICACIÓN #15**: ¿Por qué es importante mantener el
 número de políticas al mínimo? ¿Qué impacto tiene en el rendimiento?
+
+**Respuesta**: El FortiGate evalúa políticas de arriba hacia abajo hasta encontrar coincidencia. Más políticas = más evaluaciones por paquete = latencia aumenta. Además, políticas redundantes generan confusión operacional y errores de auditoría. Consolidar con grupos y objetos mantiene las políticas limpias y el rendimiento óptimo.
 
 **Paso 4.4: Habilitar Session Helpers (Opcional)**
 
@@ -2647,6 +2677,8 @@ serial=00000abc tos=ff/ff app_list=0 app=0 url_cat=0
 **PREGUNTA DE VERIFICACIÓN #16**: ¿Qué significa que una sesión tenga
 act=snat? ¿En qué ejercicio de esta práctica vimos SNAT?
 
+**Respuesta**: `act=snat` significa que Source NAT está activo en esa sesión: el FortiGate cambió la IP origen del paquete. Vimos SNAT en el **Ejercicio 6 (Port Forwarding/VIP)** donde los paquetes desde Kali hacia Metasploitable2 tenían IP origen modificada a 200.100.10.1 (puerto2 del FortiGate) en lugar de 192.168.10.10.
+
 **\
 **
 
@@ -2792,6 +2824,8 @@ diagnose debug reset
 
 **PREGUNTA DE VERIFICACIÓN #17**: ¿En qué situación usarías diagnose
 debug flow en lugar de diagnose sniffer packet?
+
+**Respuesta**: **diagnose sniffer packet**: Ver el contenido real de paquetes (headers, payload), útil para análisis detallado de protocolos. **diagnose debug flow**: Entender las decisiones del FortiGate (¿qué política se aplicó?, ¿qué NAT se hizo?), útil para troubleshooting de configuración. Úsalo cuando una política no funciona como esperado y necesites ver exactamente por qué el firewall permitió/bloqueó el tráfico.
 
 **\
 **
