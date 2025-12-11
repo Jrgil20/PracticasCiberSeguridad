@@ -39,7 +39,7 @@ Este repositorio puede servir como referencia para estudiantes, docentes o cualq
 | 7        | [Criptografía & Password Attack](Practica7\Practica7.md)                           | 20   |
 | 8        | [Escaneo de Vulnerabilidades y Explotación Avanzada](Practica8/Practica8.md)       | [20](Practica8/nota.md)   |
 | 9        | [Pentesting Integral: Metodología de Red Team Assessment(Reconocimiento, Análisis de Vulnerabilidades, Explotación y Post-Explotación con Nmap, Metasploit, SQLMap, Hydra y Técnicas de Escalada de Privilegios)](Practica9/Practica9.md)                                                                                   | 20   |
-|10        | [Criptografía Simétrica y Asimétrica](Pratica10/Practica10.md)| 18|
+|10        | [Criptografía Simétrica y Asimétrica](Practica10/Practica10.md)| 18|
 |11        | [Ingeniería Social](Practica11/Practica11.md)| 14|
 
 ## Estructura del repositorio
