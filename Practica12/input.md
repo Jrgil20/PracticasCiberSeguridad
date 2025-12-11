@@ -1,11 +1,20 @@
-**Práctica Nro. 12**
+# Auditoría de Seguridad: Configuración de Firewall FortiGate
 
-**REDES Y PERÍMETRO**
+## 📊 Identificación
 
-**Práctica de FortiGate: Configuración de Firewall de Última Generación
-con Políticas de Seguridad Avanzadas**
+| Campo | Valor |
+|-------|-------|
+| **Número de Práctica** | 12 |
+| **Título** | Configuración de Firewall de Última Generación con Políticas de Seguridad Avanzadas |
+| **Dominio** | REDES Y PERÍMETRO |
+| **Tipo de Auditoría** | Laboratorio de Seguridad Perimetral |
+| **Instructor** | [Nombre del Docente] |
+| **Fecha de Realización** | [DD-MM-YYYY] |
+| **Equipo/Grupo** | grupo 4|
 
-**Objetivos de Aprendizaje**
+---
+
+## 🎯 Objetivos de Aprendizaje
 
 Al completar esta práctica, será capaz de:
 
@@ -335,9 +344,13 @@ ping -c 4 192.168.10.1
 
 ping -c 4 200.100.10.10
 
-**Resultado esperado**: Ambos pings deben FALLAR (Destination Host
-Unreachable)
+**Resultado esperado**: Ambos pings deben FALLAR
 
+**📋 Registro de Pruebas de Conectividad Inicial**
+
+En los siguientes registros se adjuntan los resultados de los intentos de ping fallidos, donde se aprecia claramente que la conexión es **rechazada por ausencia de rutas** hacia los destinos solicitados:
+
+``` bash
 ──(kali㉿kali)-[~]
 └─$ ping -c 4 192.168.10.1
 PING 192.168.10.1 (192.168.10.1) 56(84) bytes of data.
@@ -361,11 +374,18 @@ From 192.168.100.10 icmp_seq=4 Destination Host Unreachable
 --- 200.100.10.10 ping statistics ---
 4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3053ms
 pipe 4
-         
+```
 
-**Explicación**: Esto es correcto porque el FortiGate aún no está
-configurado. Una vez configuremos las interfaces y políticas, estos
-pings funcionarán.
+**📌 Análisis de Resultados**
+
+| Aspecto | Observación |
+|--------|-------------|
+| **Estado de ICMP** | 100% packet loss en ambos destinos |
+| **Motivo del rechazo** | Destination Host Unreachable (ausencia de interfaz activa) |
+| **Causa raíz** | FortiGate no configurado aún; interfaces sin IPs asignadas |
+| **Conclusión** | **ESPERADO Y CORRECTO** - Comportamiento baseline antes de implementar la configuración |
+
+**Justificación técnica**: El kernel de Linux en Kali rechaza los paquetes ICMP porque no encuentra ruta disponible hacia los destinos 192.168.10.1 (port1 del FortiGate) ni 200.100.10.10 (Metasploitable2 en DMZ). Estos errores desaparecerán una vez que configuremos las interfaces de red y las políticas de firewall en el FortiGate.
 
 **PREGUNTA DE VERIFICACIÓN #2**: ¿Por qué el ping a 200.100.10.10 falla
 si Kali está en una red diferente (192.168.10.0/24)?
