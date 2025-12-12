@@ -15,135 +15,90 @@
 
 Al completar esta práctica, será capaz de:
 
--   Configurar desde cero un firewall FortiGate en entorno virtualizado
+- Configurar desde cero un firewall FortiGate en entorno virtualizado
+- Implementar políticas de seguridad basadas en zonas (LAN/DMZ)
+- Gestionar control granular de servicios (SSH, HTTP, HTTPS, ICMP)
+- Configurar políticas asimétricas de seguridad
+- Implementar Virtual IPs (VIP) para port forwarding
+- Aplicar filtrado de DNS y políticas basadas en objetos
+- Configurar policy routing y web proxy transparente
+- Analizar logs y realizar troubleshooting en FortiGate
+- Comprender el rol del firewall como perímetro de seguridad
 
--   Implementar políticas de seguridad basadas en zonas (LAN/DMZ)
+### Requisitos Previos
 
--   Gestionar control granular de servicios (SSH, HTTP, HTTPS, ICMP)
+Antes de comenzar esta práctica, asegúrate de cumplir con los siguientes requisitos:
 
--   Configurar políticas asimétricas de seguridad
+#### Conocimientos
 
--   Implementar Virtual IPs (VIP) para port forwarding
+- Experiencia intermedia con redes TCP/IP (direccionamiento, subnetting, routing básico)
+- Familiaridad con VirtualBox (gestión de VMs, adaptadores de red)
+- Conocimientos básicos de Linux (comandos de red: `ping`, `ssh`, `curl`, `nmap`)
+- Comprensión de protocolos: HTTP/HTTPS, SSH, DNS, ICMP
+- NO se requiere experiencia previa con FortiGate o firewalls UTM
 
--   Aplicar filtrado de DNS y políticas basadas en objetos
+#### Entorno Técnico
 
--   Configurar policy routing y web proxy transparente
+- **VirtualBox** 6.1 o superior instalado
+- **3 Máquinas Virtuales**:
+    1. **Kali Linux** (última versión) — Rol: Cliente LAN
+    2. **FortiGate VM** (imagen proporcionada por el instructor) — Rol: Firewall UTM
+    3. **Metasploitable2** — Rol: Servidor DMZ
+- **Recursos mínimos recomendados**:
+  - Host: 8 GB RAM, 4 cores, 40 GB espacio libre
+  - Kali: 2 GB RAM, 2 cores
+  - FortiGate: 2 GB RAM, 1 core
+  - Metasploitable2: 512 MB RAM, 1 core
 
--   Analizar logs y realizar troubleshooting en FortiGate
+#### Conectividad
 
--   Comprender el rol del firewall como perímetro de seguridad
+- Las tres VMs deben estar en el mismo host de VirtualBox
 
-**Requisitos Previos**
+#### Materiales Proporcionados por el docente
 
-**Conocimientos**
+- Imagen OVA de FortiGate (importar en VirtualBox)
+- Credenciales por defecto del FortiGate
+- Plantilla de reporte para capturas de pantalla
 
--   Experiencia intermedia con redes TCP/IP (direccionamiento,
-    subnetting, routing básico)
+---
 
--   Familiaridad con VirtualBox (gestión de VMs, adaptadores de red)
+### Escenario / Topología
 
--   Conocimientos básicos de Linux (comandos de red: ping, ssh, curl,
-    nmap)
-
--   Comprensión de protocolos: HTTP/HTTPS, SSH, DNS, ICMP
-
--   NO se requiere experiencia previa con FortiGate o firewalls UTM
-
-**Entorno Técnico**
-
--   **VirtualBox** 6.1 o superior instalado
-
--   **3 Máquinas Virtuales**:
-
-    i.  **Kali Linux** (última versión) - Rol: Cliente LAN
-
-    ii. **FortiGate VM** (imagen proporcionada por el instructor) - Rol:
-        Firewall UTM
-
-    iii. **Metasploitable2** - Rol: Servidor DMZ
-
--   **Recursos mínimos recomendados**:
-
-    i.  Host: 8GB RAM, 4 cores, 40GB espacio libre
-
-    ii. Kali: 2GB RAM, 2 cores
-
-    iii. FortiGate: 2GB RAM, 1 core
-
-    iv. Metasploitable2: 512MB RAM, 1 core
-
-```{=html}
-<!-- -->
-```
--   **Conectividad**: Las tres VMs deben estar en el mismo host de
-    VirtualBox
-
-**Materiales Proporcionados por el docente**
-
--   Imagen OVA de FortiGate (importar en VirtualBox)
-
--   Credenciales por defecto del FortiGate
-
--   Plantilla de reporte para capturas de pantalla
-
-**\
-**
-
-**Escenario / Topología**
-
-**Contexto Profesional**
+#### Contexto Profesional
 
 Has sido contratado como administrador de seguridad de una pequeña
 empresa que necesita segmentar su red. La organización tiene:
 
--   Una **red LAN** donde operan los usuarios (simulada con Kali Linux)
+- Una **red LAN** donde operan los usuarios (simulada con Kali Linux)
 
--   Una **zona DMZ** donde se alojan servidores accesibles (simulada con
-    Metasploitable2)
+- Una **zona DMZ** donde se alojan servidores accesibles (simulada con Metasploitable2)
 
--   Un **firewall FortiGate** que debe actuar como perímetro de
-    seguridad
+- Un **firewall FortiGate** que debe actuar como perímetro de seguridad
 
 Tu misión es configurar el FortiGate desde cero e implementar políticas
 de seguridad progresivamente más complejas.
 
-**Diagrama de Topología**
+#### Diagrama de Topología
 
-![](./image1.png){width="6.1375in" height="6.485416666666667in"}
+![ Topologia de red](https://imgur.com/m7RCQ0e)
 
-**Tabla de Direccionamiento**
+#### Tabla de Direccionamiento
 
-  -----------------------------------------------------------------------------------
-  Dispositivo       Interface   Dirección IP    Máscara   Gateway        Rol
-  ----------------- ----------- --------------- --------- -------------- ------------
-  Kali Linux        eth0        192.168.10.10   /24       192.168.10.1   Cliente LAN
+| Dispositivo | Interface | Dirección IP | Máscara | Gateway | Rol |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| Kali Linux | eth0 | 192.168.10.10 | /24 | 192.168.10.1 | Cliente LAN |
+| FortiGate | port1 | 192.168.10.1 | /24 | - | Interface LAN |
+| FortiGate | port2 | 200.100.10.1 | /24 | - | Interface DMZ |
+| FortiGate | port3 | DHCP | - | - | WAN (opcional) |
+| Metasploitable2 | eth0 | 200.100.10.10 | /24 | 200.100.10.1 | Servidor DMZ |
 
-  FortiGate         port1       192.168.10.1    /24       \-             Interface
-                                                                         LAN
+#### Configuración de Adaptadores de Red en VirtualBox
 
-  FortiGate         port2       200.100.10.1    /24       \-             Interface
-                                                                         DMZ
-
-  FortiGate         port3       DHCP            \-        \-             WAN
-                                                                         (opcional)
-
-  Metasploitable2   eth0        200.100.10.10   /24       200.100.10.1   Servidor DMZ
-  -----------------------------------------------------------------------------------
-
-**Configuración de Adaptadores de Red en VirtualBox**
-
-  ----------------------------------------------------------------------------
-  VM                Adaptador 1            Adaptador 2            Adaptador 3
-  ----------------- ---------------------- ---------------------- ------------
-  Kali Linux        Red                    \-                     \-
-                    Interna: LAN_Segment                          
-
-  FortiGate         Red                    Red                    NAT
-                    Interna: LAN_Segment   Interna: DMZ_Segment   (opcional)
-
-  Metasploitable2   Red                    \-                     \-
-                    Interna: DMZ_Segment                          
-  ----------------------------------------------------------------------------
+| VM | Adaptador 1 | Adaptador 2 | Adaptador 3 |
+| :--- | :--- | :--- | :--- |
+| Kali Linux | Red Interna: LAN_Segment | - | - |
+| FortiGate | Red Interna: LAN_Segment | Red Interna: DMZ_Segment | NAT (opcional) |
+| Metasploitable2 | Red Interna: DMZ_Segment | - | - |
 
 ## **FASE 1: Preparación del Entorno de Laboratorio (15 minutos)**
 
@@ -157,79 +112,72 @@ configuración del FortiGate.
 
 **Acción en VirtualBox**:
 
-1.  Abra VirtualBox
+1. Abra VirtualBox
 
-2.  Menú: Archivo → Importar servicio virtualizado
+2. Menú: Archivo → Importar servicio virtualizado
 
-3.  Seleccione el archivo OVA de FortiGate
+3. Seleccione el archivo OVA de FortiGate
 
-4.  En la pantalla de configuración:
+4. En la pantalla de configuración:
+    - **Nombre**: FortiGate-Firewall
+    - **RAM**: 2048 MB
+    - **CPU**: 1 core
 
-    -   **Nombre**: FortiGate-Firewall
-
-    -   **RAM**: 2048 MB
-
-    -   **CPU**: 1 core
-
-5.  Clic en Importar
+5. Clic en Importar
 
 **Tiempo estimado**: 2-3 minutos
 
-**\
-**
+---
 
 #### **Paso 1.2: Configurar Adaptadores de Red del FortiGate**
 
 **Acción**:
 
-1.  Seleccione la VM FortiGate-Firewall (NO la inicie aún)
+1. Seleccione la VM FortiGate-Firewall (NO la inicie aún)
 
-2.  Clic derecho → Configuración → Red
+2. Clic derecho → Configuración → Red
 
 **Adaptador 1 (port1 - LAN)**:
 
--   Habilitar adaptador de red
+- Habilitar adaptador de red
 
--   Conectado a: Red interna
+- Conectado a: Red interna
 
--   Nombre: LAN_Segment
+- Nombre: LAN_Segment
 
 **Adaptador 2 (port2 - DMZ)**:
 
--   Habilitar adaptador de red
+- Habilitar adaptador de red
 
--   Conectado a: Red interna
+- Conectado a: Red interna
 
--   Nombre: DMZ_Segment
+- Nombre: DMZ_Segment
 
 **Adaptador 3 (port3 - WAN - Opcional)**:
 
--   Habilitar adaptador de red
+- Habilitar adaptador de red
 
--   Conectado a: NAT
+- Conectado a: NAT
 
--   (Este adaptador permite al FortiGate acceder a Internet para
-    actualizaciones)
+- (Este adaptador permite al FortiGate acceder a Internet para actualizaciones)
 
-3.  Clic en Aceptar
+3.Clic en Aceptar
 
-![alt text](https://imgur.com/KC7BDiv)
+![Figura 1: Configuración de adaptadores de red en VirtualBox (LAN_Segment y DMZ_Segment)](https://imgur.com/KC7BDiv)
 
 #### **Paso 1.3: Configurar Kali Linux**
 
 **Acción**:
 
-1.  Seleccione su VM de Kali Linux
+1.Seleccione su VM de Kali Linux
 
-2.  Configuración → Red
+2.Configuración → Red
 
-**Adaptador 1**:
+    **Adaptador 1**:
 
--   Habilitar adaptador de red
-
--   Conectado a: Red interna
-
--   Nombre: LAN_Segment
+    - Habilitar adaptador de red
+    - Conectado a: Red interna
+    - Nombre: LAN_Segment
 
 3.  Inicie Kali Linux y abra una terminal
 
@@ -245,7 +193,7 @@ configuración del FortiGate.
 
 Agregue estas líneas:
 
-```bash
+``` bash
 auto eth0
 iface eth0 inet static
   address 192.168.10.10
@@ -278,7 +226,8 @@ Guarde (Ctrl+O, Enter, Ctrl+X) y aplique:
 `ip addr show eth0`
 
 **Salida esperada**:
-```bash
+
+``` bash
 2: eth0: \<BROADCAST,MULTICAST,UP,LOWER_UP\> mtu 1500 qdisc pfifo_fast
 state UP group default qlen 1000
 
@@ -294,28 +243,26 @@ inet 192.168.10.10/24 brd 192.168.10.255 scope global eth0
 
 **Acción**:
 
-1.  Seleccione su VM de Metasploitable2
+1.Seleccione su VM de Metasploitable2
 
-2.  Configuración → Red
+2.Configuración → Red
 
-**Adaptador 1**:
+    **Adaptador 1**:
 
--   Habilitar adaptador de red
+    - Habilitar adaptador de red
 
--   Conectado a: Red interna
+    - Conectado a: Red interna
 
--   Nombre: DMZ_Segment
+    - Nombre: DMZ_Segment
 
-3.  Inicie Metasploitable2 (credenciales por
-    defecto: msfadmin / msfadmin)
-
-**Configurar IP estática**:
+3.Inicie Metasploitable2 (credenciales por defecto: msfadmin / msfadmin)
 
 \# Editar configuración de red
 
 `sudo nano /etc/network/interfaces`
 
 Modifique/agregue:
+
 ```bash
 auto eth0
 iface eth0 inet static
@@ -335,6 +282,7 @@ Aplique cambios:
 `ifconfig eth0`
 
 **Salida esperada**:
+
 ```bash
 
 eth0 Link encap:Ethernet HWaddr 08:00:27:xx:xx:xx
@@ -355,7 +303,7 @@ FortiGate:
 
 **Resultado esperado**: Ambos pings deben FALLAR
 
-**📋 Registro de Pruebas de Conectividad Inicial**
+##### 📋 Registro de Pruebas de Conectividad Inicial
 
 En los siguientes registros se adjuntan los resultados de los intentos de ping fallidos, donde se aprecia claramente que la conexión es **rechazada por ausencia de rutas** hacia los destinos solicitados:
 
@@ -385,7 +333,7 @@ From 192.168.100.10 icmp_seq=4 Destination Host Unreachable
 pipe 4
 ```
 
-**📌 Análisis de Resultados**
+##### 📌 Análisis de Resultados
 
 | Aspecto | Observación |
 |--------|-------------|
@@ -414,11 +362,9 @@ Acceder al FortiGate por primera vez, configurar las interfaces de red
 
 **Credenciales por defecto (Observe la pizarra)**
 
--   Usuario: 
+- Usuario:
 
--   Contraseña:
-
-**Primer acceso**: El sistema le pedirá cambiar la contraseña.
+- Contraseña:
 
 You are forced to change your password. Please input a new password.
 
@@ -430,8 +376,8 @@ Confirm Password: FortiGate2025!
 práctica.
 
 ![alt text](https://imgur.com/t4kEjwG)
-**\
-**
+
+---
 
 **Paso 2.2: Configuración de la Interfaz port1 (LAN)**
 
@@ -457,18 +403,18 @@ next
 
 end
 ```
+
 **Explicación de cada comando**:
 
--   set mode static: Configura IP estática (vs DHCP)
+- `set mode static`: Configura IP estática (vs DHCP)
 
--   set ip 192.168.10.1 255.255.255.0: Asigna IP y máscara
+- `set ip 192.168.10.1 255.255.255.0`: Asigna IP y máscara
 
--   set allowaccess ping https ssh http: Permite gestión del firewall
-    desde esta interfaz
+- `set allowaccess ping https ssh http`: Permite gestión del firewall desde esta interfaz
 
--   set alias \"LAN\": Etiqueta descriptiva
+- `set alias "LAN"`: Etiqueta descriptiva
 
--   set role lan: Define el rol de seguridad (importante para políticas)
+- `set role lan`: Define el rol de seguridad (importante para políticas)
 
 **Verificar configuración**:
 
@@ -496,13 +442,13 @@ next
 
 end
 ```
+
 **PREGUNTA DE VERIFICACIÓN #3**: ¿Qué significa set allowaccess ping
 https ssh http? ¿Qué pasaría si no incluyéramos https?
 
 **Respuesta**: `set allowaccess` define qué servicios de gestión están permitidos en esa interfaz. En port1 permitimos ping (ICMP), https (GUI), ssh (acceso de consola) e http (GUI en texto). Sin https, no podrías acceder a la interfaz gráfica del FortiGate desde Kali usando navegador.
 
-**\
-**
+---
 
 #### **Paso 2.3: Configuración de la Interfaz port2 (DMZ)**
 
@@ -562,34 +508,34 @@ explícitas.
 
 **Desde Kali Linux**, abra Firefox:
 
-https://192.168.10.1
+ingrese a `https://192.168.10.1`
 
 **Acepte el certificado autofirmado** (Add Exception → Confirm)
 
 **Login**:
 
--   Usuario: admin
+- Usuario: admin
 
--   Contraseña: FortiGate2025! (la que configuró anteriormente)
+- Contraseña: FortiGate2025! (la que configuró anteriormente)
 
 ![alt text](https://imgur.com/iZeNi5O)
 
 ![alt text](https://imgur.com/undefined)
-**\
-**
+
+---
 
 **Paso 2.6: Exploración de la Interfaz GUI**
 
 **Navegue por estos menús** (solo observación, no modifique aún):
 
-1.  **Dashboard**: Vista general del estado del firewall
+1.**Dashboard**: Vista general del estado del firewall
 
-2.  **Network → Interfaces**: Vea port1 y port2 configuradas
+2.**Network → Interfaces**: Vea port1 y port2 configuradas
 
-3.  **Policy & Objects → Firewall Policy**: Actualmente vacía (por eso
+3.**Policy & Objects → Firewall Policy**: Actualmente vacía (por eso
     no hay conectividad entre zonas)
 
-4.  **Log & Report → Forward Traffic**: Logs de tráfico (vacío por
+4.**Log & Report → Forward Traffic**: Logs de tráfico (vacío por
     ahora)
 
 **PREGUNTA DE VERIFICACIÓN #4**: ¿Cuántas políticas de firewall existen
@@ -643,50 +589,35 @@ asimétricas.
 Permitir que Kali (LAN) y Metasploitable2 (DMZ) puedan hacerse ping
 mutuamente.
 
-**\
-**
+---
 
 **Paso 3.1.1: Crear Política LAN → DMZ (Permitir Todo)**
 
 **Vía GUI**:
 
-1.  Navegue a: Policy & Objects → Firewall Policy
+1.Navegue a: Policy & Objects → Firewall Policy
 
-2.  Clic en Create New
+2.Clic en Create New
 
-3.  Configure:
+3.Configure:
 
-  -------------------------------------------------------------------------
-  Campo             Valor                  Explicación
-  ----------------- ---------------------- --------------------------------
-  Name              LAN_to_DMZ_Allow_All   Nombre descriptivo
+| Campo | Valor | Explicación |
+| :--- | :---: | :--- |
+| Name | `LAN_to_DMZ_Allow_All` | Nombre descriptivo |
+| Incoming Interface | `port1 (LAN)` | Origen del tráfico |
+| Outgoing Interface | `port2 (DMZ)` | Destino del tráfico |
+| Source | `all` | Cualquier IP de origen |
+| Destination | `all` | Cualquier IP de destino |
+| Schedule | `always` | Siempre activa |
+| Service | `ALL` | Todos los servicios/puertos |
+| Action | `ACCEPT` | Permitir tráfico |
+| NAT | `Deshabilitado` | No se aplica NAT entre redes internas |
+| Log Allowed Traffic | `Habilitado` | Registrar tráfico permitido para auditoría |
 
-  Incoming          port1 (LAN)            Origen del tráfico
-  Interface                                
-
-  Outgoing          port2 (DMZ)            Destino del tráfico
-  Interface                                
-
-  Source            all                    Cualquier IP de origen
-
-  Destination       all                    Cualquier IP de destino
-
-  Schedule          always                 Siempre activa
-
-  Service           ALL                    Todos los servicios/puertos
-
-  Action            ACCEPT                 Permitir tráfico
-
-  NAT               Deshabilitado          No necesitamos NAT entre redes
-                                           internas
-
-  Log Allowed       Habilitado             Para auditoría
-  Traffic                                  
-  -------------------------------------------------------------------------
-
-4.  Clic en OK
+4.Clic en OK
 
 **Vía CLI** (alternativa):
+
 ```bash
 config firewall policy
 
@@ -716,36 +647,27 @@ end
 ```
 
 ![alt text](https://imgur.com/V7a7v8q)
-**\
-**
+
+---
 
 #### **Paso 3.1.2: Crear Política DMZ → LAN (Permitir Todo)**
 
 **Repita el proceso anterior** con estos valores:
 
-  -----------------------------------------------------------------------
-  Campo                             Valor
-  --------------------------------- -------------------------------------
-  Name                              DMZ_to_LAN_Allow_All
-
-  Incoming Interface                port2 (DMZ)
-
-  Outgoing Interface                port1 (LAN)
-
-  Source                            all
-
-  Destination                       all
-
-  Service                           ALL
-
-  Action                            ACCEPT
-
-  NAT                               Deshabilitado
-
-  Log Allowed Traffic               Habilitado
-  -----------------------------------------------------------------------
+| Campo | Valor | Explicación |
+| :--- | :---: | :--- |
+| Name | `DMZ_to_LAN_Allow_All` | Nombre descriptivo |
+| Incoming Interface | `port2 (DMZ)` | Origen del tráfico |
+| Outgoing Interface | `port1 (LAN)` | Destino del tráfico |
+| Source | `all` | Cualquier IP de origen |
+| Destination | `all` | Cualquier IP de destino |
+| Service | `ALL` | Todos los servicios/puertos |
+| Action | `ACCEPT` | Permitir tráfico |
+| NAT | `Deshabilitado` | No se aplica NAT entre redes internas |
+| Log Allowed Traffic | `Habilitado` | Registrar tráfico permitido para auditoría |
 
 **Vía CLI**:
+
 ```bash
 config firewall policy
 
@@ -803,7 +725,6 @@ PING 200.100.10.10 (200.100.10.10) 56(84) bytes of data.
 `ping -c 4 192.168.10.10`
 
 **Resultado esperado**: Debe funcionar
-
 
 ![alt text](https://imgur.com/dDqfncw)
 
@@ -909,11 +830,11 @@ Si el firewall tiene miles de reglas, colocar las reglas de tráfico de **alto v
 
 La estructura más común y segura para las políticas de firewall es la siguiente, de arriba (más importante) a abajo:
 
-1.  **Tráfico Explícito de Denegación (Anti-Spoofing, Bloqueos conocidos).**
-2.  **Permisos Específicos** (Excepciones necesarias, como el tráfico de servidores críticos).
-3.  **Denegaciones Específicas** (Bloquear aplicaciones o usuarios específicos).
-4.  **Reglas Amplias de Permiso** (Reglas que permiten la funcionalidad general, como permitir la navegación saliente).
-5.  **Regla de Denegación Implícita (Cleanup Rule):** Una regla final que **deniega todo** lo que no haya coincidido con ninguna regla anterior (ej. `ANY to ANY Deny`). Esto es una medida de seguridad fundamental.
+1.**Tráfico Explícito de Denegación (Anti-Spoofing, Bloqueos conocidos).**
+2.**Permisos Específicos** (Excepciones necesarias, como el tráfico de servidores críticos).
+3.**Denegaciones Específicas** (Bloquear aplicaciones o usuarios específicos).
+4.**Reglas Amplias de Permiso** (Reglas que permiten la funcionalidad general, como permitir la navegación saliente).
+5.**Regla de Denegación Implícita (Cleanup Rule):** Una regla final que **deniega todo** lo que no haya coincidido con ninguna regla anterior (ej. `ANY to ANY Deny`). Esto es una medida de seguridad fundamental.
 
 En el escenario de la práctica, invertir el orden de las políticas LAN_to_DMZ_Allow_All y DMZ_to_LAN_Allow_All es una falla de seguridad por las siguientes razones:
 
@@ -938,14 +859,24 @@ La inversión causaría que la LAN no pueda funcionar correctamente, especialmen
 | **1** | **`DMZ_to_LAN_Allow_All`** | **DMZ $\to$ LAN** | **PERMITIR** | **PELIGRO INMINENTE:** Se permite todo, incluyendo ataques de día cero, robo de bases de datos y movimientos laterales a la red interna. El firewall ignora todas las reglas de bloqueo que estaban debajo. |
 | **2** | **`LAN_to_DMZ_Allow_All`** | **LAN $\to$ DMZ** | **PERMITIR** | **I
 
-
-**Pregunta 10: Reflexión Final**
+### Pregunta 10: Reflexión Final
 
 **Después de completar esta práctica, ¿cómo cambió su comprensión del
 rol de un firewall de última generación en la seguridad perimetral? ¿Qué
 funcionalidad le sorprendió más y por qué?**
 
-**Espacio para respuesta** (mínimo 150 palabras):
+Mi comprensión del firewall evolucionó desde verlo como un simple "muro de bloqueo" a reconocerlo como una **estructura de defensa estratégica multinivel**, similar a una trinchera militar medieval:
 
-**\
-**
+**La Analogía de la Trinchera:**
+
+- **Internet (zona enemiga):** El territorio exterior donde residen los atacantes
+- **Firewall (trinchera de defensa):** La primera barrera protectora que inspecciona cada "invasión" (paquete de datos)
+- **DMZ (campamento de provisiones):** La zona intermedia donde se ubican los servicios "expuestos" (web, DNS, correo) que necesitan comunicación externa, pero están contenidos y monitoreados
+- **LAN/Sistemas Internos (la ciudad):** El corazón protegido donde residen los activos más críticos y valiosos
+
+**Lo que sorprendió:**
+La **simetría y asimetría de políticas (Ejercicio 4)** fue revelador. Permitir ping unidireccional (LAN→DMZ pero bloquear DMZ→LAN) demostró que un firewall stateful no es simplemente un bloqueador/permitidor binario, sino un **guardián inteligente que entiende sesiones de comunicación**. Es como una trinchera que permite que tus soldados disparen hacia afuera pero rechaza el fuego que viene de la zona de provisiones hacia la ciudad.
+
+Las políticas de objetos (Ejercicio 8) también fueron críticas: en lugar de memorizar "bloquear 192.168.10.10", el FortiGate usa nombres semánticos ("Host_Kali", "Group_Web_Services"), lo que transforma la gestión de seguridad de **táctica (matar mosquitos) a estratégica (defender el reino)**.
+
+El concepto que cambió mi pensamiento: **la seguridad no es restrictiva, es inteligente**. No se trata de bloquear todo (que pararía el negocio), sino de permitir lo necesario, inspeccionar lo permitido, y denegar lo malicioso. El FortiGate es una trinchera que sabe cuándo dejar pasar suministros civiles legítimos y cuándo repeler un ataque coordinado.
