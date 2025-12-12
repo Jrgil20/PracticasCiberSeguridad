@@ -865,7 +865,7 @@ La inversión causaría que la LAN no pueda funcionar correctamente, especialmen
 rol de un firewall de última generación en la seguridad perimetral? ¿Qué
 funcionalidad le sorprendió más y por qué?**
 
-Mi comprensión del firewall evolucionó desde verlo como un simple "muro de bloqueo" a reconocerlo como una **estructura de defensa estratégica multinivel**, similar a una trinchera militar medieval:
+Nuestra comprensión del firewall evolucionó desde verlo como un simple "muro de bloqueo" a reconocerlo como una **estructura de defensa estratégica multinivel**, similar a una trinchera militar medieval:
 
 **La Analogía de la Trinchera:**
 
@@ -874,9 +874,9 @@ Mi comprensión del firewall evolucionó desde verlo como un simple "muro de blo
 - **DMZ (campamento de provisiones):** La zona intermedia donde se ubican los servicios "expuestos" (web, DNS, correo) que necesitan comunicación externa, pero están contenidos y monitoreados
 - **LAN/Sistemas Internos (la ciudad):** El corazón protegido donde residen los activos más críticos y valiosos
 
-**Lo que sorprendió:**
+**Lo que nos sorprendió:**
 La **simetría y asimetría de políticas (Ejercicio 4)** fue revelador. Permitir ping unidireccional (LAN→DMZ pero bloquear DMZ→LAN) demostró que un firewall stateful no es simplemente un bloqueador/permitidor binario, sino un **guardián inteligente que entiende sesiones de comunicación**. Es como una trinchera que permite que tus soldados disparen hacia afuera pero rechaza el fuego que viene de la zona de provisiones hacia la ciudad.
 
 Las políticas de objetos (Ejercicio 8) también fueron críticas: en lugar de memorizar "bloquear 192.168.10.10", el FortiGate usa nombres semánticos ("Host_Kali", "Group_Web_Services"), lo que transforma la gestión de seguridad de **táctica (matar mosquitos) a estratégica (defender el reino)**.
 
-El concepto que cambió mi pensamiento: **la seguridad no es restrictiva, es inteligente**. No se trata de bloquear todo (que pararía el negocio), sino de permitir lo necesario, inspeccionar lo permitido, y denegar lo malicioso. El FortiGate es una trinchera que sabe cuándo dejar pasar suministros civiles legítimos y cuándo repeler un ataque coordinado.
+El concepto que cambió nuestro pensamiento: **la seguridad no es restrictiva, es inteligente**. No se trata de bloquear todo (que pararía el negocio), sino de permitir lo necesario, inspeccionar lo permitido, y denegar lo malicioso. El FortiGate es una trinchera que sabe cuándo dejar pasar suministros civiles legítimos y cuándo repeler un ataque coordinado.
