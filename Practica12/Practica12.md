@@ -11,6 +11,10 @@
 
 ---
 
+## **Resumen Ejecutivo**
+
+En esta práctica se configuró un FortiGate virtual para segmentar la red en LAN y DMZ. Se crearon interfaces y políticas básicas, se comprobó la conectividad y se documentaron prácticas recomendadas de seguridad. Durante la ejecución la licencia del FortiGate expiró, lo que impidió completar ejercicios avanzados; la documentación incluye hallazgos y remediaciones sugeridas.
+
 ## 🎯 Objetivos de Aprendizaje
 
 Al completar esta práctica, será capaz de:
@@ -59,6 +63,16 @@ Antes de comenzar esta práctica, asegúrate de cumplir con los siguientes requi
 - Imagen OVA de FortiGate (importar en VirtualBox)
 - Credenciales por defecto del FortiGate
 - Plantilla de reporte para capturas de pantalla
+
+### Herramientas Utilizadas
+
+| Herramienta | Versión | Propósito |
+|-------------|---------|-----------|
+| VirtualBox | 6.1+ | Virtualización y gestión de VMs |
+| FortiGate VM | N/A | Appliance UTM (práctica con OVA) |
+| Kali Linux | Rolling | Cliente de pruebas y herramienta de administración |
+| Metasploitable2 | 2.0 | Servidor vulnerable para pruebas en DMZ |
+| nmap | 7.x | Escaneos y verificación de puertos |
 
 ---
 
@@ -362,9 +376,9 @@ Acceder al FortiGate por primera vez, configurar las interfaces de red
 
 #### Credenciales por defecto (Observe la pizarra)
 
-- Usuario:
+- **Usuario:** admin
 
-- Contraseña:
+- **Contraseña:** *(por defecto no tiene; el sistema obliga a crear una nueva contraseña al primer inicio)*
 
 You are forced to change your password. Please input a new password.
 
@@ -445,6 +459,20 @@ next
 end
 ```
 
+Desglose de Comandos y Verificación (Breve)
+
+- `config system interface` — Entra en el bloque de configuración de interfaces; los cambios se aplican al finalizar.
+- `edit port1` — Selecciona la interfaz física `port1`.
+- `set mode static` — Define IP estática.
+- `set allowaccess` — Activa servicios de administración (ping, https, ssh).
+- `show system interface port1` — Muestra la configuración actual para confirmación.
+
+Comprobación en el host Kali:
+
+- `ip addr show` — Confirma IP local.
+- `ip route` — Verifica la tabla de rutas y la puerta de enlace.
+- `arp -n` — Confirma que el FortiGate responde ARP en LAN.
+
 **PREGUNTA DE VERIFICACIÓN #3**: ¿Qué significa set allowaccess ping
 https ssh http? ¿Qué pasaría si no incluyéramos https?
 
@@ -505,6 +533,14 @@ que permitan tráfico entre zonas)
 **Explicación**: El FortiGate responde en su interfaz LAN, pero por
 defecto bloquea todo tráfico entre zonas hasta que creemos políticas
 explícitas.
+
+Comandos de diagnóstico recomendados con desglose:
+
+- `ping -c 4 192.168.10.1` — Verifica disponibilidad de IP y conectividad de capa 3.
+- `tcpdump -nni eth0 icmp` — Captura ICMP para confirmar si los paquetes salen de Kali y si el FortiGate responde. (`-n` evita DNS; `-i` indica la interfaz; `icmp` filtra ICMP).
+- `nmap -Pn -p 22,80,443 192.168.10.1` — Verifica puertos de administración y acceso web al FortiGate; `-Pn` evita ping para detectar puertos cuando ICMP está bloqueado.
+- `ip route` — Verifica la ruta y la puerta de enlace del host Kali.
+- `arp -n` — Confirma presencia del FortiGate en la red LAN a través de ARP.
 
 #### Paso 2.5: Acceso a la Interfaz Gráfica (GUI)
 
@@ -730,15 +766,100 @@ PING 200.100.10.10 (200.100.10.10) 56(84) bytes of data.
 
 ![alt text](https://imgur.com/dDqfncw)
 
-En la imagen se obseva que solo fue exitoso el ping desde "Analista" hacia "Objetivo", este debido a la expiración de las licencias de Fortinet en medio de la ejecución de la práctica.
+En la imagen se observa que solo fue exitoso el ping desde "Analista" hacia "Objetivo", este debido a la expiración de las licencias de Fortinet en medio de la ejecución de la práctica.
 
 La totalidad de la práctica no se pudo realizar debido a que a mitad de la misma la licencia de Fortinet expiró, por lo que las políticas dejaron de funcionar conllevando a la imposibilidad de seguir con el contenido de la práctica en su totalidad, por ello en la sección siguiente solo se responderán las preguntas cuya respuesta pueda ser construida con la información contenida en el presente informe.
 
+## 🔬 Verificación Forense y Evidencia
+
+Después de cada acción crítica (configuración de interfaces, creación de políticas), capture y preserve evidencia automatizada:
+
+```bash
+# Crear estructura de evidencias
+timestamp=$(date +%Y%m%d_%H%M%S)
+workdir=~/pentesting_$(date +%Y%m%d)_fortigate
+mkdir -p "$workdir"/{recon,config,logs,evidence}
+
+# Guardar outputs clave
+ip addr show > "$workdir"/recon/ip_addr_$(date +%H%M%S).txt
+ip route > "$workdir"/recon/ip_route_$(date +%H%M%S).txt
+arp -n > "$workdir"/recon/arp_$(date +%H%M%S).txt
+ssh admin@192.168.10.1 "show system interface" > "$workdir"/config/fortigate_interfaces_$(date +%H%M%S).txt
+ssh admin@192.168.10.1 "show firewall policy" > "$workdir"/config/fortigate_policies_$(date +%H%M%S).txt
+tcpdump -nni eth0 icmp -c 10 > "$workdir"/logs/tcpdump_icmp_$(date +%H%M%S).txt
+```
+
+Explicación: Cada comando salva información que valida el estado del entorno. Esto es útil en auditorías y para reproducir la cronología de cambios.
+
+**Validación mínima**:
+
+- `cat $workdir/recon/ip_addr_*.txt` — Verifica IPs en la estación de trabajo.
+- `cat $workdir/config/fortigate_policies_*.txt` — Verifica las políticas creadas y su orden.
+- `tcpdump` logs — Verifica que los paquetes ICMP o los servicios deseados cruzan la frontera.
+
+**Snapshot de VMs**:
+
+- Cree un snapshot antes de operaciones destructivas: en VirtualBox UI: seleccionar VM → Snapshots → Take Snapshot.
+- Nombres recomendados: `pre-change_<timestamp>`, `post-change_<timestamp>`.
+- Exportar OVA o guardar la carpeta VM para evidencia adicional si es necesario.
+
 **Conclusiones de la práctica.**
 
-**Instrucciones**: Responda las siguientes preguntas con base en su
-experiencia durante la práctica. Sea específico y use ejemplos de su
-configuración.
+## 📊 Resumen de Hallazgos y Recomendaciones
+
+| # | Hallazgo | Impacto (CIA) | Severidad | Recomendación | Estado |
+|---|---|---|---|---|---|
+| 1 | Políticas `ALLOW_ALL` (`LAN_to_DMZ_Allow_All`, `DMZ_to_LAN_Allow_All`) | C: Medio I: Alto A: Alto | 🔴 Crítica | Reemplazar por políticas específicas por servicio/puerto, aplicar objetos de dirección y grupos; deshabilitar NAT innecesario | Pendiente |
+| 2 | Administración en interfaz pública con `allowaccess` multiple | C: Alto I: Alto A: Medio | 🔴 Alta | Restringir `allowaccess` a HTTPS, origin IPs, usar admin-allowip; desactivar HTTP/SSH si no necesario | Pendiente |
+| 3 | Falta de documentación de sesión y logging | C: Medio I: Medio A: Bajo | 🟡 Alta | Habilitar `logtraffic` y exportar logs a Syslog/SEC SIEM, revisar `Log & Report` | Pendiente |
+| 4 | Licencia FortiGate expiró | C: Operacional I: Bajo A: Bajo | 🔴 Alta | Renovar licencia o usar una imagen con licencia para laboratorio; documentar limitación | Parcial |
+
+**Notas**: La tabla prioriza correcciones puntuales de configuración para reducir el riesgo de movimiento lateral y exposición de servicios.
+
+### 🛠️ Remediación técnica (ejemplo)
+
+1) Reemplazar la política `ALL` por servicios específicos (ejemplo HTTP):
+
+    ```bash
+    config firewall service custom
+    edit "srv_http"
+    set protocol TCP
+    set tcp-portrange 80
+    next
+    end
+
+    config firewall policy
+    edit 1
+    set name "LAN_to_DMZ_HTTP"
+    set srcintf "port1"
+    set dstintf "port2"
+    set srcaddr "Host_Kali"
+    set dstaddr "Host_WebDMZ"
+    set service "srv_http"
+    set action accept
+    set schedule "always"
+    set logtraffic all
+    next
+    end
+    ```
+
+2) Restringir GUI y SSH a la red de administración:
+
+    ```bash
+    config system interface
+    edit "port1"
+    set allowaccess https
+    set admin-allowip 192.168.10.0/24
+    next
+    end
+    ```
+
+3) Habilitar Syslog y exportar los logs a un collector para su análisis y retención.
+
+**Validación de remediación**:
+
+- Ejecutar `show firewall policy` y `show system interface` y confirmar que los cambios están aplicados.
+- Realizar pruebas `nmap` y `tcpdump` para comprobar que sólo los puertos y servicios permitidos son accesibles.
 
 #### Pregunta 1: Arquitectura de Seguridad
 
@@ -774,7 +895,7 @@ Definición y Rol de Cada Zona
 | **DMZ** | Demilitarized Zone | Zona de "buffer" o amortiguación. Contiene sistemas que deben ser accesibles desde Internet. | **Medio/Alto** (Sistemas expuestos al público) | Servidores Web, Servidores de Correo (MTA), Servidores DNS públicos, Servidores de Aplicaciones públicos. |
 | **WAN** | Wide Area Network | La red no confiable (generalmente **Internet**). | **Alto** (Máximo nivel de amenaza) | Tráfico externo, Origen de ataques. |
 
-En la práctica, se evita el éxito completo de un posible ataque al poner el firewall entre la DMZ(la máquina denominada como "Objetivo") y la red LAN(la máquina denomindada como "Analista") ya que las configuraciones realizadas en el equipo Fortinte impide la comunicación entre ambas zonas si no hay una política declarada en el equipo que lo permita debido a que el firewall por defecto bloquea las comunicación entre sus puertos. Todo esto evita que contenido malicioso que un atacante pudo haber insertado en los paqutes enviados desde DMZ hacia la red LAN no afecte a la misma, de igual forma esto aisla el daño hacia una zona específica lo que facilita su análisis y correción por el equipo de cibersguridad.
+En la práctica, se evita el éxito completo de un posible ataque al poner el firewall entre la DMZ(la máquina denominada como "Objetivo") y la red LAN(la máquina denominada como "Analista") ya que las configuraciones realizadas en el equipo Fortinet impide la comunicación entre ambas zonas si no hay una política declarada en el equipo que lo permita debido a que el firewall por defecto bloquea las comunicación entre sus puertos. Todo esto evita que contenido malicioso que un atacante pudo haber insertado en los paquetes enviados desde DMZ hacia la red LAN no afecte a la misma, de igual forma esto aisla el daño hacia una zona específica lo que facilita su análisis y correción por el equipo de cibersguridad.
 
 #### Pregunta 4: Orden de Políticas
 
