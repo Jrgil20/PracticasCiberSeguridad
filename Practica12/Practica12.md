@@ -137,31 +137,31 @@ configuración del FortiGate.
 
 2. Clic derecho → Configuración → Red
 
-**Adaptador 1 (port1 - LAN)**:
+    **Adaptador 1 (port1 - LAN)**:
 
-- Habilitar adaptador de red
+    - Habilitar adaptador de red
 
-- Conectado a: Red interna
+    - Conectado a: Red interna
 
-- Nombre: LAN_Segment
+    - Nombre: LAN_Segment
 
-**Adaptador 2 (port2 - DMZ)**:
+    **Adaptador 2 (port2 - DMZ)**:
 
-- Habilitar adaptador de red
+    - Habilitar adaptador de red
 
-- Conectado a: Red interna
+    - Conectado a: Red interna
 
-- Nombre: DMZ_Segment
+    - Nombre: DMZ_Segment
 
-**Adaptador 3 (port3 - WAN - Opcional)**:
+    **Adaptador 3 (port3 - WAN - Opcional)**:
 
-- Habilitar adaptador de red
+    - Habilitar adaptador de red
 
-- Conectado a: NAT
+    - Conectado a: NAT
 
-- (Este adaptador permite al FortiGate acceder a Internet para actualizaciones)
+    - (Este adaptador permite al FortiGate acceder a Internet para actualizaciones)
 
-3.Clic en Aceptar
+3. Clic en Aceptar
 
 ![Figura 1: Configuración de adaptadores de red en VirtualBox (LAN_Segment y DMZ_Segment)](https://imgur.com/KC7BDiv)
 
@@ -169,9 +169,9 @@ configuración del FortiGate.
 
 **Acción**:
 
-1.Seleccione su VM de Kali Linux
+1. Seleccione su VM de Kali Linux
 
-2.Configuración → Red
+2. Configuración → Red
 
     **Adaptador 1**:
 
@@ -179,7 +179,7 @@ configuración del FortiGate.
     - Conectado a: Red interna
     - Nombre: LAN_Segment
 
-3.  Inicie Kali Linux y abra una terminal
+3. Inicie Kali Linux y abra una terminal
 
 **Configurar IP estática**:
 
@@ -243,9 +243,9 @@ inet 192.168.10.10/24 brd 192.168.10.255 scope global eth0
 
 **Acción**:
 
-1.Seleccione su VM de Metasploitable2
+1. Seleccione su VM de Metasploitable2
 
-2.Configuración → Red
+2. Configuración → Red
 
     **Adaptador 1**:
 
@@ -255,7 +255,7 @@ inet 192.168.10.10/24 brd 192.168.10.255 scope global eth0
 
     - Nombre: DMZ_Segment
 
-3.Inicie Metasploitable2 (credenciales por defecto: msfadmin / msfadmin)
+3. Inicie Metasploitable2 (credenciales por defecto: msfadmin / msfadmin)
 
 \# Editar configuración de red
 
@@ -351,7 +351,7 @@ si Kali está en una red diferente (192.168.10.0/24)?
 
 ## **FASE 2: Configuración Inicial del FortiGate (15 minutos)**
 
-### **Objetivo de la Fase**
+### Objetivo de la Fase
 
 Acceder al FortiGate por primera vez, configurar las interfaces de red
 (port1 y port2) con sus respectivas IPs y zonas de seguridad.
@@ -360,7 +360,7 @@ Acceder al FortiGate por primera vez, configurar las interfaces de red
 
 **Inicie la VM del FortiGate**. Verá una consola de texto.
 
-**Credenciales por defecto (Observe la pizarra)**
+#### Credenciales por defecto (Observe la pizarra)
 
 - Usuario:
 
@@ -379,11 +379,12 @@ práctica.
 
 ---
 
-**Paso 2.2: Configuración de la Interfaz port1 (LAN)**
+#### Paso 2.2: Configuración de la Interfaz port1 (LAN)
 
 **En la consola del FortiGate**, ejecute:
 
 \# Entrar al modo de configuración
+
 ```bash
 config system interface
 
@@ -421,6 +422,7 @@ end
 `show system interface port1`
 
 **Salida esperada**:
+
 ```bash
 config system interface
 
@@ -482,7 +484,7 @@ show system interface port2
 
 ![alt text](https://imgur.com/GREem3A)
 
-**Paso 2.4: Verificación de Conectividad Básica**
+#### Paso 2.4: Verificación de Conectividad Básica
 
 **Desde Kali Linux**, ahora intente:
 
@@ -504,7 +506,7 @@ que permitan tráfico entre zonas)
 defecto bloquea todo tráfico entre zonas hasta que creemos políticas
 explícitas.
 
-**Paso 2.5: Acceso a la Interfaz Gráfica (GUI)**
+#### Paso 2.5: Acceso a la Interfaz Gráfica (GUI)
 
 **Desde Kali Linux**, abra Firefox:
 
@@ -524,18 +526,18 @@ ingrese a `https://192.168.10.1`
 
 ---
 
-**Paso 2.6: Exploración de la Interfaz GUI**
+#### Paso 2.6: Exploración de la Interfaz GUI
 
 **Navegue por estos menús** (solo observación, no modifique aún):
 
-1.**Dashboard**: Vista general del estado del firewall
+1. **Dashboard**: Vista general del estado del firewall
 
-2.**Network → Interfaces**: Vea port1 y port2 configuradas
+2. **Network → Interfaces**: Vea port1 y port2 configuradas
 
-3.**Policy & Objects → Firewall Policy**: Actualmente vacía (por eso
+3. **Policy & Objects → Firewall Policy**: Actualmente vacía (por eso
     no hay conectividad entre zonas)
 
-4.**Log & Report → Forward Traffic**: Logs de tráfico (vacío por
+4. **Log & Report → Forward Traffic**: Logs de tráfico (vacío por
     ahora)
 
 **PREGUNTA DE VERIFICACIÓN #4**: ¿Cuántas políticas de firewall existen
@@ -543,7 +545,7 @@ actualmente? ¿Por qué Kali no puede hacer ping a Metasploitable2?
 
 **Respuesta**: No hay políticas configuradas aún (0 políticas). Kali no puede hacer ping a Metasploitable2 porque el FortiGate tiene una postura de denegación implícita: por defecto bloquea todo tráfico entre zonas hasta que se crean políticas explícitas que lo permitan.
 
-**Paso 2.7: Configuración Opcional de port3 (WAN)**
+#### Paso 2.7: Configuración Opcional de port3 (WAN)
 
 **Solo si necesita acceso a Internet desde el FortiGate**:
 
@@ -576,7 +578,7 @@ El paso 2.7 se omitió por indicación del profesor.
 
 ## **FASE 3: Implementación de Políticas de Seguridad (50 minutos)**
 
-### **Objetivo de la Fase**
+### Objetivo de la Fase**
 
 Configurar políticas de firewall progresivamente más complejas, desde
 conectividad básica hasta control granular de servicios y políticas
@@ -584,37 +586,37 @@ asimétricas.
 
 #### **Ejercicio 1: Interconexión Básica LAN ↔ DMZ (Ping Bidireccional)**
 
-**Objetivo**
+Objetivo
 
 Permitir que Kali (LAN) y Metasploitable2 (DMZ) puedan hacerse ping
 mutuamente.
 
 ---
 
-**Paso 3.1.1: Crear Política LAN → DMZ (Permitir Todo)**
+#### Paso 3.1.1: Crear Política LAN → DMZ (Permitir Todo)
 
 **Vía GUI**:
 
-1.Navegue a: Policy & Objects → Firewall Policy
+1. Navegue a: Policy & Objects → Firewall Policy
 
-2.Clic en Create New
+2. Clic en Create New
 
-3.Configure:
+3. Configure:
 
-| Campo | Valor | Explicación |
-| :--- | :---: | :--- |
-| Name | `LAN_to_DMZ_Allow_All` | Nombre descriptivo |
-| Incoming Interface | `port1 (LAN)` | Origen del tráfico |
-| Outgoing Interface | `port2 (DMZ)` | Destino del tráfico |
-| Source | `all` | Cualquier IP de origen |
-| Destination | `all` | Cualquier IP de destino |
-| Schedule | `always` | Siempre activa |
-| Service | `ALL` | Todos los servicios/puertos |
-| Action | `ACCEPT` | Permitir tráfico |
-| NAT | `Deshabilitado` | No se aplica NAT entre redes internas |
-| Log Allowed Traffic | `Habilitado` | Registrar tráfico permitido para auditoría |
+    | Campo | Valor | Explicación |
+    | :--- | :---: | :--- |
+    | Name | `LAN_to_DMZ_Allow_All` | Nombre descriptivo |
+    | Incoming Interface | `port1 (LAN)` | Origen del tráfico |
+    | Outgoing Interface | `port2 (DMZ)` | Destino del tráfico |
+    | Source | `all` | Cualquier IP de origen |
+    | Destination | `all` | Cualquier IP de destino |
+    | Schedule | `always` | Siempre activa |
+    | Service | `ALL` | Todos los servicios/puertos |
+    | Action | `ACCEPT` | Permitir tráfico |
+    | NAT | `Deshabilitado` | No se aplica NAT entre redes internas |
+    | Log Allowed Traffic | `Habilitado` | Registrar tráfico permitido para auditoría |
 
-4.Clic en OK
+4. Clic en OK
 
 **Vía CLI** (alternativa):
 
@@ -732,14 +734,13 @@ En la imagen se obseva que solo fue exitoso el ping desde "Analista" hacia "Obje
 
 La totalidad de la práctica no se pudo realizar debido a que a mitad de la misma la licencia de Fortinet expiró, por lo que las políticas dejaron de funcionar conllevando a la imposibilidad de seguir con el contenido de la práctica en su totalidad, por ello en la sección siguiente solo se responderán las preguntas cuya respuesta pueda ser construida con la información contenida en el presente informe.
 
-
 **Conclusiones de la práctica.**
 
 **Instrucciones**: Responda las siguientes preguntas con base en su
 experiencia durante la práctica. Sea específico y use ejemplos de su
 configuración.
 
-**Pregunta 1: Arquitectura de Seguridad**
+#### Pregunta 1: Arquitectura de Seguridad
 
 **¿Por qué es importante segmentar la red en zonas (LAN, DMZ, WAN)?
 Explique con un ejemplo concreto de esta práctica cómo la segmentación
@@ -749,21 +750,21 @@ La segmentación de una red en zonas lógicas (como LAN, DMZ y WAN) es la base d
 
  1. **Seguridad (Objetivo Primordial)**
 
-La segmentación es fundamental para aplicar los principios de **Mínimo Privilegio** y **Aislamiento**.
+    La segmentación es fundamental para aplicar los principios de **Mínimo Privilegio** y **Aislamiento**.
 
-* **Contención de Amenazas:** Este es el beneficio más crítico. Si un atacante compromete un sistema en la **DMZ** (la zona más expuesta), el **firewall** situado entre la DMZ y la LAN actúa como una barrera. Esto **contiene** el ataque, impidiendo el movimiento lateral hacia los sistemas internos críticos (donde residen las bases de datos y la información sensible). 
-* **Reducción de la Superficie de Ataque:** Al aislar los servicios que deben ser públicos (servidores web, correo) en la DMZ, se reduce significativamente el número de sistemas internos expuestos a Internet. Solo lo estrictamente necesario es accesible desde fuera.
-* **Control de Tráfico Estricto:** Permite a los *firewalls* aplicar reglas de filtrado muy granulares y estrictas sobre el tráfico que cruza los límites de cada zona, haciendo imposible el tráfico no autorizado:
-    * Tráfico WAN $\to$ LAN: **Generalmente bloqueado.**
-    * Tráfico DMZ $\to$ LAN: **Estrictamente limitado** (ej. solo puerto 3306 hacia el servidor de base de datos).
+    - **Contención de Amenazas:** Este es el beneficio más crítico. Si un atacante compromete un sistema en la **DMZ** (la zona más expuesta), el **firewall** situado entre la DMZ y la LAN actúa como una barrera. Esto **contiene** el ataque, impidiendo el movimiento lateral hacia los sistemas internos críticos (donde residen las bases de datos y la información sensible).
+    - **Reducción de la Superficie de Ataque:** Al aislar los servicios que deben ser públicos (servidores web, correo) en la DMZ, se reduce significativamente el número de sistemas internos expuestos a Internet. Solo lo estrictamente necesario es accesible desde fuera.
+    - **Control de Tráfico Estricto:** Permite a los *firewalls* aplicar reglas de filtrado muy granulares y estrictas sobre el tráfico que cruza los límites de cada zona, haciendo imposible el tráfico no autorizado:
+    - Tráfico WAN $\to$ LAN: **Generalmente bloqueado.**
+    - Tráfico DMZ $\to$ LAN: **Estrictamente limitado** (ej. solo puerto 3306 hacia el servidor de base de datos).
 
  2. **Gestión, Rendimiento y Cumplimiento**
 
 La segmentación también mejora la eficiencia operativa y ayuda a cumplir con normativas.
 
-* **Aislamiento de Problemas de Rendimiento:** Dividir la red en subredes más pequeñas reduce el tamaño de los dominios de *broadcast*. Si ocurre un problema de tráfico excesivo o un *loop* en la LAN, este no impactará negativamente en el rendimiento de los servidores críticos en la DMZ ni en la conectividad WAN.
-* **Optimización de Recursos (QoS):** Permite priorizar el tráfico por zona (ej. garantizar ancho de banda de alta calidad para llamadas VoIP en la LAN) sin que el tráfico de la DMZ consuma estos recursos.
-* **Cumplimiento Normativo (*Compliance*):** Normativas de seguridad como **PCI DSS** (para manejo de tarjetas de crédito) o HIPAA (sanidad) a menudo **exigen** la segmentación para aislar y proteger los sistemas que manejan datos regulados, facilitando las auditorías.
+- **Aislamiento de Problemas de Rendimiento:** Dividir la red en subredes más pequeñas reduce el tamaño de los dominios de *broadcast*. Si ocurre un problema de tráfico excesivo o un *loop* en la LAN, este no impactará negativamente en el rendimiento de los servidores críticos en la DMZ ni en la conectividad WAN.
+- **Optimización de Recursos (QoS):** Permite priorizar el tráfico por zona (ej. garantizar ancho de banda de alta calidad para llamadas VoIP en la LAN) sin que el tráfico de la DMZ consuma estos recursos.
+- **Cumplimiento Normativo (*Compliance*):** Normativas de seguridad como **PCI DSS** (para manejo de tarjetas de crédito) o HIPAA (sanidad) a menudo **exigen** la segmentación para aislar y proteger los sistemas que manejan datos regulados, facilitando las auditorías.
 
 Definición y Rol de Cada Zona
 
@@ -775,7 +776,7 @@ Definición y Rol de Cada Zona
 
 En la práctica, se evita el éxito completo de un posible ataque al poner el firewall entre la DMZ(la máquina denominada como "Objetivo") y la red LAN(la máquina denomindada como "Analista") ya que las configuraciones realizadas en el equipo Fortinte impide la comunicación entre ambas zonas si no hay una política declarada en el equipo que lo permita debido a que el firewall por defecto bloquea las comunicación entre sus puertos. Todo esto evita que contenido malicioso que un atacante pudo haber insertado en los paqutes enviados desde DMZ hacia la red LAN no afecte a la misma, de igual forma esto aisla el daño hacia una zona específica lo que facilita su análisis y correción por el equipo de cibersguridad.
 
-**Pregunta 4: Orden de Políticas**
+#### Pregunta 4: Orden de Políticas
 
 **¿Por qué el orden de las políticas de firewall es crítico? Proporcione
 un ejemplo de dos políticas que, si se invierten, cambiarían
@@ -787,10 +788,10 @@ El Modelo de "Primera Coincidencia Válida"
 
 Cuando un paquete de datos llega al firewall, el dispositivo no revisa todas las reglas. En su lugar, el firewall:
 
-1.  **Comienza** a revisar las reglas **desde la parte superior (Regla 1) hacia abajo**.
-2.  **Se detiene** en la **primera regla** que coincide exactamente con los parámetros del paquete (dirección de origen, destino, puerto, protocolo).
-3.  **Ejecuta** la acción definida en esa regla (Permitir, Bloquear o Rechazar).
-4.  **Ignora** el resto de las reglas, incluso si alguna de ellas también hubiera coincidido o si era la regla deseada. 
+1. **Comienza** a revisar las reglas **desde la parte superior (Regla 1) hacia abajo**.
+2. **Se detiene** en la **primera regla** que coincide exactamente con los parámetros del paquete (dirección de origen, destino, puerto, protocolo).
+3. **Ejecuta** la acción definida en esa regla (Permitir, Bloquear o Rechazar).
+4. **Ignora** el resto de las reglas, incluso si alguna de ellas también hubiera coincidido o si era la regla deseada.
 
 Consecuencias Críticas del Orden
 
@@ -798,66 +799,66 @@ Si el orden no es el correcto, las reglas pueden **encapsularse** mutuamente, ll
 
  1. Problemas de Seguridad (La Amenaza Mayor)
 
-Si una regla muy permisiva (una regla de **"PERMITIR TODO"** o una regla genérica) se coloca antes que una regla específica de bloqueo:
+    Si una regla muy permisiva (una regla de **"PERMITIR TODO"** o una regla genérica) se coloca antes que una regla específica de bloqueo:
 
-* **Ejemplo:**
-    * **Regla 1 (Genérica):** Permitir todo el tráfico TCP saliente.
-    * **Regla 2 (Específica, Bloqueo):** Bloquear el acceso a servidores maliciosos conocidos (`badip.com`).
-* **Resultado:** El tráfico hacia `badip.com` coincidirá inmediatamente con la **Regla 1** ("Permitir todo TCP saliente") y será autorizado. El firewall nunca llegará a procesar la **Regla 2**, comprometiendo la seguridad.
+    - **Ejemplo:**
+    - **Regla 1 (Genérica):** Permitir todo el tráfico TCP saliente.
+    - **Regla 2 (Específica, Bloqueo):** Bloquear el acceso a servidores maliciosos conocidos (`badip.com`).
+    - **Resultado:** El tráfico hacia `badip.com` coincidirá inmediatamente con la **Regla 1** ("Permitir todo TCP saliente") y será autorizado. El firewall nunca llegará a procesar la **Regla 2**, comprometiendo la seguridad.
 
-> **Regla de Oro de Seguridad:** Las reglas de **bloqueo específico** y las excepciones deben ir **arriba**, antes que las reglas amplias de permiso.
+    > **Regla de Oro de Seguridad:** Las reglas de **bloqueo específico** y las excepciones deben ir **arriba**, antes que las reglas amplias de permiso.
 
  2. Problemas de Funcionalidad y Bloqueo Innecesario
 
-Si una regla de bloqueo amplio se coloca antes de una regla específica de permiso, el servicio puede dejar de funcionar:
+    Si una regla de bloqueo amplio se coloca antes de una regla específica de permiso, el servicio puede dejar de funcionar:
 
-* **Ejemplo:**
-    * **Regla 1 (Genérica, Bloqueo):** Bloquear todo el tráfico del puerto 80.
-    * **Regla 2 (Específica, Permiso):** Permitir que el servidor web interno acceda a `updateserver.com` por el puerto 80 para actualizaciones.
-* **Resultado:** El servidor web intentará acceder al servidor de actualizaciones, pero el tráfico coincidirá con la **Regla 1** y será bloqueado. La **Regla 2** nunca se alcanzará, y el servidor no se podrá actualizar.
+    - **Ejemplo:**
+    - **Regla 1 (Genérica, Bloqueo):** Bloquear todo el tráfico del puerto 80.
+    - **Regla 2 (Específica, Permiso):** Permitir que el servidor web interno acceda a `updateserver.com` por el puerto 80 para actualizaciones.
+    - **Resultado:** El servidor web intentará acceder al servidor de actualizaciones, pero el tráfico coincidirá con la **Regla 1** y será bloqueado. La **Regla 2** nunca se alcanzará, y el servidor no se podrá actualizar.
 
-> **Regla de Oro de Funcionalidad:** Las excepciones (Permitir) a una regla de bloqueo general deben ir **arriba**.
+    > **Regla de Oro de Funcionalidad:** Las excepciones (Permitir) a una regla de bloqueo general deben ir **arriba**.
 
  3. Rendimiento (Ineficiencia)
 
-Si el firewall tiene miles de reglas, colocar las reglas de tráfico de **alto volumen** (tráfico frecuente) al final puede ralentizar todo el sistema.
+    Si el firewall tiene miles de reglas, colocar las reglas de tráfico de **alto volumen** (tráfico frecuente) al final puede ralentizar todo el sistema.
 
-* **Ejemplo:** El tráfico de navegación web (HTTP/HTTPS) constituye el 80% del tráfico de la red. Si la regla que permite este tráfico está al final de la lista, el firewall tendrá que revisar potencialmente miles de reglas inútiles para cada paquete de navegación, consumiendo CPU y latencia.
+    **Ejemplo:** El tráfico de navegación web (HTTP/HTTPS) constituye el 80% del tráfico de la red. Si la regla que permite este tráfico está al final de la lista, el firewall tendrá que revisar potencialmente miles de reglas inútiles para cada paquete de navegación, consumiendo CPU y latencia.
 
-> **Regla de Oro de Rendimiento:** Las reglas que manejan el **mayor volumen de tráfico** deberían estar cerca de la **parte superior** para ser procesadas rápidamente.
+    > **Regla de Oro de Rendimiento:** Las reglas que manejan el **mayor volumen de tráfico** deberían estar cerca de la **parte superior** para ser procesadas rápidamente.
 
- Estrategia Recomendada para el Orden de Reglas
+    Estrategia Recomendada para el Orden de Reglas
 
 La estructura más común y segura para las políticas de firewall es la siguiente, de arriba (más importante) a abajo:
 
-1.**Tráfico Explícito de Denegación (Anti-Spoofing, Bloqueos conocidos).**
-2.**Permisos Específicos** (Excepciones necesarias, como el tráfico de servidores críticos).
-3.**Denegaciones Específicas** (Bloquear aplicaciones o usuarios específicos).
-4.**Reglas Amplias de Permiso** (Reglas que permiten la funcionalidad general, como permitir la navegación saliente).
-5.**Regla de Denegación Implícita (Cleanup Rule):** Una regla final que **deniega todo** lo que no haya coincidido con ninguna regla anterior (ej. `ANY to ANY Deny`). Esto es una medida de seguridad fundamental.
+1. **Tráfico Explícito de Denegación (Anti-Spoofing, Bloqueos conocidos).**
+2. **Permisos Específicos** (Excepciones necesarias, como el tráfico de servidores críticos).
+3. **Denegaciones Específicas** (Bloquear aplicaciones o usuarios específicos).
+4. **Reglas Amplias de Permiso** (Reglas que permiten la funcionalidad general, como permitir la navegación saliente).
+5. **Regla de Denegación Implícita (Cleanup Rule):** Una regla final que **deniega todo** lo que no haya coincidido con ninguna regla anterior (ej. `ANY to ANY Deny`). Esto es una medida de seguridad fundamental.
 
 En el escenario de la práctica, invertir el orden de las políticas LAN_to_DMZ_Allow_All y DMZ_to_LAN_Allow_All es una falla de seguridad por las siguientes razones:
 
 1. Consecuencias en la Seguridad (Lo Peor)
 
-Si la regla de `DMZ_to_LAN_Allow_All` se convierte en la Regla 1, el **aislamiento de seguridad se anula por completo**.
+    Si la regla de `DMZ_to_LAN_Allow_All` se convierte en la Regla 1, el **aislamiento de seguridad se anula por completo**.
 
-* **Violación de la Contención:** El propósito fundamental de la DMZ es ser un amortiguador donde los sistemas pueden ser comprometidos sin afectar la LAN.
-* **Puerta Trasera Abierta:** Al tener la regla **`DMZ_to_LAN_Allow_All`** arriba, cualquier atacante que logre comprometer un servidor expuesto en la DMZ (un servidor web vulnerable, por ejemplo) tendrá un **camino libre** hacia toda la red interna (LAN). Podría lanzar ataques, robar datos, o infectar las máquinas de los empleados **sin ninguna restricción de firewall**.
+    - **Violación de la Contención:** El propósito fundamental de la DMZ es ser un amortiguador donde los sistemas pueden ser comprometidos sin afectar la LAN.
+    - **Puerta Trasera Abierta:** Al tener la regla **`DMZ_to_LAN_Allow_All`** arriba, cualquier atacante que logre comprometer un servidor expuesto en la DMZ (un servidor web vulnerable, por ejemplo) tendrá un **camino libre** hacia toda la red interna (LAN). Podría lanzar ataques, robar datos, o infectar las máquinas de los empleados **sin ninguna restricción de firewall**.
 
 2. Consecuencias en la Funcionalidad (El Colapso)
 
-La inversión causaría que la LAN no pueda funcionar correctamente, especialmente si hay otras reglas específicas que dependen de este tráfico.
+    La inversión causaría que la LAN no pueda funcionar correctamente, especialmente si hay otras reglas específicas que dependen de este tráfico.
 
-* **Bloqueo de la LAN hacia la DMZ:** Al mover `LAN_to_DMZ_Allow_All` hacia abajo, cualquier regla de bloqueo genérica o la Regla de Denegación Implícita (si la hay) podría atrapar el tráfico saliente de la LAN antes de que esta regla de permiso se procese.
-    * **Resultado:** Los usuarios de la LAN **no podrían acceder** a los servicios públicos de la propia empresa que están alojados en la DMZ.
+    - **Bloqueo de la LAN hacia la DMZ:** Al mover `LAN_to_DMZ_Allow_All` hacia abajo, cualquier regla de bloqueo genérica o la Regla de Denegación Implícita (si la hay) podría atrapar el tráfico saliente de la LAN antes de que esta regla de permiso se procese.
+        **Resultado:** Los usuarios de la LAN **no podrían acceder** a los servicios públicos de la propia empresa que están alojados en la DMZ.
 
 ## Escenario Detallado: DMZ_to_LAN_Allow_All Arriba
 
 | Orden | Nombre de la Regla | Tráfico (Origen $\to$ Destino) | Acción | Consecuencia |
 | :---: | :--- | :---: | :---: | :--- |
 | **1** | **`DMZ_to_LAN_Allow_All`** | **DMZ $\to$ LAN** | **PERMITIR** | **PELIGRO INMINENTE:** Se permite todo, incluyendo ataques de día cero, robo de bases de datos y movimientos laterales a la red interna. El firewall ignora todas las reglas de bloqueo que estaban debajo. |
-| **2** | **`LAN_to_DMZ_Allow_All`** | **LAN $\to$ DMZ** | **PERMITIR** | **I
+| **2** | **`LAN_to_DMZ_Allow_All`** | **LAN $\\to$ DMZ** | **PERMITIR** | **I |
 
 ### Pregunta 10: Reflexión Final
 
@@ -867,7 +868,7 @@ funcionalidad le sorprendió más y por qué?**
 
 Nuestra comprensión del firewall evolucionó desde verlo como un simple "muro de bloqueo" a reconocerlo como una **estructura de defensa estratégica multinivel**, similar a una trinchera militar medieval:
 
-**La Analogía de la Trinchera:**
+#### La Analogía de la Trinchera
 
 - **Internet (zona enemiga):** El territorio exterior donde residen los atacantes
 - **Firewall (trinchera de defensa):** La primera barrera protectora que inspecciona cada "invasión" (paquete de datos)
