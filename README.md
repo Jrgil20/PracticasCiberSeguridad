@@ -41,6 +41,7 @@ Este repositorio puede servir como referencia para estudiantes, docentes o cualq
 | 9        | [Pentesting Integral: Metodología de Red Team Assessment(Reconocimiento, Análisis de Vulnerabilidades, Explotación y Post-Explotación con Nmap, Metasploit, SQLMap, Hydra y Técnicas de Escalada de Privilegios)](Practica9/Practica9.md)                                                                                   | 20   |
 |10        | [Criptografía Simétrica y Asimétrica](Practica10/Practica10.md)| 18|
 |11        | [Ingeniería Social](Practica11/Practica11.md)| 14|
+|12        | [Redes y Perímetro (Fortigate)](Practica12/Practica12.md)| 17|
 
 ## Estructura del repositorio
 
