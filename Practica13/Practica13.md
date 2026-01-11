@@ -1,9 +1,10 @@
-# Informe de Seguridad – Práctica 10 (Parte I) DNS Sniffing & Spoofing
+#  **Práctica Nro 13 Sniffing & Spoofing**
 
 ## 📊 Tabla de Identificación
-| Apellido, Nombre | Cédula | Práctica/Proyecto | Fecha | Equipo |
+| Apellido, Nombre | Cédula | Nro de Práctica | Fecha | Equipo |
 |------------------|--------|-------------------|-------|--------|
-| Gil, Jesús | 30175126 | 10 – Sniffing & Spoofing (Parte I) | 11-01-2026 | Grupo 4 |
+| Gil, Jesús | 30175126 | 13 | 11-01-2026 | Grupo 4 |
+|Guilarte, Andrés| 30246084| 13 | 11-01-2025 | Grupo 4 |
 
 ## 🎭 Contexto del Escenario
 Simulación de un laboratorio de pruebas de seguridad en redes internas para un cliente ficticio ("TechCorp Labs") que desea validar su exposición ante ataques de manipulación DNS y MITM. El alcance cubre la fase de DNS Sniffing y Spoofing usando DNSChef en entorno controlado. La fase de ARP Spoofing no se ejecutó por falta temporal de las máquinas virtuales; se documenta el plan teórico de ejecución para asegurar trazabilidad del procedimiento.
@@ -33,7 +34,9 @@ Simulación de un laboratorio de pruebas de seguridad en redes internas para un 
 
 ## 🔍 METODOLOGÍA Y PROCEDIMIENTO
 
-### Fase 1: Verificación de red y preparación del entorno
+### Parte 1. DNS Sniffing y Spoofing  
+
+#### Fase 1: Verificación de red y preparación del entorno
 ```bash
 ifconfig
 
@@ -45,7 +48,9 @@ ifconfig
 ifconfig | tee recon/ifconfig_inicial.txt
 ```
 
-### Fase 2: Ejecución de DNSChef en modo FakeIP (loopback)
+El comando `ifconfig` se utiliza para inspeccionar y mostrar la configuración de las interfaces de red en el sistema, incluyendo direcciones IP, máscaras de subred y direcciones MAC. Este paso se realizó al inicio de la práctica para verificar que el entorno de laboratorio esté correctamente configurado, asegurando que las interfaces loopback (127.0.0.1) y eth0 (con IP 10.0.2.15) estén activas y funcionales antes de proceder con las pruebas de DNS spoofing. La salida se redirige a un archivo para mantener una evidencia trazable del estado inicial de la red, lo que facilita la comparación posterior y la documentación forense.
+
+#### Fase 2: Ejecución de DNSChef en modo FakeIP (loopback)
 ```bash
 dnschef --fakeip 127.0.0.1 -q
 
@@ -57,7 +62,9 @@ dnschef --fakeip 127.0.0.1 -q
 # manipuladas no salgan a la red; sirve para demostrar suplantación controlada.
 ```
 
-### Fase 3: Consulta dirigida al DNS falso
+DNSChef es una herramienta que actúa como un proxy DNS capaz de falsificar respuestas. En este caso, se ejecuta con la opción `--fakeip 127.0.0.1` para responder a todas las consultas de tipo A con la dirección IP 127.0.0.1 (loopback), y `-q` para reducir la verbosidad de los logs. Este comando se realizó para simular un ataque de spoofing DNS en un entorno controlado y local, demostrando cómo un atacante podría interceptar y manipular consultas DNS sin afectar el tráfico de red externa, ya que el binding en loopback asegura que las respuestas falsificadas solo impacten al sistema local.
+
+#### Fase 3: Consulta dirigida al DNS falso
 ```bash
 host -t A mercadolibre.com 127.0.0.1
 
@@ -69,7 +76,9 @@ host -t A mercadolibre.com 127.0.0.1
 # EXPECTATIVA: la respuesta A debe ser 127.0.0.1 (IP falsificada por DNSChef).
 ```
 
-### Fase 4: Repetición con dominio alterno y evidencias
+El comando `host` es un cliente DNS que permite consultar registros específicos. Aquí se utiliza `-t A` para solicitar el registro de dirección IPv4 del dominio mercadolibre.com, apuntando al servidor DNS en 127.0.0.1 (donde DNSChef está ejecutándose). Este paso se realizó para validar que la herramienta de spoofing esté funcionando correctamente, esperando que la respuesta sea la IP falsificada (127.0.0.1) en lugar de la real, lo que confirma la manipulación exitosa de las respuestas DNS y demuestra el riesgo de aceptar respuestas no validadas.
+
+#### Fase 4: Repetición con dominio alterno y evidencias
 ```bash
 host -t A example.com 127.0.0.1 | tee evidencias/host_example_fakeip.txt
 
@@ -77,7 +86,9 @@ host -t A example.com 127.0.0.1 | tee evidencias/host_example_fakeip.txt
 # Se documenta salida en archivo para anexos y comparación futura.
 ```
 
-### Fase 5: Verificación forense y evidencia de manipulación
+Similar a la fase anterior, se utiliza `host` para consultar el registro A de example.com apuntando al DNS falso en 127.0.0.1, pero esta vez la salida se guarda en un archivo usando `tee`. Este comando se realizó para repetir la prueba de spoofing con un dominio diferente, generando evidencia persistente de la manipulación DNS, lo que permite comparar resultados y documentar la consistencia del ataque en el laboratorio, facilitando análisis forenses posteriores.
+
+#### Fase 5: Verificación forense y evidencia de manipulación
 ```bash
 # Confirmar identidad y entorno tras las pruebas
 whoami | tee evidencias/whoami.txt
@@ -101,6 +112,8 @@ echo "Equipo: Grupo 4" >> "$evidence_file"
 cat "$evidence_file"
 ls -la "$evidence_file"
 ```
+
+Esta fase incluye varios comandos para recopilar información forense después de las pruebas. `whoami`, `id` y `hostname` se usan para confirmar la identidad del usuario y el sistema; `netstat` registra el estado de las conexiones de red post-prueba. Además, se crea un archivo de evidencia con timestamp que documenta el compromiso, incluyendo detalles del usuario, sistema y técnica utilizada. Estos comandos se realizaron para proporcionar trazabilidad completa, asegurando que todas las acciones en el laboratorio estén documentadas y verificables, lo que es crucial en un contexto de ciberseguridad para demostrar la ejecución controlada y evitar malentendidos sobre el alcance del ataque.
 
 ## Evidencias (Parte I)
 ![ifconfig – estado inicial](https://imgur.com/Q7ddbLZ "ifconfig – estado inicial")
@@ -262,9 +275,3 @@ Se demostró la viabilidad de falsificar respuestas DNS en laboratorio usando DN
 - Documentación DNSChef: https://github.com/iphelix/dnschef
 - RFC 4033/4034/4035 – DNS Security (DNSSEC)
 - OWASP Testing Guide – Testing for DNS Manipulation
-
-## 📎 Anexos
-- evidencias/ifconfig_inicial.txt
-- evidencias/host_example_fakeip.txt
-- evidencias/netstat_post_dnschef.txt
-- evidencias/EVIDENCIA_DNS_<timestamp>_EQUIPO4.txt
