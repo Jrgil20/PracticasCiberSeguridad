@@ -42,6 +42,7 @@ Este repositorio puede servir como referencia para estudiantes, docentes o cualq
 |10        | [Criptografía Simétrica y Asimétrica](Practica10/Practica10.md)| 18|
 |11        | [Ingeniería Social](Practica11/Practica11.md)| 14|
 |12        | [Redes y Perímetro (Fortigate)](Practica12/Practica12.md)| 17|
+|13        | [Sniffing & Spoofing](Practica13/Practica13.md)| 19| 
 
 ## Estructura del repositorio
 
